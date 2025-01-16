@@ -1,5 +1,6 @@
 import { query, Request, Response } from "express";
 import * as https from "https";
+import path from "path";
 import * as querystring from "querystring";
 
 export const retreiveAmadeusToken = (request: Request, res: Response) => {
@@ -43,21 +44,15 @@ export const retreiveAmadeusToken = (request: Request, res: Response) => {
 } 
 
 export const flightOffersSearch = async (request: Request, res: Response) => {
-//   const body = querystring.stringify({
-//     currencyCode: 'ILS',
-//     originLocationCode: 'TLV',
-//     destinationLocationCode: 'ATH',
-//     departureDate: '2025-06-01',
-//     adults:1
-//   });
   const options = {
   hostname: process.env.AMADEUS_API_BASE_URL,
   headers: { authorization:
     `Bearer ${process.env.AMADEUS_ACCESS_TOKEN}`},
-  path: '/v2/shopping/flight-offers',
   agent: new https.Agent({ rejectUnauthorized: false }),
-  method: 'GET'};
-    const req = https.request(options, ( response) => {
+  method: 'GET',
+  path: `/v2/shopping/flight-offers?originLocationCode=${request.query.originLocationCode}&destinationLocationCode=${request.query.destinationLocationCode}&departureDate=${request.query.departureDate}&returnDate=${request.query.returnDate}&adults=${request.query.adults}&children=${request.query.children}&infants=${request.query.infants}&travelClass=${request.query.travelClass}&currencyCode=${request.query.currencyCode}&max=10`,
+};
+    const req = https.request(options, (response) => {
         
     let data = '';
     response.on('data', (chunk) => {
@@ -76,6 +71,5 @@ export const flightOffersSearch = async (request: Request, res: Response) => {
     res.status(500).send(error.message);
 
     });
-
     req.end()
 }
