@@ -1,0 +1,7 @@
+###
+# get amadeus flights offer search
+GET http://localhost:3000/amadeus/flight-offers
+
+###
+# get amadeus token
+POST http://localhost:3000/amadeus
