@@ -1,6 +1,6 @@
 ###
 # get amadeus flights offer search
-GET http://localhost:3000/amadeus/flight-offers
+GET http://localhost:3000/amadeus/flight-offers?currencyCode=ILS&originLocationCode=TLV&destinationLocationCode=CDG&departureDate=2021-12-01&returnDate=2021-12-05&adults=1&max=5
 
 ###
 # get amadeus token
