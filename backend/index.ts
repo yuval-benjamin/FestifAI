@@ -9,7 +9,7 @@ const app = express();
 const port = 3000;
 
 app.get('/test', (req: Request, res: Response) => {
-  askChatGPT()
+  askChatGPT(req, res);
 });
 
 app.use('/spotify', spotifyRouter);
