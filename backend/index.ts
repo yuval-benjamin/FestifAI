@@ -1,12 +1,11 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
+import { festivalRouter } from './routers/festival.router';
 const app = express();
 const port = 3000;
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello FestifAI!');
-});
+app.use(express.json())
+app.use('/festivals',festivalRouter);
 
 app.listen(port, () => {
   console.log(`FestifAI server listening at http://localhost:${port}`);
 });
- 
