@@ -7,7 +7,6 @@ dotenv.config();
 const userTokens: Record<string, string> = {}; // Temporary token store
 
 const client_id = process.env.SPOTIFY_CLIENT_ID as string;
-console.log(client_id);
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET as string;
 const redirect_uri = 'http://localhost:3000/spotify/callback';
 
