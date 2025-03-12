@@ -1,11 +1,14 @@
 import { Request, Response } from "express";
 import querystring from "querystring";
 import https from "https";
+import dotenv from "dotenv";
 
+dotenv.config();
 const userTokens: Record<string, string> = {}; // Temporary token store
 
-const client_id = 'e4f2aaa400d04d40824fe55863470098';
-const client_secret = '237dd3cdce5443999b5cb2d5416d4a83';
+const client_id = process.env.SPOTIFY_CLIENT_ID as string;
+console.log(client_id);
+const client_secret = process.env.SPOTIFY_CLIENT_SECRET as string;
 const redirect_uri = 'http://localhost:3000/spotify/callback';
 
 const generateRandomString = (length: number) => {
@@ -65,7 +68,7 @@ export const spotifyCallback = async (req: Request, res: Response): Promise<void
                         return res.status(400).json(parsedBody);
                     }
 
-                    userTokens["default_user"] = parsedBody.access_token; 
+                    userTokens["default_user"] = parsedBody.access_token;
 
                     res.json({
                         access_token: parsedBody.access_token,

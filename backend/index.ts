@@ -1,5 +1,8 @@
 import express, { Request, Response } from 'express';
 import { spotifyRouter } from './routers/spotify.route';
+import dotenv from "dotenv";
+
+dotenv.config(); 
 
 const app = express();
 const port = 3000;
