@@ -114,3 +114,31 @@ export const getFavoriteArtists = async (req: Request, res: Response): Promise<v
     }
 };
 
+export const getTopArtistGenres = async (req: Request, res: Response): Promise<void> => {
+    const accessToken = userTokens["default_user"];
+
+    if (!accessToken) {
+        res.status(401).json({ error: "Unauthorized - No Access Token" });
+        return;
+    }
+
+    try {
+        const response = await fetch("https://api.spotify.com/v1/me/top/artists?limit=5", {
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Spotify API error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const uniqueGenres: string[] = data.items
+            .flatMap((artist: any) => artist.genres)
+            .filter((genre, index, self) => self.indexOf(genre) === index); 
+
+        res.json({ genres: uniqueGenres });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Failed to fetch artist genres" });
+    }
+};
