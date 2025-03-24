@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { spotifyRouter } from './routers/spotify.route';
-import { askChatGPT } from './chat.service';
+import { festivalRouter } from './routers/festival.router';
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -8,9 +8,8 @@ dotenv.config();
 const app = express();
 const port = 3000;
 
-app.get('/test', (req: Request, res: Response) => {
-  askChatGPT(req, res);
-});
+app.use(express.json())
+app.use('/festivals',festivalRouter);
 
 app.use('/spotify', spotifyRouter);
 
