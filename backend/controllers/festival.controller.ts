@@ -2,10 +2,7 @@ import { OpenAI, RateLimitError } from 'openai';
 import { Request, Response } from 'express';
 
 const baseURL = "https://api.aimlapi.com/v1";
-// const apiKey = process.env.AI_API_KEY;
-const apiKey = "db94c6e5c
-
-45e438b82afca62dd2efa00"
+const apiKey = process.env.AI_API_KEY;
 
 const api = new OpenAI({
     apiKey,
@@ -22,10 +19,6 @@ export async function getFestivalsFromAi(req: Request, res: Response) {
   const { genre, lowPrice, highPrice } = req.body as GetFestivalsFromAiRequestBody;
   // const question = `answer so we can run JSON.parse(answer).${genre} music,range ${lowPrice}$-${highPrice}$.2025 Festivals- VERY IMPORTANT to get exact festival date from the festival website -send back 5 festivals with these fields:name,country,dates,website`;
   const question = `Return a JSON array of 5 festivals in 2025 for ${genre} music, within ${lowPrice}$-${highPrice}$. Ensure festival dates are correct by verifying them from the official festival website. Each object must have: name, country, dates, and website.`
-    if (!question) {
-      res.status(400).json({ error: 'Missing question in request body' });
-      return
-    }
 
     try {
       const completion = await api.chat.completions.create({

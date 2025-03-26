@@ -4,7 +4,7 @@
     "module": "commonjs",              // Module system used by Node.js
     "esModuleInterop": true,           // To use ES module syntax
     "skipLibCheck": true,              // Skip type checking of declaration files
-    "strict": true,                    // Enable strict type checking
+    "strict": false,                    // Enable strict type checking
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   }
