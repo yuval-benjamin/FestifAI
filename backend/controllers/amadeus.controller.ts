@@ -20,7 +20,6 @@ export const retreiveAmadeusToken = (request: Request, res: Response) => {
 }
 
     const req = https.request(options, ( response) => {
-        
         let data = '';
         response.on('data', (chunk) => {
         data = data + chunk.toString();
@@ -29,7 +28,7 @@ export const retreiveAmadeusToken = (request: Request, res: Response) => {
         response.on('end', () => {
         const body = JSON.parse(data);
         console.log(body);
-        res.status(response.statusCode).send(body);
+        res.status(response.statusCode!).send(body);
         });
     })
 
@@ -41,7 +40,7 @@ export const retreiveAmadeusToken = (request: Request, res: Response) => {
 
     req.write(body);
     req.end()
-} 
+}
 
 export const flightOffersSearch = async (request: Request, res: Response) => {
   const options = {
@@ -53,7 +52,7 @@ export const flightOffersSearch = async (request: Request, res: Response) => {
   path: `/v2/shopping/flight-offers?originLocationCode=${request.query.originLocationCode}&destinationLocationCode=${request.query.destinationLocationCode}&departureDate=${request.query.departureDate}&returnDate=${request.query.returnDate}&adults=${request.query.adults}&children=${request.query.children}&infants=${request.query.infants}&travelClass=${request.query.travelClass}&currencyCode=${request.query.currencyCode}&max=10`,
 };
     const req = https.request(options, (response) => {
-        
+
     let data = '';
     response.on('data', (chunk) => {
     data = data + chunk.toString();
@@ -62,7 +61,7 @@ export const flightOffersSearch = async (request: Request, res: Response) => {
         response.on('end', () => {
         const body = JSON.parse(data);
         console.log(body);
-        res.status(response.statusCode).send(body);
+        res.status(response.statusCode!).send(body);
         });
 })
 
