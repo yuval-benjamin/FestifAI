@@ -4,7 +4,7 @@ import https from "https";
 import dotenv from "dotenv";
 
 dotenv.config();
-const userTokens: Record<string, string> = {}; // Temporary token store
+const userTokens: Record<string, string> = {}; 
 
 const client_id = process.env.SPOTIFY_CLIENT_ID as string;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET as string;
