@@ -4,6 +4,7 @@ import { festivalRouter } from './routers/festival.router';
 import dotenv from "dotenv";
 import { amadeusRouter } from './routers/amadeus.router';
 dotenv.config();
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const app = express();
 const port = 3000;

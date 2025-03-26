@@ -36,7 +36,7 @@ export async function getFestivalsFromAi(req: Request, res: Response) {
       const response = completion.choices[0].message.content;
       console.log(response);
 
-      res.status(200).send({ answer: response?.match(/\[.*\]/s)?.[0].replace(/\s+/g, ' ') });
+      res.status(200).send({ festivals: response?.match(/\[.*\]/s)?.[0].replace(/\s+/g, ' ') });
 
     } catch (error) {
         console.log(error);
