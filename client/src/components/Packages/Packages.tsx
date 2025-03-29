@@ -1,0 +1,80 @@
+import React, { FC, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PackageInterface, PackageEnum } from '../../App';
+
+
+interface PackagesProps {
+}
+
+export const Packages: FC<PackagesProps> = () => {
+  let [packages] = useState<PackageInterface[]>([]);
+  const navigate = useNavigate();
+  packages = [
+    {
+        _id: '1',
+        price: 500,
+        festivalId: '1',
+        startDay: '2023-04-14',
+        endDay: '2023-04-16',
+        accommodation: 'Hotel California',
+        packageType: PackageEnum.LITE,
+        flights: {
+        _id: '1',
+        departure: new Date('2023-04-14'),
+        arrival: new Date('2023-04-16'),
+        airline: 'Delta Airlines',
+        }
+      },
+      {
+        _id: '2',
+        price: 700,
+        festivalId: '2',
+        startDay: '2023-07-28',
+        endDay: '2023-07-31',
+        accommodation: 'Hilton Chicago',
+        packageType: PackageEnum.STANDARD,
+        flights: {
+        _id: '2',
+        departure: new Date('2023-07-28'),
+        arrival: new Date('2023-07-31'),
+        airline: 'United Airlines',
+        }
+      },
+      {
+        _id: '3',
+        price: 900,
+        festivalId: '3',
+        startDay: '2023-06-15',
+        endDay: '2023-06-18',
+        accommodation: 'Bonnaroo Campground',
+        packageType: PackageEnum.PREMIUM,
+        flights: {
+          _id: '3',
+          departure: new Date('2023-06-15'),
+          arrival: new Date('2023-06-18'),
+          airline: 'American Airlines',
+          }
+      }
+  ]
+
+
+return(
+    <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white opacity-75" 
+     style={{height: "100vh", backgroundImage:"url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center"}}>
+      <h1 className="display-1 bangers-regular">choose your package</h1>
+      <div className="d-flex flex-row justify-content-center align-items-center">
+    {packages.map((festivalPackage) => (
+      <div key={festivalPackage._id} className="card text-center m-2" style={{width: "18rem"}} onClick={() => navigate(`/checkout`)}>
+         <div className="card-body">
+           <h5 className="card-title">{festivalPackage.packageType}</h5>
+            <p className="card-text">airline: {festivalPackage.flights.airline}</p>
+           <p className="card-text">dates: {festivalPackage.startDay}-{festivalPackage.endDay}</p>
+           <p className="card-text">accommodation: {festivalPackage.accommodation}</p>
+           <p className="card-text">total: ${festivalPackage.price}</p>
+         </div>
+       </div>
+    ))}
+    </div>
+    </div>
+  );
+};
