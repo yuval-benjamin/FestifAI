@@ -61,7 +61,7 @@ export const Packages: FC<PackagesProps> = () => {
 return(
     <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white opacity-75" 
      style={{height: "100vh", backgroundImage:"url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center"}}>
-      <h1 className="display-1 bangers-regular">choose your package</h1>
+      <h1 className="display-1 bangers-regular" style={{ color:"black"}}>choose your package</h1>
       <div className="d-flex flex-row justify-content-center align-items-center">
     {packages.map((festivalPackage) => (
       <div key={festivalPackage._id} className="card text-center m-2"  style={{

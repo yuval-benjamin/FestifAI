@@ -46,7 +46,7 @@ export const Festivals: FC<FestivalsProps> = () => {
 return(
     <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white opacity-75" 
      style={{height: "100vh", backgroundImage:"url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center"}}>
-      <h1 className="display-1 bangers-regular">choose your festival</h1>
+      <h1 className="display-1 bangers-regular" style={{ color:"black"}}>choose your festival</h1>
       <div className="d-flex flex-row justify-content-center align-items-center">
     {festivals.map((festival) => (
       <div key={festival._id} className="card text-center m-2" style={{
@@ -54,7 +54,7 @@ return(
         height: "22rem",
         backgroundColor: "rgba(31, 31, 61, 0.8)", 
         color: "white", 
-        border: "none", 
+        border: "none",
       }}  onClick={() => navigate(`/festivals/package`)}>
         <div className="card-body">
           <h5 className="card-title bangers-regular">{festival.name}</h5>
