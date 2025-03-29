@@ -49,9 +49,15 @@ return(
       <h1 className="display-1 bangers-regular">choose your festival</h1>
       <div className="d-flex flex-row justify-content-center align-items-center">
     {festivals.map((festival) => (
-      <div key={festival._id} className="card text-center m-2" style={{width: "18rem"}} onClick={() => navigate(`/festivals/package`)}>
+      <div key={festival._id} className="card text-center m-2" style={{
+        width: "20rem", 
+        height: "22rem",
+        backgroundColor: "rgba(31, 31, 61, 0.8)", 
+        color: "white", 
+        border: "none", 
+      }}  onClick={() => navigate(`/festivals/package`)}>
         <div className="card-body">
-          <h5 className="card-title">{festival.name}</h5>
+          <h5 className="card-title bangers-regular">{festival.name}</h5>
           <p className="card-text">dates: {festival.startDay}-{festival.endDay}</p>
           <p className="card-text">location: {festival.location}</p>
           <p className="card-text">genre: {festival.genre}</p>
