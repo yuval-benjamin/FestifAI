@@ -134,7 +134,7 @@ export const getTopArtistGenres = async (req: Request, res: Response): Promise<v
         const data = await response.json();
         const uniqueGenres: string[] = data.items
             .flatMap((artist: any) => artist.genres)
-            .filter((genre, index, self) => self.indexOf(genre) === index); 
+            .filter((genre, index, self) => self.indexOf(genre) === index);
 
         res.json({ genres: uniqueGenres });
     } catch (error) {
