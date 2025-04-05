@@ -226,6 +226,7 @@
 //         res.status(500).json({ error: "Failed to fetch artist genres" });
 //     }
 // };
+
 import { Request, Response } from "express";
 import { User } from '../models/User';
 import querystring from "querystring";
@@ -331,7 +332,6 @@ export const spotifyCallback = async (req: Request, res: Response): Promise<void
             .map((artist: any) => artist.name);
 
         const expiresAt = new Date();
-        console.log("Expires in:", tokenData.expires_in);
         expiresAt.setSeconds(expiresAt.getSeconds() + tokenData.expires_in);
 
         // Save or update user
@@ -423,7 +423,9 @@ export const getFavoriteArtists = async (req: Request, res: Response): Promise<v
 
 export const getTopArtistGenres = async (req: Request, res: Response): Promise<void> => {
     const email = req.query.email as string;
+
     console.log("Email:", email);
+    
     const accessToken = await getValidAccessToken(email);
 
     if (!accessToken) {
