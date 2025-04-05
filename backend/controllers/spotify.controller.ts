@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
+import { User } from '../models/User';
 import querystring from "querystring";
 import https from "https";
 import dotenv from "dotenv";
 
 dotenv.config();
-const userTokens: Record<string, string> = {}; 
+const userTokens: Record<string, string> = {};
 
 const client_id = process.env.SPOTIFY_CLIENT_ID as string;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET as string;
@@ -42,52 +43,135 @@ export const spotifyCallback = async (req: Request, res: Response): Promise<void
             grant_type: "authorization_code",
             code: code,
             redirect_uri: redirect_uri,
-            client_id: client_id,
-            client_secret: client_secret,
         });
 
-        const options = {
+        const tokenResponse = await fetch("https://accounts.spotify.com/api/token", {
             method: "POST",
-            hostname: "accounts.spotify.com",
-            path: "/api/token",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
                 Authorization: "Basic " + Buffer.from(`${client_id}:${client_secret}`).toString("base64"),
             },
-        };
-
-        const request = https.request(options, (response) => {
-            let body = "";
-
-            response.on("data", (chunk) => (body += chunk));
-            response.on("end", () => {
-                try {
-                    const parsedBody = JSON.parse(body);
-                    if (parsedBody.error) {
-                        return res.status(400).json(parsedBody);
-                    }
-
-                    userTokens["default_user"] = parsedBody.access_token;
-
-                    res.json({
-                        access_token: parsedBody.access_token,
-                        refresh_token: parsedBody.refresh_token,
-                        expires_in: parsedBody.expires_in,
-                    });
-                } catch (error) {
-                    res.status(500).json({ error: "Failed to parse response" });
-                }
-            });
+            body: postData,
         });
 
-        request.on("error", (err) => res.status(500).json({ error: err.message }));
-        request.write(postData);
-        request.end();
+        const tokenData = await tokenResponse.json();
+        const accessToken = tokenData.access_token;
+
+        if (!accessToken) {
+            res.status(400).json({ error: "Failed to retrieve access token" });
+            return;
+        }
+
+        // Save access token
+        userTokens["default_user"] = accessToken;
+
+        // Fetch user profile
+        const profileRes = await fetch("https://api.spotify.com/v1/me", {
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        const profileData = await profileRes.json();
+
+        const name = profileData.display_name;
+        const email = profileData.email;
+
+        // Fetch top artists
+        const topArtistsRes = await fetch("https://api.spotify.com/v1/me/top/artists?limit=10", {
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        const topArtistsData = await topArtistsRes.json();
+
+        const genres = topArtistsData.items
+            .flatMap((artist: any) => artist.genres)
+            .filter((genre: string, i: number, arr: string[]) => arr.indexOf(genre) === i);
+
+        const songs = topArtistsData.items
+            .map((artist: any) => artist.name); // Just using artist names as a proxy for "favorite songs" for now
+
+        // Save user to DB
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            existingUser.favoriteGenres = genres;
+            existingUser.favoriteSongs = songs;
+            await existingUser.save();
+        } else {
+            const newUser = new User({
+                name,
+                email,
+                favoriteGenres: genres,
+                favoriteSongs: songs,
+            });
+            await newUser.save();
+        }
+
+        res.json({
+            access_token: tokenData.access_token,
+            refresh_token: tokenData.refresh_token,
+            expires_in: tokenData.expires_in,
+        });
     } catch (error) {
         console.error("Error in spotifyCallback:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
+// export const spotifyCallback = async (req: Request, res: Response): Promise<void> => {
+//     try {
+//         const code = req.query.code as string;
+//         if (!code) {
+//             res.status(400).json({ error: "No authorization code provided" });
+//             return;
+//         }
+
+//         const postData = querystring.stringify({
+//             grant_type: "authorization_code",
+//             code: code,
+//             redirect_uri: redirect_uri,
+//             client_id: client_id,
+//             client_secret: client_secret,
+//         });
+
+//         const options = {
+//             method: "POST",
+//             hostname: "accounts.spotify.com",
+//             path: "/api/token",
+//             headers: {
+//                 "Content-Type": "application/x-www-form-urlencoded",
+//                 Authorization: "Basic " + Buffer.from(`${client_id}:${client_secret}`).toString("base64"),
+//             },
+//         };
+
+//         const request = https.request(options, (response) => {
+//             let body = "";
+
+//             response.on("data", (chunk) => (body += chunk));
+//             response.on("end", () => {
+//                 try {
+//                     const parsedBody = JSON.parse(body);
+//                     if (parsedBody.error) {
+//                         return res.status(400).json(parsedBody);
+//                     }
+
+//                     userTokens["default_user"] = parsedBody.access_token;
+
+//                     res.json({
+//                         access_token: parsedBody.access_token,
+//                         refresh_token: parsedBody.refresh_token,
+//                         expires_in: parsedBody.expires_in,
+//                     });
+//                 } catch (error) {
+//                     res.status(500).json({ error: "Failed to parse response" });
+//                 }
+//             });
+//         });
+
+//         request.on("error", (err) => res.status(500).json({ error: err.message }));
+//         request.write(postData);
+//         request.end();
+//     } catch (error) {
+//         console.error("Error in spotifyCallback:", error);
+//         res.status(500).json({ error: "Internal Server Error" });
+//     }
+// };
 
 export const getFavoriteArtists = async (req: Request, res: Response): Promise<void> => {
     const accessToken = userTokens["default_user"];
