@@ -1,13 +1,12 @@
 import { OpenAI, RateLimitError } from 'openai';
 import { Request, Response } from 'express';
-
 const baseURL = "https://api.aimlapi.com/v1";
 const apiKey = process.env.AI_API_KEY;
 
 const api = new OpenAI({
-    apiKey,
-    baseURL,
-  });
+  apiKey,
+  baseURL,
+});
 
 type GetFestivalsFromAiRequestBody = {
   genre: string;
