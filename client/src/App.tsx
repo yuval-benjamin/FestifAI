@@ -9,6 +9,7 @@ import { Preferences } from './components/Preferences';
 export function App() {
   const [user, setUser] = useState<User>();
   const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
+  const [packages, setPackages] = useState<PackageInterface[]>([]);
 
   return (
     <AppContext.Provider
@@ -17,6 +18,8 @@ export function App() {
         festivals,
         user,
         setUser,
+        packages,
+        setPackages
       }}>
       <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white opacity-75"
         style={{ height: "100vh", backgroundImage: "url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
@@ -79,4 +82,6 @@ interface AppContextProps {
   setFestivals?: (festivals: FestivalInterface[]) => void;
   user?: User;
   setUser?: (user: User) => void;
+  packages?: PackageInterface[];
+  setPackages?: (packages: PackageInterface[]) => void;
 }

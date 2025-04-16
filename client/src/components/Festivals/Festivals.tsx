@@ -1,10 +1,37 @@
 import React, { FC, Fragment, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppContext } from '../../App';
+import { AppContext, FestivalInterface, PackageInterface } from '../../App';
+import axios from 'axios';
 
 export const Festivals: FC = () => {
-  const {festivals} = useContext(AppContext)
+  const {festivals, setPackages} = useContext(AppContext)
   const navigate = useNavigate();
+
+
+  const fetchAmadeusToken = async (festival: FestivalInterface) => {
+      const { data } = await axios.post<{ access_token: string }>(`http://localhost:3000/amadeus`)
+      console.log(data.access_token)
+      fetchFlights(festival, data.access_token)
+    };
+      
+  const fetchFlights = async (festival: FestivalInterface, amadeusAccessToken: string) => {
+    const { data } = await axios.get<{ packages: PackageInterface[] }>(`http://localhost:3000/amadeus/flight-offers`, {
+      data: {
+        festivalName: festival.name,
+        originLocationCode: "TLV",
+        destinationLocationCode: "CDG",
+        departureDate: festival.startDate,
+        returnDate: festival.endDate,
+        adults: 1,
+      },
+      headers: {
+        AMADEUS_ACCESS_TOKEN: `${amadeusAccessToken}`
+      },
+    })
+    console.log(data)
+    setPackages?.(data.packages);
+    navigate(`/festivals/package`)
+  }
 
   return (
     <Fragment>
@@ -21,7 +48,7 @@ export const Festivals: FC = () => {
               color: "white",
               border: "none",
             }}
-            onClick={() => navigate(`/festivals/package`)}>
+            onClick={() => fetchAmadeusToken(festival)}>
             <div className="card-body">
               <h5 className="card-title bangers-regular">{festival.name}</h5>
               <p className="card-text">dates: {festival.startDate}-{festival.endDate}</p>
