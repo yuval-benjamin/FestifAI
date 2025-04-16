@@ -46,7 +46,7 @@ export const flightOffersSearch = async (request: Request, res: Response) => {
   const options = {
   hostname: process.env.AMADEUS_API_BASE_URL,
   headers: { authorization:
-    `Bearer ${process.env.AMADEUS_ACCESS_TOKEN}`},
+    `Bearer ${request.body.AMADEUS_ACCESS_TOKEN}`},
   agent: new https.Agent({ rejectUnauthorized: false }),
   method: 'GET',
   path: `/v2/shopping/flight-offers?originLocationCode=${request.body.originLocationCode}
