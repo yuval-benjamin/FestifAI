@@ -1,4 +1,4 @@
-import { query, Request, Response } from "express";
+import { Request, Response } from "express";
 import * as https from "https";
 import path from "path";
 import * as querystring from "querystring";
@@ -49,7 +49,10 @@ export const flightOffersSearch = async (request: Request, res: Response) => {
     `Bearer ${process.env.AMADEUS_ACCESS_TOKEN}`},
   agent: new https.Agent({ rejectUnauthorized: false }),
   method: 'GET',
-  path: `/v2/shopping/flight-offers?originLocationCode=${request.query.originLocationCode}&destinationLocationCode=${request.query.destinationLocationCode}&departureDate=${request.query.departureDate}&returnDate=${request.query.returnDate}&adults=${request.query.adults}&children=${request.query.children}&infants=${request.query.infants}&travelClass=${request.query.travelClass}&currencyCode=${request.query.currencyCode}&max=10`,
+  path: `/v2/shopping/flight-offers?originLocationCode=${request.body.originLocationCode}
+  &destinationLocationCode=${request.body.destinationLocationCode}&departureDate=${request.body.departureDate}
+  &returnDate=${request.body.returnDate}&adults=${request.body.adults}
+  &children=0&infants=0&travelClass=ECONOMY&currencyCode=NIS&max=3`,
 };
     const req = https.request(options, (response) => {
 
