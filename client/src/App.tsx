@@ -4,30 +4,31 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import React, { createContext, useState } from 'react';
 import { Festivals } from './components/Festivals/Festivals';
 import { Packages } from './components/Packages/Packages';
-import Preferences from './components/Preferences';
+import { Preferences } from './components/Preferences';
 
 export function App() {
   const [user, setUser] = useState<User>();
-
+  const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
 
   return (
     <AppContext.Provider
       value={{
+        setFestivals,
+        festivals,
         user,
         setUser,
-      }}
-    >
+      }}>
       <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white opacity-75"
-          style={{height: "100vh", backgroundImage:"url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center"}}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/festivals" element={<Festivals />} />
-          <Route path="/preferences" element={<Preferences />} />
-          <Route path="/festivals/package" element={< Packages />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+        style={{ height: "100vh", backgroundImage: "url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/festivals" element={<Festivals />} />
+            <Route path="/preferences" element={<Preferences />} />
+            <Route path="/festivals/package" element={< Packages />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
     </AppContext.Provider>
   );
 }
@@ -40,14 +41,11 @@ export interface User {
 }
 
 export interface FestivalInterface {
-  _id: string;
-  link: string;
   name: string;
   location: string;
-  genre: string;
-  price: number;
-  startDay: string;
-  endDay: string;
+  startDate: string;
+  endDate: string;
+  website: string;
 }
 
 export interface PackageInterface {
@@ -77,6 +75,8 @@ export enum PackageEnum {
 export const AppContext = createContext<AppContextProps>({});
 
 interface AppContextProps {
+  festivals?: FestivalInterface[];
+  setFestivals?: (festivals: FestivalInterface[]) => void;
   user?: User;
   setUser?: (user: User) => void;
 }

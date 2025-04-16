@@ -3,7 +3,6 @@ import { SpotifyIcon } from "../assets/icons";
 import { useNavigate } from 'react-router-dom';
 
 export const Homepage: FC = () => {
-
   const navigate = useNavigate();
 
   return (
