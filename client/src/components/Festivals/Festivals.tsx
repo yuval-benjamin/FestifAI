@@ -57,7 +57,7 @@ export const Festivals: FC = () => {
       },
       accommodation: "-",
       checkedBags: flightOffer.travelerPricings[0].fareDetailsBySegment[0].includedCheckedBags.quantity,
-      class: flightOffer.travelerPricings[0].fareDetailsBySegment[0].class,
+      class: flightOffer.travelerPricings[0].fareDetailsBySegment[0].cabin,
       packageType: flightOffer.packageType,
     }))
     setPackages?.(packages);
