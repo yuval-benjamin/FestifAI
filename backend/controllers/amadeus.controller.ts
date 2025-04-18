@@ -49,7 +49,7 @@ export const flightOffersSearch = async (request: Request, res: Response) => {
     `Bearer ${request.headers.amadeus_access_token}`},
   agent: new https.Agent({ rejectUnauthorized: false }),
   method: 'GET',
-  path: `/v2/shopping/flight-offers?originLocationCode=${request.query.originLocationCode}&destinationLocationCode=${request.query.destinationLocationCode}&departureDate=${request.query.departureDate}&returnDate=${request.query.returnDate}&adults=${request.query.adults}&children=0&infants=0&travelClass=ECONOMY&currencyCode=ILS&max=3`,
+  path: `/v2/shopping/flight-offers?originLocationCode=${request.query.originLocationCode}&destinationLocationCode=${request.query.destinationLocationCode}&departureDate=${request.query.departureDate}&returnDate=${request.query.returnDate}&adults=${request.query.adults}&currencyCode=ILS&max=3`,
 };
     const req = https.request(options, (response) => {
 

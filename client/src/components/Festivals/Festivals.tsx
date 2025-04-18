@@ -34,25 +34,25 @@ export const Festivals: FC = () => {
     data.data[2].packageType = PackageEnum.PREMIUM
 
     const packages = data.data.map((flightOffer: AmadeusFlightOffer) => ({
-      startDay: flightOffer.itineraries[0].segments[0].departure.at,
+      startDay: (flightOffer.itineraries[0].segments[0].departure.at).split("T")[0],
       price: flightOffer.price.total,
-      endDay: flightOffer.itineraries[0].segments[1].arrival.at,
+      endDay: (flightOffer.itineraries[0].segments[1].arrival.at).split("T")[0],
       _id: flightOffer.id,
       festivalId: festival.name,
       flights: {
         departure: {
           origin: flightOffer.itineraries[0].segments[0].departure.iataCode,
           destination: flightOffer.itineraries[0].segments[0].arrival.iataCode,
-          departureDate: new Date(flightOffer.itineraries[0].segments[0].departure.at).toISOString,
-          arrivalDate: new Date(flightOffer.itineraries[0].segments[0].arrival.at).toISOString,
-          airline: flightOffer.validatingAirlineCodes[0],
+          departureDate: (flightOffer.itineraries[0].segments[0].departure.at),
+          arrivalDate: (flightOffer.itineraries[0].segments[0].arrival.at),
+          airline: flightOffer.itineraries[0].segments[0].operating.carrierCode
         },
         return: {
           origin: flightOffer.itineraries[0].segments[1].departure.iataCode,
           destination: flightOffer.itineraries[0].segments[1].arrival.iataCode,
           departureDate: flightOffer.itineraries[0].segments[1].departure.at,
           arrivalDate: flightOffer.itineraries[0].segments[1].arrival.at,
-          airline: flightOffer.validatingAirlineCodes[0],
+          airline: flightOffer.itineraries[0].segments[1].operating.carrierCode
         }
       },
       accommodation: "-",
