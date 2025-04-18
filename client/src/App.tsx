@@ -49,23 +49,30 @@ export interface FestivalInterface {
   startDate: string;
   endDate: string;
   website: string;
+  locationCode: string;
 }
 
 export interface PackageInterface {
   _id: string;
-  price: number;
+  price: string;
   festivalId: string;
   startDay: string;
   endDay: string;
-  flights: FlightInterface;
+  flights: {
+    departure: FlightInterface;
+    return: FlightInterface;
+  };
   accommodation: string;
   packageType: PackageEnum;
+  checkedBags: number;
+  class: string;
 }
 
 export interface FlightInterface {
-  _id: string;
-  departure: Date;
-  arrival: Date;
+  origin: string;
+  destination: string;
+  departureDate: string;
+  arrivalDate: string;
   airline: string;
 }
 
@@ -74,6 +81,86 @@ export enum PackageEnum {
   STANDARD = "STANDARD",
   PREMIUM = "PREMIUM"
 }
+
+export interface AmadeusFlightOffer {
+  type: string;
+  id: string;
+  source: string;
+  instantTicketingRequired: boolean;
+  nonHomogeneous: boolean;
+  oneWay: boolean;
+  lastTicketingDate: string;
+  numberOfBookableSeats: number;
+  itineraries: Itinerary[];
+  price: Price;
+  validatingAirlineCodes: string[];
+  travelerPricings: TravelerPricing[];
+  packageType: PackageEnum;
+}
+
+export interface Itinerary {
+  duration: string;
+  segments: Segment[];
+}
+export interface Segment {
+  departure: Departure;
+  arrival: Arrival;
+  carrierCode: string;
+  number: string;
+  aircraft: Aircraft;
+  operating: Operating;
+}
+export interface Departure {
+  iataCode: string;
+  terminal: string;
+  at: string;
+}
+
+export interface Arrival {
+  iataCode: string;
+  terminal: string;
+  at: string;
+}
+
+export interface Aircraft {
+  code: string;
+}
+
+export interface Operating {
+  carrierCode: string;
+}
+
+export interface Price {
+  currency: string;
+  total: string;
+  base: string;
+  fees: Fee[];
+  grandTotal: string;
+}
+export interface Fee {
+  amount: string;
+}
+
+export interface TravelerPricing {
+  travelerId: string;
+  fareOption: string;
+  price: Price;
+  fareDetailsBySegment: FareDetailsBySegment[];
+}
+
+export interface FareDetailsBySegment {
+  segmentId: string;
+  cabin: string;
+  fareBasis: string;
+  brandedFare: string;
+  class: string;
+  includedCheckedBags: IncludedCheckedBags;
+}
+
+export interface IncludedCheckedBags {
+  quantity: number;
+}
+
 
 export const AppContext = createContext<AppContextProps>({});
 
