@@ -1,10 +1,12 @@
 import './App.css'
 import HomePage from './components/homepage'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import React, { createContext, useState } from 'react';
+
+import React, { createContext, ReactNode, useState } from 'react';
 import { Festivals } from './components/Festivals/Festivals';
 import { Packages } from './components/Packages/Packages';
 import { Preferences } from './components/Preferences';
+import SpotifyCallback from "./pages/spotifyCallback";
 
 export function App() {
   const [user, setUser] = useState<User>();
@@ -24,8 +26,9 @@ export function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/festivals" element={<Festivals />} />
+            <Route path="/festivals/package" element={< Packages/>} />
+            <Route path="/spotify/callback" element={<SpotifyCallback />} />
             <Route path="/preferences" element={<Preferences />} />
-            <Route path="/festivals/package" element={< Packages />} />
           </Routes>
         </BrowserRouter>
       </div>
