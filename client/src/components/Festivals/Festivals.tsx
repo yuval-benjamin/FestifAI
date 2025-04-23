@@ -1,72 +1,95 @@
-import React, { FC, useState } from 'react';
-import { FestivalInterface } from '../../App';
+import React, { FC, Fragment, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AmadeusFlightOffer, AppContext, FestivalInterface, FlightInterface, PackageInterface, PackageEnum } from '../../App';
+import axios from 'axios';
 
-
-interface FestivalsProps {
-}
-
-export const Festivals: FC<FestivalsProps> = () => {
-  let [festivals] = useState<FestivalInterface[]>([]);
+export const Festivals: FC = () => {
+  const {festivals, setPackages} = useContext(AppContext)
   const navigate = useNavigate();
-  festivals = [
-    {
-      _id: "1",
-      link: "https://www.coachella.com/",
-      name: "Coachella",
-      location: "Indio, California",
-      genre: "Rock, Pop, Hip-Hop",
-      price: 500,
-      startDay: "April 14, 2023",
-      endDay: "April 16, 2023"
-    },
-    {
-      _id: "2",
-      link: "https://www.lollapalooza.com/",
-      name: "Lollapalooza",
-      location: "Chicago, Illinois",
-      genre: "Rock, Pop, Electronic",
-      price: 400,
-      startDay: "July 28, 2023",
-      endDay: "July 31, 2023"
-    },
-    {
-      _id: "3",
-      link: "https://www.bonnaroo.com/",
-      name: "Bonnaroo",
-      location: "Manchester, Tennessee",
-      genre: "Rock, Indie, Electronic",
-      price: 350,
-      startDay: "June 15, 2023",
-      endDay: "June 18, 2023"
-    }
-  ]
 
 
-return(
-    <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white opacity-75" 
-     style={{height: "100vh", backgroundImage:"url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center"}}>
-      <h1 className="display-1 bangers-regular" style={{ color:"black"}}>choose your festival</h1>
+  const fetchAmadeusToken = async (festival: FestivalInterface) => {
+      const { data } = await axios.post<{ access_token: string }>(`http://localhost:3000/amadeus`)
+      console.log(data.access_token)
+      fetchFlights(festival, data.access_token)
+    };
+      
+  const fetchFlights = async (festival: FestivalInterface, amadeusAccessToken: string) => {
+    const { data } = await axios.get<{ data: AmadeusFlightOffer[] }>(`http://localhost:3000/amadeus/flight-offers`, {
+      params: {
+        originLocationCode: "TLV",
+        destinationLocationCode: festival.locationCode,
+        departureDate: festival.startDate,
+        returnDate: festival.endDate,
+        adults: 1,
+      },
+      headers: {
+        AMADEUS_ACCESS_TOKEN: `${amadeusAccessToken}`
+      },
+    })
+    
+    data.data.sort((flightOfferA, flightOfferB) => parseInt(flightOfferA.price.total) - parseInt(flightOfferB.price.total))
+    data.data[0].packageType = PackageEnum.LITE,
+    data.data[1].packageType = PackageEnum.STANDARD,
+    data.data[2].packageType = PackageEnum.PREMIUM
+
+    const packages = data.data.map((flightOffer: AmadeusFlightOffer) => ({
+      startDay: (flightOffer.itineraries[0].segments[0].departure.at).split("T")[0],
+      price: flightOffer.price.total,
+      endDay: (flightOffer.itineraries[0].segments[1].arrival.at).split("T")[0],
+      _id: flightOffer.id,
+      festivalId: festival.name,
+      flights: {
+        departure: {
+          origin: flightOffer.itineraries[0].segments[0].departure.iataCode,
+          destination: flightOffer.itineraries[0].segments[0].arrival.iataCode,
+          departureDate: (flightOffer.itineraries[0].segments[0].departure.at),
+          arrivalDate: (flightOffer.itineraries[0].segments[0].arrival.at),
+          airline: flightOffer.itineraries[0].segments[0].operating.carrierCode
+        },
+        return: {
+          origin: flightOffer.itineraries[0].segments[1].departure.iataCode,
+          destination: flightOffer.itineraries[0].segments[1].arrival.iataCode,
+          departureDate: flightOffer.itineraries[0].segments[1].departure.at,
+          arrivalDate: flightOffer.itineraries[0].segments[1].arrival.at,
+          airline: flightOffer.itineraries[0].segments[1].operating.carrierCode
+        }
+      },
+      accommodation: "-",
+      checkedBags: flightOffer.travelerPricings[0].fareDetailsBySegment[0].includedCheckedBags.quantity,
+      class: flightOffer.travelerPricings[0].fareDetailsBySegment[0].cabin,
+      packageType: flightOffer.packageType,
+    }))
+    setPackages?.(packages);
+    navigate(`/festivals/package`)
+  }
+
+  return (
+    <Fragment>
+      <h1 className="display-1 bangers-regular" style={{ color: "black" }}>choose your festival</h1>
       <div className="d-flex flex-row justify-content-center align-items-center">
-    {festivals.map((festival) => (
-      <div key={festival._id} className="card text-center m-2" style={{
-        width: "20rem", 
-        height: "22rem",
-        backgroundColor: "rgba(31, 31, 61, 0.8)", 
-        color: "white", 
-        border: "none",
-      }}  onClick={() => navigate(`/festivals/package`)}>
-        <div className="card-body">
-          <h5 className="card-title bangers-regular">{festival.name}</h5>
-          <p className="card-text">dates: {festival.startDay}-{festival.endDay}</p>
-          <p className="card-text">location: {festival.location}</p>
-          <p className="card-text">genre: {festival.genre}</p>
-          <p className="card-text">estimated cost: ${festival.price}</p>
-          <a href={festival.link} className="btn btn-primary">Checkout {festival.name} website</a>
-        </div>
+        {festivals?.map((festival) => (
+          <div
+            key={festival.name}
+            className="card text-center m-2"
+            style={{
+              width: "20rem",
+              height: "22rem",
+              backgroundColor: "rgba(31, 31, 61, 0.8)",
+              color: "white",
+              border: "none",
+            }}
+            onClick={() => fetchAmadeusToken(festival)}>
+            <div className="card-body">
+              <h5 className="card-title bangers-regular">{festival.name}</h5>
+              <p className="card-text">dates: {festival.startDate}, {festival.endDate}</p>
+              <p className="card-text">location: {festival.location}</p>
+              {/* <p className="card-text">estimated cost: ${festival.price}</p> */}
+              <a href={festival.website} className="btn btn-primary">Checkout {festival.name} website</a>
+            </div>
+          </div>
+        ))}
       </div>
-    ))}
-    </div>
-    </div>
+    </Fragment>
   );
 };

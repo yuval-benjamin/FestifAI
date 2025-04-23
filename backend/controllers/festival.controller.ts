@@ -8,15 +8,15 @@ const baseURL = "https://api.aimlapi.com/v1";
 const apiKey = process.env.AI_API_KEY;
 
 const api = new OpenAI({
-    apiKey,
-    baseURL,
-  });
+  apiKey,
+  baseURL,
+});
 
 type GetFestivalsFromAiRequestBody = {
-  genre: string;
   highPrice: number;
   lowPrice: number;
 }
+
 
 export async function getFestivalsFromAi(req: Request, res: Response) {
   const { lowPrice, highPrice } = req.query as unknown as GetFestivalsFromAiRequestBody;
@@ -38,38 +38,6 @@ export async function getFestivalsFromAi(req: Request, res: Response) {
 
     const response = completion.choices[0].message.content;
     console.log(response);
-    // const response = `[
-    //   {
-    //     "name": "Test",
-    //     "country": "USA",
-    //     "dates": "April 11-13, 2025",
-    //     "website": "https://www.coachella.com/"
-    //   },
-    //   {
-    //     "name": "Glastonbury Festival",
-    //     "country": "UK",
-    //     "dates": "June 25-29, 2025",
-    //     "website": "https://www.glastonburyfestivals.co.uk/"
-    //   },
-    //   {
-    //     "name": "Lollapalooza",
-    //     "country": "USA",
-    //     "dates": "July 31 - August 3, 2025",
-    //     "website": "https://www.lollapalooza.com/"
-    //   },
-    //   {
-    //     "name": "Rock in Rio",
-    //     "country": "Brazil",
-    //     "dates": "September 19-28, 2025",
-    //     "website": "https://www.rockinrio.com/"
-    //   },
-    //   {
-    //     "name": "Primavera Sound",
-    //     "country": "Spain",
-    //     "dates": "June 5-7, 2025",
-    //     "website": "https://www.primaverasound.com/"
-    //   }
-    // ]`;
     const jsonString = response?.match(/\[.*\]/s)?.[0].replace(/\s+/g, ' ');
 
     if (!jsonString) {
