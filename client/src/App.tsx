@@ -1,10 +1,18 @@
 import './App.css'
-import HomePage from './components/homepage'
+import HomePage from './components/Home'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import React, { createContext, useState } from 'react';
 import { Festivals } from './components/Festivals/Festivals';
 import { Packages } from './components/Packages/Packages';
 import { Preferences } from './components/Preferences';
+import { create } from 'zustand'
+
+export const useStore = create<{ highPrice: number; lowPrice: number; setLowPrice: (price: number) => void; setHighPrice: (price: number) => void; }>((set) => ({
+  highPrice: 0,
+  lowPrice: 0,
+  setHighPrice: (price: number) => set(() => ({ highPrice: price })),
+  setLowPrice: (price: number) => set(() => ({ lowPrice: price })),
+}))
 
 export function App() {
   const [user, setUser] = useState<User>();

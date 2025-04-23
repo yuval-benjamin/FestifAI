@@ -1,16 +1,29 @@
-import React, { FC, Fragment, useContext } from 'react';
+import React, { FC, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppContext } from '../../App';
+import { useQuery } from '@tanstack/react-query';
+import { FestivalInterface, useStore } from '../../App';
+import apiService from '../../api';
+
+type FestivalsQueryResponse = {
+  festivals: FestivalInterface[];
+};
 
 export const Festivals: FC = () => {
-  const {festivals} = useContext(AppContext)
-  const navigate = useNavigate();
+  const { highPrice, lowPrice } = useStore();
 
+  const { data } = useQuery<any, any, { data: FestivalsQueryResponse }>({
+    queryKey: ["festivals"],
+    enabled: false,
+    queryFn:
+      async () =>
+        await apiService.get<{ festivals: FestivalInterface[] }>(`/festivals?lowPrice=${lowPrice}&highPrice=${highPrice}`)
+  })
+  const navigate = useNavigate();
   return (
     <Fragment>
       <h1 className="display-1 bangers-regular" style={{ color: "black" }}>choose your festival</h1>
       <div className="d-flex flex-row justify-content-center align-items-center">
-        {festivals?.map((festival) => (
+        {data?.data.festivals?.map((festival) => (
           <div
             key={festival.name}
             className="card text-center m-2"
@@ -20,18 +33,21 @@ export const Festivals: FC = () => {
               backgroundColor: "rgba(31, 31, 61, 0.8)",
               color: "white",
               border: "none",
-            }}
-            onClick={() => navigate(`/festivals/package`)}>
+            }}>
             <div className="card-body">
               <h5 className="card-title bangers-regular">{festival.name}</h5>
               <p className="card-text">dates: {festival.startDate}-{festival.endDate}</p>
               <p className="card-text">location: {festival.location}</p>
-              {/* <p className="card-text">estimated cost: ${festival.price}</p> */}
               <a href={festival.website} className="btn btn-primary">Checkout {festival.name} website</a>
             </div>
+            <button
+              className="btn btn-success mt-2"
+              onClick={() => navigate(`/festivals/package`)}>
+            Choose
+          </button>
           </div>
         ))}
-      </div>
-    </Fragment>
+    </div>
+    </Fragment >
   );
 };

@@ -2,7 +2,7 @@ import { FC, Fragment } from "react";
 import { SpotifyIcon } from "../assets/icons";
 import { useNavigate } from 'react-router-dom';
 
-export const Homepage: FC = () => {
+export const Home: FC = () => {
   const navigate = useNavigate();
 
   return (
@@ -19,5 +19,5 @@ export const Homepage: FC = () => {
   );
 }
 
-export default Homepage;
+export default Home;
 
