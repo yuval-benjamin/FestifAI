@@ -60,8 +60,10 @@ export async function getFestivalsFromAi(req: Request, res: Response) {
 
       const newFestival = await Festival.create({
         name: fest.name,
-        country: fest.country,
-        dates: fest.dates,
+        location: fest.location,
+        startDate: fest.startDate,
+        endDate: fest.endDate,
+        locationCode: fest.locationCode,
         website: fest.website,
       });
 
