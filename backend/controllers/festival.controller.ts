@@ -37,7 +37,6 @@ export async function getFestivalsFromAi(req: Request, res: Response) {
     });
 
     const response = completion.choices[0].message.content;
-    console.log(response);
     const jsonString = response?.match(/\[.*\]/s)?.[0].replace(/\s+/g, ' ');
 
     if (!jsonString) {
@@ -54,7 +53,7 @@ export async function getFestivalsFromAi(req: Request, res: Response) {
       const existingFestival = await Festival.findOne({ name });
 
       if (existingFestival) {
-        console.log(`Festival ${name} already exists, skipping...`);
+        console.log(`Festival ${name} already exists in DB, skipping...`);
         continue;
       }
 
