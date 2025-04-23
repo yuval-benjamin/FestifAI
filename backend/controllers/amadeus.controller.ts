@@ -73,3 +73,33 @@ export const flightOffersSearch = async (request: Request, res: Response) => {
     req.end()
 }
 
+export const hotelOffersSearch = async (request: Request, res: Response) => {
+        const options = {
+            hostname: process.env.AMADEUS_API_BASE_URL,
+            headers: { authorization:
+              `Bearer ${request.headers.amadeus_access_token}`},
+            agent: new https.Agent({ rejectUnauthorized: false }),
+            method: 'GET',
+            path: `/v2/shopping/hotel-offers?cityCode=${request.query.cityCode}&checkInDate=${request.query.checkInDate}&checkOutDate=${request.query.checkOutDate}&adults=${request.query.adults}&roomQuantity=1&currencyCode=ILS&max=3`,
+            }
+
+    const req = https.request(options, (response) => {
+        let data = '';
+        response.on('data', (chunk) => {
+        data = data + chunk.toString();
+        }
+        );
+        response.on('end', () => {
+            const body = JSON.parse(data);
+            console.log(data)
+            res.status(response.statusCode!).send(body);
+        });
+    })
+    req.on('error', (error) => {
+        console.log('An error', error);
+        res.status(500).send(error.message);
+    }
+    );
+    req.end()
+}
+
