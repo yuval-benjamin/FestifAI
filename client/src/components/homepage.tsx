@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 export const Homepage: FC = () => {
   const navigate = useNavigate();
 
-export const Homepage: FC = () => {
   return (
     <div
       className="container-inline d-flex flex-column justify-content-center align-items-center text-white opacity-75"
@@ -28,11 +27,11 @@ export const Homepage: FC = () => {
       >
         Login with spotify <SpotifyIcon />
       </button>
-    </div>
       <button type="button" className="btn btn-success bangers-regular btn-lg" onClick={
         () => navigate('/preferences')
       }
-  );
+    >without soptify</button> </div>
+   );
 };
 
 export default Homepage;
