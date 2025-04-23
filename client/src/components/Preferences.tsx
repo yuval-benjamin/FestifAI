@@ -1,19 +1,25 @@
-import axios from 'axios';
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppContext, FestivalInterface } from '../App';
+import { FestivalInterface, useStore } from '../App';
+import { useQuery } from '@tanstack/react-query';
+import apiService from '../api';
 
 export const Preferences: React.FC = () => {
-    const [lowPrice, setLowPrice] = useState<number | undefined>(undefined);
-    const [highPrice, setHighPrice] = useState<number | undefined>(undefined);
-    const { setFestivals } = useContext(AppContext);
+    const { highPrice, setHighPrice, lowPrice, setLowPrice } = useStore();
+
+    const { isLoading, refetch, data } = useQuery({
+        queryKey: ["festivals"],
+        enabled: false,
+        queryFn:
+            async () =>
+                await apiService.get<{ festivals: FestivalInterface[] }>(`/festivals?lowPrice=${lowPrice}&highPrice=${highPrice}`)
+    })
 
     const navigate = useNavigate();
-
     const fetchFestivals = async () => {
-        const { data } = await axios.get<{ festivals: FestivalInterface[] }>(`http://localhost:3000/festivals?lowPrice=${lowPrice}&highPrice=${highPrice}`)
-        setFestivals?.(data.festivals);
-        navigate("/festivals");
+        refetch().then(() => {
+            navigate("/festivals");
+        })
     };
 
     return (

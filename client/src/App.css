@@ -1,18 +1,17 @@
 .amatic-sc-regular {
-    font-family: "Amatic SC", serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
-  .amatic-sc-bold {
-    font-family: "Amatic SC", serif;
-    font-weight: 700;
-    font-style: normal;
-  }
+  font-family: "Amatic SC", serif;
+  font-weight: 400;
+  font-style: normal;
+}
 
-  .bangers-regular {
-    font-family: "Bangers", serif;
-    font-weight: 400;
-    font-style: normal;
-  }
-  
+.amatic-sc-bold {
+  font-family: "Amatic SC", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.bangers-regular {
+  font-family: "Bangers", serif;
+  font-weight: 400;
+  font-style: normal;
+}
