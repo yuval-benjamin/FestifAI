@@ -24,7 +24,7 @@ const SpotifyCallback = () => {
       try {
         const response = await fetch(`http://localhost:3000/spotify/getUserData?access_token=${accessToken}`);
         const data = await response.json();
-        navigate("/festivals");
+        navigate("/preferences");
       } catch (error) {
         console.error("Sync error:", error);
       }
