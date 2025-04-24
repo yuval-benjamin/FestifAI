@@ -1,13 +1,11 @@
-
 import { SpotifyIcon } from "../assets/icons";
 import { loginWithSpotify } from "../services/spotifyService";
-import { FC, Fragment } from "react";
+import { FC } from "react";
 import { useNavigate } from 'react-router-dom';
 
 export const Homepage: FC = () => {
   const navigate = useNavigate();
 
-export const Homepage: FC = () => {
   return (
     <div
       className="container-inline d-flex flex-column justify-content-center align-items-center text-white opacity-75"
@@ -24,14 +22,18 @@ export const Homepage: FC = () => {
       <button
         type="button"
         className="btn btn-success bangers-regular btn-lg"
-        onClick={loginWithSpotify}  // This only triggers the Spotify login flow
+        onClick={loginWithSpotify}
       >
-        Login with spotify <SpotifyIcon />
+        Login with Spotify <SpotifyIcon />
+      </button>
+      <button
+        type="button"
+        className="btn btn-success bangers-regular btn-lg mt-3"
+        onClick={() => navigate('/preferences')}
+      >
+        Go to Preferences
       </button>
     </div>
-      <button type="button" className="btn btn-success bangers-regular btn-lg" onClick={
-        () => navigate('/preferences')
-      }
   );
 };
 
