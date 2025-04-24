@@ -1,8 +1,11 @@
-// Homepage.tsx
 
-import { FC } from "react";
 import { SpotifyIcon } from "../assets/icons";
 import { loginWithSpotify } from "../services/spotifyService";
+import { FC, Fragment } from "react";
+import { useNavigate } from 'react-router-dom';
+
+export const Homepage: FC = () => {
+  const navigate = useNavigate();
 
 export const Homepage: FC = () => {
   return (
@@ -26,6 +29,9 @@ export const Homepage: FC = () => {
         Login with spotify <SpotifyIcon />
       </button>
     </div>
+      <button type="button" className="btn btn-success bangers-regular btn-lg" onClick={
+        () => navigate('/preferences')
+      }
   );
 };
 

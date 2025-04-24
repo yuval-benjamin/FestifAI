@@ -5,7 +5,6 @@ import { festivalRouter } from './routers/festival.router';
 import dotenv from "dotenv";
 import { amadeusRouter } from './routers/amadeus.router';
 import cors from 'cors';
-
 dotenv.config();
 connectToMongoDB();
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -19,7 +18,8 @@ app.use(cors({
 }));
 
 app.use(express.json())
-app.use('/festivals',festivalRouter);
+app.use(cors());
+app.use('/festivals', festivalRouter);
 
 app.use('/spotify', spotifyRouter);
 app.use('/amadeus', amadeusRouter);
