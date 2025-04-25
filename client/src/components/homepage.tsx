@@ -31,10 +31,8 @@ export const Homepage: FC = () => {
         className="btn btn-success bangers-regular btn-lg mt-3"
         onClick={() => navigate('/preferences')}
       >
-        Go to Preferences
-      </button>
-    </div>
-  );
+        Go to Preferences without soptify</button> </div>
+   );
 };
 
 export default Homepage;

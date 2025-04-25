@@ -19,7 +19,7 @@ type GetFestivalsFromAiRequestBody = {
 export async function getFestivalsFromAi(req: Request, res: Response) {
   const { lowPrice, highPrice } = req.query as unknown as GetFestivalsFromAiRequestBody;
   const genre = "pop"
-  const question = `Return a JSON array of 3 festivals in 2025 for ${genre} music, within ${lowPrice}$-${highPrice}$. Ensure festival dates are correct by verifying them from the official festival website. Each object must have:name,location,startDate,endDate,and website.response only be upto 256 letter`
+  const question = `Return a JSON array of 3 festivals in 2025 for ${genre} music, within ${lowPrice}$-${highPrice}$. Ensure festival dates are correct by verifying them from the official festival website. Each object must have:name,location,startDate,endDate, a locationCode of the nearest airport and website.response only be upto 256 letter, dates have to be in a format of YYYY-MM-DD`
 
   try {
     const completion = await api.chat.completions.create({
