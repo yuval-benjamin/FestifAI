@@ -12,6 +12,11 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 const app = express();
 const port = 3000;
 
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true // Optional if you're using cookies or auth headers
+}));
+
 app.use(express.json())
 app.use(cors());
 app.use('/festivals', festivalRouter);

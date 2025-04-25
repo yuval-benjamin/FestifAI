@@ -2,7 +2,6 @@ import { OpenAI, RateLimitError } from 'openai';
 import { Request, Response } from 'express';
 import dotenv from "dotenv";
 dotenv.config();
-
 const baseURL = "https://api.aimlapi.com/v1";
 const apiKey = process.env.AI_API_KEY;
 
