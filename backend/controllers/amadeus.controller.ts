@@ -33,7 +33,7 @@ export const retreiveAmadeusToken = (request: Request, res: Response) => {
     })
 
     req.on('error', (error) => {
-    console.log('An error', error);
+    console.log('An error in fetching token', error);
     res.status(500).send(error.message);
 
     });
@@ -66,23 +66,22 @@ export const flightOffersSearch = async (request: Request, res: Response) => {
 })
 
     req.on('error', (error) => {
-    console.log('An error', error);
+    console.log('An error in flight offers search', error);
     res.status(500).send(error.message);
 
     });
     req.end()
 }
 
-export const hotelOffersSearch = async (request: Request, res: Response) => {
-        const options = {
-            hostname: process.env.AMADEUS_API_BASE_URL,
-            headers: { authorization:
-              `Bearer ${request.headers.amadeus_access_token}`},
-            agent: new https.Agent({ rejectUnauthorized: false }),
-            method: 'GET',
-            path: `/v2/shopping/hotel-offers?cityCode=${request.query.cityCode}&checkInDate=${request.query.checkInDate}&checkOutDate=${request.query.checkOutDate}&adults=${request.query.adults}&roomQuantity=1&currencyCode=ILS&max=3`,
-            }
-
+export const hotels = async (request: Request, res: Response) => {
+    const options = {
+        hostname: process.env.AMADEUS_API_BASE_URL,
+        headers: { authorization:
+          `Bearer ${request.headers.amadeus_access_token}`},
+        agent: new https.Agent({ rejectUnauthorized: false }),
+        method: 'GET',
+        path: `/v1/reference-data/locations/hotels/by-city?cityCode=${request.query.cityCode}?max=3`,
+    }
     const req = https.request(options, (response) => {
         let data = '';
         response.on('data', (chunk) => {
@@ -96,10 +95,42 @@ export const hotelOffersSearch = async (request: Request, res: Response) => {
         });
     })
     req.on('error', (error) => {
-        console.log('An error', error);
+        console.log('An error in hotels search', error);
         res.status(500).send(error.message);
     }
     );
-    req.end()
+    req.end();
 }
+
+export const hotelOffersSearch = async (request: Request, res: Response) => {
+    const options = {
+        hostname: process.env.AMADEUS_API_BASE_URL,
+        headers: { authorization:
+          `Bearer ${request.headers.amadeus_access_token}`},
+        agent: new https.Agent({ rejectUnauthorized: false }),
+        method: 'GET',
+        path: `/v3/shopping/hotel-offers?hotelIds=${request.query.hotelIds}?cityCode=${request.query.cityCode}&checkInDate=${request.query.checkInDate}&checkOutDate=${request.query.checkOutDate}&adults=${request.query.adults}&roomQuantity=1&currencyCode=ILS&max=3`,
+        }
+
+const req = https.request(options, (response) => {
+    let data = '';
+    response.on('data', (chunk) => {
+    data = data + chunk.toString();
+    }
+    );
+    response.on('end', () => {
+        const body = JSON.parse(data);
+        console.log(data)
+        res.status(response.statusCode!).send(body);
+    });
+})
+req.on('error', (error) => {
+    console.log('An error in hotel night offers', error);
+    res.status(500).send(error.message);
+}
+);
+req.end()
+}
+
+
 

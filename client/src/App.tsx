@@ -53,6 +53,7 @@ export interface FestivalInterface {
   endDate: string;
   website: string;
   locationCode: string;
+  cityCode: string;
 }
 
 export interface PackageInterface {

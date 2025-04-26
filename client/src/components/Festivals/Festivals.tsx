@@ -48,11 +48,11 @@ export const Festivals: FC = () => {
           airline: flightOffer.itineraries[0].segments[0].operating.carrierCode
         },
         return: {
-          origin: flightOffer.itineraries[0].segments[1].departure.iataCode,
-          destination: flightOffer.itineraries[0].segments[1].arrival.iataCode,
-          departureDate: flightOffer.itineraries[0].segments[1].departure.at,
-          arrivalDate: flightOffer.itineraries[0].segments[1].arrival.at,
-          airline: flightOffer.itineraries[0].segments[1].operating.carrierCode
+          origin: flightOffer.itineraries[1].segments[1].departure.iataCode,
+          destination: flightOffer.itineraries[1].segments[1].arrival.iataCode,
+          departureDate: flightOffer.itineraries[1].segments[1].departure.at,
+          arrivalDate: flightOffer.itineraries[1].segments[1].arrival.at,
+          airline: flightOffer.itineraries[1].segments[1].operating?.carrierCode ?? flightOffer.itineraries[0].segments[1].carrierCode
         }
       },
       accommodation: "-",
@@ -60,7 +60,52 @@ export const Festivals: FC = () => {
       class: flightOffer.travelerPricings[0].fareDetailsBySegment[0].cabin,
       packageType: flightOffer.packageType,
     }))
-    setPackages?.(packages);
+    fetchHotels(packages, amadeusAccessToken, festival.locationCode)
+  }
+
+  const fetchHotels = async (packages: PackageInterface[], amadeusAccessToken: string, cityCode: string) => {
+
+    const { data } = await axios.get<{ data: any[] }>(`http://localhost:3000/amadeus/hotels`, {
+    params: {
+      cityCode
+    },
+    headers: {
+      AMADEUS_ACCESS_TOKEN: `${amadeusAccessToken}`
+    }
+  })
+  const hotels = data.data.map((hotelOffer) => ({
+    hotelId: hotelOffer.hotelId,
+    name: hotelOffer.name
+  }))
+  fetchHotelOffers(amadeusAccessToken, packages, hotels, cityCode)
+  }
+
+  const fetchHotelOffers = async(amadeusAccessToken: string, packages: PackageInterface[], hotelIds: any[], cityCode: string) => {
+    const { data } = await axios.get<{ data: any[] }>(`http://localhost:3000/amadeus/hotel-offers`, {
+      params: {
+        hotelIds,
+        cityCode,
+        checkInDate: packages[0].startDay,
+        checkOutDate: packages[0].endDay,
+        adults: 1,
+      },
+      headers: {
+        AMADEUS_ACCESS_TOKEN: `${amadeusAccessToken}`
+      },
+    })
+
+    data.data.sort((hotelA, hotelB) => parseInt(hotelA.price) - parseInt(hotelB.price))
+    packages[0].accommodation = data.data[0].name
+    packages[1].accommodation = data.data[1].name
+    packages[2].accommodation = data.data[2].name
+
+    const fullPackages = packages.map((packageItem, index) => ({
+      ...packageItem,
+      accommodation: data.data[index].name,
+      price: (parseInt(packageItem.price) + parseInt(data.data[index].price)).toString(),
+    }))
+
+    setPackages?.(fullPackages);
     navigate(`/festivals/package`)
   }
 
