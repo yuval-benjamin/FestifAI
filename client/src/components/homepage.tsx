@@ -26,7 +26,6 @@ export const Homepage: FC = () => {
       >
         Login with Spotify <SpotifyIcon />
       </button>
-</button>
       <button
         type="button"
         className="btn btn-success bangers-regular btn-lg mt-3"
