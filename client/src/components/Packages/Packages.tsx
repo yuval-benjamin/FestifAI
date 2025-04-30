@@ -33,7 +33,7 @@ export const Packages: FC = () => {
               <p className="card-text">checked bags: {festivalPackage.checkedBags}</p>
               <p className="card-text">departure: {festivalPackage.flights.departure.origin} - {festivalPackage.flights.departure.destination}</p>
               <p className="card-text">return: {festivalPackage.flights.return.origin} - {festivalPackage.flights.return.destination}</p>
-              <p className="card-text">total: ${festivalPackage.price}</p>
+              <p className="card-text">total: ₪{festivalPackage.price}</p>
             </div>
           </div>
         ))}
