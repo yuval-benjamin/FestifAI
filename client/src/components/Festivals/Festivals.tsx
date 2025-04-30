@@ -36,24 +36,38 @@ export const Festivals: FC = () => {
     const packages = data.data.map((flightOffer: AmadeusFlightOffer) => ({
       startDay: (flightOffer.itineraries[0].segments[0].departure.at).split("T")[0],
       price: flightOffer.price.total,
-      endDay: (flightOffer.itineraries[0].segments[1].arrival.at).split("T")[0],
+      endDay: (flightOffer.itineraries[1].segments[1].arrival.at).split("T")[0],
       _id: flightOffer.id,
       festivalId: festival.name,
       flights: {
-        departure: {
+        departure: [{
           origin: flightOffer.itineraries[0].segments[0].departure.iataCode,
           destination: flightOffer.itineraries[0].segments[0].arrival.iataCode,
           departureDate: (flightOffer.itineraries[0].segments[0].departure.at),
           arrivalDate: (flightOffer.itineraries[0].segments[0].arrival.at),
-          airline: flightOffer.itineraries[0].segments[0].operating.carrierCode
+          airline: flightOffer.itineraries[0].segments[0].operating?.carrierCode ?? flightOffer.itineraries[0].segments[0].carrierCode
         },
-        return: {
+      {
+        origin: flightOffer.itineraries[0].segments[1].departure.iataCode,
+        destination: flightOffer.itineraries[0].segments[1].arrival.iataCode,
+        departureDate: (flightOffer.itineraries[0].segments[1].departure.at),
+        arrivalDate: (flightOffer.itineraries[0].segments[1].arrival.at),
+        airline: flightOffer.itineraries[0].segments[1].operating?.carrierCode ?? flightOffer.itineraries[0].segments[0].carrierCode
+      }],
+        return: [{
+          origin: flightOffer.itineraries[1].segments[0].departure.iataCode,
+          destination: flightOffer.itineraries[1].segments[0].arrival.iataCode,
+          departureDate: flightOffer.itineraries[1].segments[0].departure.at,
+          arrivalDate: flightOffer.itineraries[1].segments[0].arrival.at,
+          airline: flightOffer.itineraries[1].segments[0].operating?.carrierCode ?? flightOffer.itineraries[0].segments[0].carrierCode
+        }, {
           origin: flightOffer.itineraries[1].segments[1].departure.iataCode,
           destination: flightOffer.itineraries[1].segments[1].arrival.iataCode,
           departureDate: flightOffer.itineraries[1].segments[1].departure.at,
           arrivalDate: flightOffer.itineraries[1].segments[1].arrival.at,
-          airline: flightOffer.itineraries[1].segments[1].operating?.carrierCode ?? flightOffer.itineraries[0].segments[1].carrierCode
-        }
+          airline: flightOffer.itineraries[1].segments[1].operating?.carrierCode ?? flightOffer.itineraries[0].segments[0].carrierCode
+        
+        }]
       },
       accommodation: "-",
       checkedBags: flightOffer.travelerPricings[0].fareDetailsBySegment[0].includedCheckedBags.quantity,
@@ -73,15 +87,14 @@ export const Festivals: FC = () => {
       AMADEUS_ACCESS_TOKEN: `${amadeusAccessToken}`
     }
   })
-  const hotels = data.data.map((hotelOffer) => ({
-    hotelId: hotelOffer.hotelId,
-    name: hotelOffer.name
-  }))
+  data.data.splice(10, data.data.length)
+  const hotels = data.data.map((hotelOffer) =>  hotelOffer.hotelId)
+  console.log(hotels);
   fetchHotelOffers(amadeusAccessToken, packages, hotels, cityCode)
   }
 
   const fetchHotelOffers = async(amadeusAccessToken: string, packages: PackageInterface[], hotelIds: any[], cityCode: string) => {
-    const { data } = await axios.get<{ data: any[] }>(`http://localhost:3000/amadeus/hotel-offers`, {
+    const { data } = await axios.get<{ data: any[], dictionaries: any }>(`http://localhost:3000/amadeus/hotel-offers`, {
       params: {
         hotelIds,
         cityCode,
@@ -94,19 +107,33 @@ export const Festivals: FC = () => {
       },
     })
 
-    data.data.sort((hotelA, hotelB) => parseInt(hotelA.price) - parseInt(hotelB.price))
-    packages[0].accommodation = data.data[0].name
-    packages[1].accommodation = data.data[1].name
-    packages[2].accommodation = data.data[2].name
+  
+    data.data.filter((hotelOffer) => hotelOffer.isAvalible)
+    let fullPackages = []
+    if(data.data.length >= 3) {
+      data.data[0].offers[0].price.total = parseInt(data.data[0].offers[0].price.total) * parseInt(data.dictionaries.currencyConversionLookupRates[data.data[0].offers[0].price.currency].rate)
+      data.data[1].offers[0].price.total = parseInt(data.data[1].offers[0].price.total)* parseInt(data.dictionaries.currencyConversionLookupRates[data.data[1].offers[0].price.currency].rate)
+      data.data[2].offers[0].price.total = parseInt(data.data[2].offers[0].price.total) * parseInt(data.dictionaries.currencyConversionLookupRates[data.data[2].offers[0].price.currency].rate)  
+    data.data.sort((hotelA, hotelB) => (hotelA.offers[0].price.total) - (hotelB.offers[0].price.total))
+    packages[0].accommodation = data.data[0].hotel.name
+    packages[1].accommodation = data.data[1].hotel.name
+    packages[2].accommodation = data.data[2].hotel.name
 
-    const fullPackages = packages.map((packageItem, index) => ({
+     fullPackages = packages.map((packageItem, index) => ({
       ...packageItem,
-      accommodation: data.data[index].name,
-      price: (parseInt(packageItem.price) + parseInt(data.data[index].price)).toString(),
+      price: (parseInt(packageItem.price) + parseInt(data.data[index].offers[0].price.total)).toString(),
     }))
-
+  } else {
+    fullPackages = packages.map((packageItem, index) => ({
+      ...packageItem,
+      accommodation: data.data[0].hotel.name,
+      price: (parseInt(packageItem.price) + parseInt(data.data[0].offers[0].price.total)).toString(),
+    }))
+  }
     setPackages?.(fullPackages);
     navigate(`/festivals/package`)
+  
+
   }
 
   return (

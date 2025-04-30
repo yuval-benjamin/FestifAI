@@ -14,7 +14,7 @@ export const Packages: FC = () => {
         {packages?.map((festivalPackage) => (
           <div key={festivalPackage._id} className="card text-center m-2" style={{
             width: "20rem",
-            height: "25rem",
+            height: "35rem",
             backgroundColor: "rgba(31, 31, 61, 0.8)",
             color: "white",
             border: "none",
@@ -22,17 +22,19 @@ export const Packages: FC = () => {
             <div className="card-body">
               <h5 className="card-title bangers-regular">{festivalPackage.packageType}</h5>
               <p className="card-text">dates: {(festivalPackage.startDay)}-{festivalPackage.endDay}</p>
-                { (festivalPackage.flights.departure.airline == festivalPackage.flights.return.airline) ? 
-              <p className="card-text">airline: {festivalPackage.flights.departure.airline}</p>
+                { (festivalPackage.flights.departure[0].airline == festivalPackage.flights.return[0].airline) ? 
+              <p className="card-text">airline: {festivalPackage.flights.departure[0].airline}</p>
               :<>
-              <p className="card-text">departure airline: {festivalPackage.flights.departure.airline}</p>
-              <p className="card-text">return airline: {festivalPackage.flights.return.airline}</p>
+              <p className="card-text">departure airline: {festivalPackage.flights.departure[0].airline}</p>
+              <p className="card-text">return airline: {festivalPackage.flights.return[0].airline}</p>
               </>}
               <p className="card-text">travel class: {festivalPackage.class}</p>
               <p className="card-text">accommodation: {festivalPackage.accommodation}</p>
               <p className="card-text">checked bags: {festivalPackage.checkedBags}</p>
-              <p className="card-text">departure: {festivalPackage.flights.departure.origin} - {festivalPackage.flights.departure.destination}</p>
-              <p className="card-text">return: {festivalPackage.flights.return.origin} - {festivalPackage.flights.return.destination}</p>
+              <p className="card-text">departure: {festivalPackage.flights.departure[0].origin} - {festivalPackage.flights.departure[0].destination}</p>
+              <p className="card-text">{festivalPackage.flights.departure[1].origin} - {festivalPackage.flights.departure[1].destination}</p>
+              <p className="card-text">return: {festivalPackage.flights.return[0].origin} - {festivalPackage.flights.return[0].destination}</p>
+              <p className="card-text">{festivalPackage.flights.return[1].origin} - {festivalPackage.flights.return[1].destination}</p>
               <p className="card-text">total: ₪{festivalPackage.price}</p>
             </div>
           </div>
