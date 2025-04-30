@@ -80,7 +80,7 @@ export const hotels = async (request: Request, res: Response) => {
           `Bearer ${request.headers.amadeus_access_token}`},
         agent: new https.Agent({ rejectUnauthorized: false }),
         method: 'GET',
-        path: `/v1/reference-data/locations/hotels/by-city?cityCode=${request.query.cityCode}?max=3`,
+        path: `/v1/reference-data/locations/hotels/by-city?cityCode=${request.query.cityCode}`,
     }
     const req = https.request(options, (response) => {
         let data = '';
@@ -103,13 +103,14 @@ export const hotels = async (request: Request, res: Response) => {
 }
 
 export const hotelOffersSearch = async (request: Request, res: Response) => {
+
     const options = {
         hostname: process.env.AMADEUS_API_BASE_URL,
         headers: { authorization:
           `Bearer ${request.headers.amadeus_access_token}`},
         agent: new https.Agent({ rejectUnauthorized: false }),
         method: 'GET',
-        path: `/v3/shopping/hotel-offers?hotelIds=${request.query.hotelIds}?cityCode=${request.query.cityCode}&checkInDate=${request.query.checkInDate}&checkOutDate=${request.query.checkOutDate}&adults=${request.query.adults}&roomQuantity=1&currencyCode=ILS&max=3`,
+        path: `/v3/shopping/hotel-offers?hotelIds=${request.query.hotelIds}&cityCode=${request.query.cityCode}&checkInDate=${request.query.checkInDate}&checkOutDate=${request.query.checkOutDate}&adults=${request.query.adults}&roomQuantity=1&currency=ILS&max=3`,
         }
 
 const req = https.request(options, (response) => {

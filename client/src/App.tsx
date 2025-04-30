@@ -63,8 +63,8 @@ export interface PackageInterface {
   startDay: string;
   endDay: string;
   flights: {
-    departure: FlightInterface;
-    return: FlightInterface;
+    departure: FlightInterface[];
+    return: FlightInterface[];
   };
   accommodation: string;
   packageType: PackageEnum;
