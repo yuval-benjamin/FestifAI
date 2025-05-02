@@ -8,23 +8,26 @@ export const Festivals: FC = () => {
   const {festivals, setPackages} = useContext(AppContext);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  let shallowFlights: PackageInterface[];
+  let selectedFestival: FestivalInterface;
   
   const retrieveAmadeusTokenFromStorage = () => localStorage.getItem("AMADEUS_ACCESS_TOKEN")
 
   const fetchAmadeusToken = async (festival: FestivalInterface) => {
+    selectedFestival = (festival)
     setIsLoading(true)
       const { data } = await axios.post<{ access_token: string }>(`http://localhost:3000/amadeus`)
       localStorage.setItem("AMADEUS_ACCESS_TOKEN", data.access_token);
-      fetchFlights(festival)
+      fetchFlights()      
     };
       
-  const fetchFlights = async (festival: FestivalInterface) => {
+  const fetchFlights = async () => {
     const { data } = await axios.get<{ data: AmadeusFlightOffer[] }>(`http://localhost:3000/amadeus/flight-offers`, {
       params: {
         originLocationCode: "TLV",
-        destinationLocationCode: festival.locationCode,
-        departureDate: festival.startDate,
-        returnDate: festival.endDate,
+        destinationLocationCode: selectedFestival?.locationCode,
+        departureDate: selectedFestival?.startDate,
+        returnDate: selectedFestival?.endDate,
         adults: 1,
       },
       headers: {
@@ -42,7 +45,7 @@ export const Festivals: FC = () => {
       price: flightOffer.price.total,
       endDay: (flightOffer.itineraries[1].segments[1].arrival.at).split("T")[0],
       _id: flightOffer.id,
-      festivalId: festival.name,
+      festivalId: selectedFestival?.name ?? "Unknown Festival",
       flights: {
         departure: [{
           origin: flightOffer.itineraries[0].segments[0].departure.iataCode,
@@ -78,10 +81,11 @@ export const Festivals: FC = () => {
       class: flightOffer.travelerPricings[0].fareDetailsBySegment[0].cabin,
       packageType: flightOffer.packageType,
     }))
-    fetchHotels(packages, festival.locationCode)
+    shallowFlights = packages;
+    fetchHotels(selectedFestival?.locationCode)
   }
 
-  const fetchHotels = async (packages: PackageInterface[], cityCode: string) => {
+  const fetchHotels = async (cityCode: string | undefined) => {
 
     const { data } = await axios.get<{ data: any[] }>(`http://localhost:3000/amadeus/hotels`, {
     params: {
@@ -91,18 +95,18 @@ export const Festivals: FC = () => {
       AMADEUS_ACCESS_TOKEN: retrieveAmadeusTokenFromStorage()
     }
   })
-  data.data.splice(10, data.data.length)
+  data.data.splice(20, data.data.length)
   const hotels = data.data.map((hotelOffer) =>  hotelOffer.hotelId)
-  fetchHotelOffers(packages, hotels, cityCode)
+  fetchHotelOffers(hotels, cityCode)
   }
 
-  const fetchHotelOffers = async(packages: PackageInterface[], hotelIds: any[], cityCode: string) => {
+  const fetchHotelOffers = async(hotelIds: any[], cityCode: string | undefined) => {
     const { data } = await axios.get<{ data: any[], dictionaries: any }>(`http://localhost:3000/amadeus/hotel-offers`, {
       params: {
         hotelIds,
         cityCode,
-        checkInDate: packages[0].startDay,
-        checkOutDate: packages[0].endDay,
+        checkInDate: shallowFlights[0].startDay,
+        checkOutDate: shallowFlights[0].endDay,
         adults: 1,
       },
       headers: {
@@ -118,16 +122,16 @@ export const Festivals: FC = () => {
       data.data[1].offers[0].price.total = parseInt(data.data[1].offers[0].price.total)* parseInt(data.dictionaries.currencyConversionLookupRates[data.data[1].offers[0].price.currency].rate)
       data.data[2].offers[0].price.total = parseInt(data.data[2].offers[0].price.total) * parseInt(data.dictionaries.currencyConversionLookupRates[data.data[2].offers[0].price.currency].rate)  
     data.data.sort((hotelA, hotelB) => (hotelA.offers[0].price.total) - (hotelB.offers[0].price.total))
-    packages[0].accommodation = data.data[0].hotel.name
-    packages[1].accommodation = data.data[1].hotel.name
-    packages[2].accommodation = data.data[2].hotel.name
+    shallowFlights[0].accommodation = data.data[0].hotel.name
+    shallowFlights[1].accommodation = data.data[1].hotel.name
+    shallowFlights[2].accommodation = data.data[2].hotel.name
 
-     fullPackages = packages.map((packageItem, index) => ({
+     fullPackages = shallowFlights.map((packageItem, index) => ({
       ...packageItem,
       price: (parseInt(packageItem.price) + parseInt(data.data[index].offers[0].price.total)).toString(),
     }))
   } else {
-    fullPackages = packages.map((packageItem) => ({
+    fullPackages = shallowFlights.map((packageItem) => ({
       ...packageItem,
       accommodation: data.data[0].hotel.name,
       price: (parseInt(packageItem.price) + parseInt(data.data[0].offers[0].price.total)).toString(),
