@@ -1,16 +1,17 @@
-import React, { FC, Fragment, useContext } from 'react';
+import React, { FC, Fragment, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AmadeusFlightOffer, AppContext, FestivalInterface, FlightInterface, PackageInterface, PackageEnum } from '../../App';
 import axios from 'axios';
+import { ClipLoader } from 'react-spinners';
 
 export const Festivals: FC = () => {
-  const {festivals, setPackages} = useContext(AppContext)
+  const {festivals, setPackages} = useContext(AppContext);
   const navigate = useNavigate();
-
+  const [isLoading, setIsLoading] = useState(false); 
 
   const fetchAmadeusToken = async (festival: FestivalInterface) => {
+    setIsLoading(true)
       const { data } = await axios.post<{ access_token: string }>(`http://localhost:3000/amadeus`)
-      console.log(data.access_token)
       fetchFlights(festival, data.access_token)
     };
       
@@ -89,7 +90,6 @@ export const Festivals: FC = () => {
   })
   data.data.splice(10, data.data.length)
   const hotels = data.data.map((hotelOffer) =>  hotelOffer.hotelId)
-  console.log(hotels);
   fetchHotelOffers(amadeusAccessToken, packages, hotels, cityCode)
   }
 
@@ -130,13 +130,24 @@ export const Festivals: FC = () => {
       price: (parseInt(packageItem.price) + parseInt(data.data[0].offers[0].price.total)).toString(),
     }))
   }
-    setPackages?.(fullPackages);
+  setIsLoading(false)
+  setPackages?.(fullPackages);
     navigate(`/festivals/package`)
-  
-
   }
 
   return (
+    isLoading ? 
+    <Fragment>
+      <h1 className="display-1 bangers-regular" style={{ color: "black" }}>customizing your festival packages...</h1>
+      <div className="sweet-loading d-flex flex-row justify-content-center align-items-center">
+    <ClipLoader
+      loading={true}
+      size={150}
+      aria-label="Loading Spinner"
+      data-testid="loader"
+    />
+  </div>
+  </Fragment>  :
     <Fragment>
       <h1 className="display-1 bangers-regular" style={{ color: "black" }}>choose your festival</h1>
       <div className="d-flex flex-row justify-content-center align-items-center">
