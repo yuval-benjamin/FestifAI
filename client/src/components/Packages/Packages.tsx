@@ -21,21 +21,32 @@ export const Packages: FC = () => {
           }} onClick={() => navigate(`/checkout`)}>
             <div className="card-body">
               <h5 className="card-title bangers-regular">{festivalPackage.packageType}</h5>
-              <p className="card-text">dates: {(festivalPackage.startDay)}-{festivalPackage.endDay}</p>
+              <p className="card-text">dates: {(festivalPackage.startDay)} til {festivalPackage.endDay}</p>
                 { (festivalPackage.flights.departure[0].airline == festivalPackage.flights.return[0].airline) ? 
               <p className="card-text">airline: {festivalPackage.flights.departure[0].airline}</p>
               :<>
-              <p className="card-text">departure airline: {festivalPackage.flights.departure[0].airline}</p>
-              <p className="card-text">return airline: {festivalPackage.flights.return[0].airline}</p>
+              <p className="card-text"><b>departure airline:</b> {festivalPackage.flights.departure[0].airline}</p>
+              <p className="card-text"><b>return airline:</b> {festivalPackage.flights.return[0].airline}</p>
               </>}
-              <p className="card-text">travel class: {festivalPackage.class}</p>
-              <p className="card-text">accommodation: {festivalPackage.accommodation}</p>
-              <p className="card-text">checked bags: {festivalPackage.checkedBags}</p>
-              <p className="card-text">departure: {festivalPackage.flights.departure[0].origin} - {festivalPackage.flights.departure[0].destination}</p>
+              <p className="card-text"><b>travel class:</b> {festivalPackage.class}</p>
+              <p className="card-text"><b>accommodation:</b> {festivalPackage.accommodation}</p>
+              <p className="card-text"><b>checked bags:</b> {festivalPackage.checkedBags}</p>
+              {
+                (festivalPackage.flights.departure[1] && festivalPackage.flights.return[1] ?
+              <div>  
+              <p className="card-text"><b>departure:</b> {festivalPackage.flights.departure[0].origin} - {festivalPackage.flights.departure[0].destination}</p>
               <p className="card-text">{festivalPackage.flights.departure[1].origin} - {festivalPackage.flights.departure[1].destination}</p>
-              <p className="card-text">return: {festivalPackage.flights.return[0].origin} - {festivalPackage.flights.return[0].destination}</p>
-              <p className="card-text">{festivalPackage.flights.return[1].origin} - {festivalPackage.flights.return[1].destination}</p>
-              <p className="card-text">total: ₪{festivalPackage.price}</p>
+              <p className="card-text"><b>return: </b>{festivalPackage.flights.return[0].origin} - {festivalPackage.flights.return[0].destination}</p>
+              <p className="card-text">{festivalPackage.flights.return[1].origin} - {festivalPackage.flights.return[1].destination}</p></div>
+ :
+ <div>
+  <p className="card-text"><b>departure:</b> {festivalPackage.flights.departure[0].origin} - {festivalPackage.flights.departure[0].destination}</p>
+              <p className="card-text"><b>return: </b>{festivalPackage.flights.return[0].origin} - {festivalPackage.flights.return[0].destination}</p>
+ 
+ </div>
+            )
+              }
+                          <p className="card-text"><b>total:</b> ₪{festivalPackage.price}</p>
             </div>
           </div>
         ))}
