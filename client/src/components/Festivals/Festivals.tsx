@@ -50,7 +50,7 @@ export const Festivals: FC = () => {
               <p className="card-text">dates: {festival.startDate}, {festival.endDate}</p>
               <p className="card-text">location: {festival.location}</p>
               {/* <p className="card-text">estimated cost: ${festival.price}</p> */}
-              <a href={festival.website} className="btn btn-primary">Checkout {festival.name} website</a>
+              <a onClick={(event) => event.stopPropagation()} href={festival.website} target="_blank" rel="noopener noreferrer" className="btn btn-primary">Checkout {festival.name} website</a>
             </div>
           </div>
         ))}
