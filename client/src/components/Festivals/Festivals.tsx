@@ -7,15 +7,18 @@ import { ClipLoader } from 'react-spinners';
 export const Festivals: FC = () => {
   const {festivals, setPackages} = useContext(AppContext);
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const retrieveAmadeusTokenFromStorage = () => localStorage.getItem("AMADEUS_ACCESS_TOKEN")
 
   const fetchAmadeusToken = async (festival: FestivalInterface) => {
     setIsLoading(true)
       const { data } = await axios.post<{ access_token: string }>(`http://localhost:3000/amadeus`)
-      fetchFlights(festival, data.access_token)
+      localStorage.setItem("AMADEUS_ACCESS_TOKEN", data.access_token);
+      fetchFlights(festival)
     };
       
-  const fetchFlights = async (festival: FestivalInterface, amadeusAccessToken: string) => {
+  const fetchFlights = async (festival: FestivalInterface) => {
     const { data } = await axios.get<{ data: AmadeusFlightOffer[] }>(`http://localhost:3000/amadeus/flight-offers`, {
       params: {
         originLocationCode: "TLV",
@@ -25,7 +28,7 @@ export const Festivals: FC = () => {
         adults: 1,
       },
       headers: {
-        AMADEUS_ACCESS_TOKEN: `${amadeusAccessToken}`
+        AMADEUS_ACCESS_TOKEN: retrieveAmadeusTokenFromStorage()
       },
     })
     
@@ -75,25 +78,25 @@ export const Festivals: FC = () => {
       class: flightOffer.travelerPricings[0].fareDetailsBySegment[0].cabin,
       packageType: flightOffer.packageType,
     }))
-    fetchHotels(packages, amadeusAccessToken, festival.locationCode)
+    fetchHotels(packages, festival.locationCode)
   }
 
-  const fetchHotels = async (packages: PackageInterface[], amadeusAccessToken: string, cityCode: string) => {
+  const fetchHotels = async (packages: PackageInterface[], cityCode: string) => {
 
     const { data } = await axios.get<{ data: any[] }>(`http://localhost:3000/amadeus/hotels`, {
     params: {
       cityCode
     },
     headers: {
-      AMADEUS_ACCESS_TOKEN: `${amadeusAccessToken}`
+      AMADEUS_ACCESS_TOKEN: retrieveAmadeusTokenFromStorage()
     }
   })
   data.data.splice(10, data.data.length)
   const hotels = data.data.map((hotelOffer) =>  hotelOffer.hotelId)
-  fetchHotelOffers(amadeusAccessToken, packages, hotels, cityCode)
+  fetchHotelOffers(packages, hotels, cityCode)
   }
 
-  const fetchHotelOffers = async(amadeusAccessToken: string, packages: PackageInterface[], hotelIds: any[], cityCode: string) => {
+  const fetchHotelOffers = async(packages: PackageInterface[], hotelIds: any[], cityCode: string) => {
     const { data } = await axios.get<{ data: any[], dictionaries: any }>(`http://localhost:3000/amadeus/hotel-offers`, {
       params: {
         hotelIds,
@@ -103,7 +106,7 @@ export const Festivals: FC = () => {
         adults: 1,
       },
       headers: {
-        AMADEUS_ACCESS_TOKEN: `${amadeusAccessToken}`
+        AMADEUS_ACCESS_TOKEN: retrieveAmadeusTokenFromStorage()
       },
     })
 
@@ -124,7 +127,7 @@ export const Festivals: FC = () => {
       price: (parseInt(packageItem.price) + parseInt(data.data[index].offers[0].price.total)).toString(),
     }))
   } else {
-    fullPackages = packages.map((packageItem, index) => ({
+    fullPackages = packages.map((packageItem) => ({
       ...packageItem,
       accommodation: data.data[0].hotel.name,
       price: (parseInt(packageItem.price) + parseInt(data.data[0].offers[0].price.total)).toString(),
