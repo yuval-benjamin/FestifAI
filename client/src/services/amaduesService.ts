@@ -15,7 +15,7 @@ import axios from "axios";
     };
       
   const fetchFlights = async () => {
-    const { data } = await axios.get<{ data: AmadeusFlightOffer[] }>(`http://localhost:3000/amadeus/flight-offers`, {
+    const { data } = await axios.get<{ data: AmadeusFlightOffer[], dictionaries: any }>(`http://localhost:3000/amadeus/flight-offers`, {
       params: {
         originLocationCode: "TLV",
         destinationLocationCode: selectedFestival?.locationCode,
@@ -46,27 +46,27 @@ import axios from "axios";
           destination: flightOffer.itineraries[0].segments[0].arrival.iataCode,
           departureDate: (flightOffer.itineraries[0].segments[0].departure.at),
           arrivalDate: (flightOffer.itineraries[0].segments[0].arrival.at),
-          airline: flightOffer.itineraries[0].segments[0].operating?.carrierCode ?? flightOffer.itineraries[0].segments[0].carrierCode
+          airline: data.dictionaries.carriers[flightOffer.itineraries[0].segments[0].operating?.carrierCode ?? flightOffer.itineraries[0].segments[0].carrierCode]
         },
       {
         origin: flightOffer.itineraries[0].segments[1].departure.iataCode,
         destination: flightOffer.itineraries[0].segments[1].arrival.iataCode,
         departureDate: (flightOffer.itineraries[0].segments[1].departure.at),
         arrivalDate: (flightOffer.itineraries[0].segments[1].arrival.at),
-        airline: flightOffer.itineraries[0].segments[1].operating?.carrierCode ?? flightOffer.itineraries[0].segments[0].carrierCode
+        airline: data.dictionaries.carriers[flightOffer.itineraries[0].segments[1].operating?.carrierCode ?? flightOffer.itineraries[0].segments[0].carrierCode]
       }],
         return: [{
           origin: flightOffer.itineraries[1].segments[0].departure.iataCode,
           destination: flightOffer.itineraries[1].segments[0].arrival.iataCode,
           departureDate: flightOffer.itineraries[1].segments[0].departure.at,
           arrivalDate: flightOffer.itineraries[1].segments[0].arrival.at,
-          airline: flightOffer.itineraries[1].segments[0].operating?.carrierCode ?? flightOffer.itineraries[0].segments[0].carrierCode
+          airline: data.dictionaries.carriers[flightOffer.itineraries[1].segments[0].operating?.carrierCode ?? flightOffer.itineraries[0].segments[0].carrierCode]
         }, {
           origin: flightOffer.itineraries[1].segments[1].departure.iataCode,
           destination: flightOffer.itineraries[1].segments[1].arrival.iataCode,
           departureDate: flightOffer.itineraries[1].segments[1].departure.at,
           arrivalDate: flightOffer.itineraries[1].segments[1].arrival.at,
-          airline: flightOffer.itineraries[1].segments[1].operating?.carrierCode ?? flightOffer.itineraries[0].segments[0].carrierCode
+          airline: data.dictionaries.carriers[flightOffer.itineraries[1].segments[1].operating?.carrierCode ?? flightOffer.itineraries[0].segments[0].carrierCode]
         
         }]
       },
