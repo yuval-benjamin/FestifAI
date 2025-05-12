@@ -32,6 +32,7 @@ import axios from "axios";
     data.data[0].packageType = PackageEnum.LITE,
     data.data[1].packageType = PackageEnum.STANDARD,
     data.data[2].packageType = PackageEnum.PREMIUM
+    
 
     const packages = data.data.map((flightOffer: AmadeusFlightOffer) => ({
       startDay: (flightOffer.itineraries[0].segments[0].departure.at).split("T")[0],
@@ -110,25 +111,33 @@ import axios from "axios";
   
     data.data.filter((hotelOffer) => hotelOffer.isAvalible)
     let fullPackages = []
-    if(data.data.length >= 3) {
+    if (data.data.length >= 3) {
+      data.data.sort((hotelA, hotelB) => (hotelA.offers[0].price.total) - (hotelB.offers[0].price.total))
+      
       data.data[0].offers[0].price.total = parseInt(data.data[0].offers[0].price.total) * parseInt(data.dictionaries.currencyConversionLookupRates[data.data[0].offers[0].price.currency].rate)
       data.data[1].offers[0].price.total = parseInt(data.data[1].offers[0].price.total)* parseInt(data.dictionaries.currencyConversionLookupRates[data.data[1].offers[0].price.currency].rate)
       data.data[2].offers[0].price.total = parseInt(data.data[2].offers[0].price.total) * parseInt(data.dictionaries.currencyConversionLookupRates[data.data[2].offers[0].price.currency].rate)  
-    data.data.sort((hotelA, hotelB) => (hotelA.offers[0].price.total) - (hotelB.offers[0].price.total))
-    shallowFlights[0].accommodation = data.data[0].hotel.name
-    shallowFlights[1].accommodation = data.data[1].hotel.name
-    shallowFlights[2].accommodation = data.data[2].hotel.name
+
+      shallowFlights[0].accommodation = data.data[0].hotel.name
+      shallowFlights[1].accommodation = data.data[1].hotel.name
+      shallowFlights[2].accommodation = data.data[2].hotel.name
 
      fullPackages = shallowFlights.map((packageItem, index) => ({
       ...packageItem,
       price: (parseInt(packageItem.price) + parseInt(data.data[index].offers[0].price.total)).toString(),
     }))
-  } else {
-    fullPackages = shallowFlights.map((packageItem) => ({
+
+    shallowFlights.map((packageItem, index) => 
+    ({
       ...packageItem,
-      accommodation: data.data[0].hotel.name,
-      price: (parseInt(packageItem.price) + parseInt(data.data[0].offers[0].price.total)).toString(),
-    }))
-  }
-  return fullPackages
+      price: (parseInt(packageItem.price) + parseInt(data.data[index].offers[0].price.total)).toString(),
+    }))    
+    } else {
+      fullPackages = shallowFlights.map((packageItem) => ({
+        ...packageItem,
+        accommodation: data.data[0].hotel.name,
+        price: (parseInt(packageItem.price) + parseInt(data.data[0].offers[0].price.total)).toString(),
+      }))
+    }
+    return fullPackages
 }
