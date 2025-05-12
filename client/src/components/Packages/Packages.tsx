@@ -14,7 +14,7 @@ export const Packages: FC = () => {
         {packages?.map((festivalPackage) => (
           <div key={festivalPackage._id} className="card text-center m-2" style={{
             width: "20rem",
-            height: "35rem",
+            height: "25rem",
             backgroundColor: "rgba(31, 31, 61, 0.8)",
             color: "white",
             border: "none",
@@ -31,7 +31,7 @@ export const Packages: FC = () => {
               <p className="card-text"><b>travel class:</b> {festivalPackage.class}</p>
               <p className="card-text"><b>accommodation:</b> {festivalPackage.accommodation}</p>
               <p className="card-text"><b>checked bags:</b> {festivalPackage.checkedBags}</p>
-              {
+              {/* {
                 (festivalPackage.flights.departure[1] && festivalPackage.flights.return[1] ?
               <div>  
               <p className="card-text"><b>departure:</b> {festivalPackage.flights.departure[0].origin} - {festivalPackage.flights.departure[0].destination}</p>
@@ -41,11 +41,11 @@ export const Packages: FC = () => {
  :
  <div>
   <p className="card-text"><b>departure:</b> {festivalPackage.flights.departure[0].origin} - {festivalPackage.flights.departure[0].destination}</p>
-              <p className="card-text"><b>return: </b>{festivalPackage.flights.return[0].origin} - {festivalPackage.flights.return[0].destination}</p>
+              <p className="card-text"><b>return: </b>{festivalPackage.flights.return[0].origin} - {festivalPackage.flights.return[0].destination}</p> */}
  
- </div>
-            )
-              }
+ {/* </div> */}
+            {/* ) */}
+              {/* } */}
                           <p className="card-text"><b>total:</b> ₪{festivalPackage.price}</p>
             </div>
           </div>
