@@ -35,9 +35,14 @@ export default function HorizontalLinearStepper() {
                 cursor: 'pointer',
                 '& .MuiStepLabel-label': { color: 'white', fontFamily: 'Bangers', fontSize: '1.5rem' }, // Label font
                  // Label color
-                '& .MuiStepIcon-root': { color: activeStep >= index ? '#ff3366' : 'gray' }, // Icon color
+                '& .MuiStepIcon-root': { color: activeStep >= index ? '#FF3366' : 'gray' }, // Icon color
                 '& .MuiStepIcon-text': { fontFamily: 'Bangers' }, // Icon text color
-}}>
+                '& .MuiStepIcon-completed': { color: '#FF3366' }, // Completed icon color
+                '& .MuiStepIcon-active': { color: '#FF3366' }, // Active icon color
+                '& .MuiStepLabel-root:hover': { color: 'white', cursor:'pointer' }, // Step label hover color
+                '&.MuiStep-root': { backdropFilter: 'blur(5px)', // Apply blur effect
+                backgroundColor: 'rgba(255, 255, 255, 0.2)', // Semi-transparent background
+                borderRadius: '10px' }}}>
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>
           );

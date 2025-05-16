@@ -21,10 +21,20 @@ export const Preferences: React.FC = () => {
 
   return (
     <Fragment>
+        <div className="container mt-4 max-w-full lg:max-w-6xl mx-auto w-full"
+          style={{
+            backdropFilter: 'blur(5px)', // Apply blur effect
+            backgroundColor: 'rgba(255, 255, 255, 0.2)', // Semi-transparent background
+            borderRadius: '10px', // Rounded corners
+            padding: '50px', // Padding for the container
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginBottom: '100px',
+          }}> 
       <h1 className="display-1 bangers-regular text-center" style={{ color: 'white' }}>
         Choose Your Preferences
       </h1>
-      <div className="container mt-4 max-w-full lg:max-w-6xl mx-auto w-full">
         {/* Form Inputs */}
         <div className="form-group mt-6 bangers-regular">
           <label htmlFor="lowPrice">Low Price</label>
@@ -46,13 +56,13 @@ export const Preferences: React.FC = () => {
             className="form-control rounded-lg focus:ring-blue-600 focus:border-blue-600"
             id="highPrice"
             placeholder="Enter high price"
-          />
-        </div>
-        <button className="btn btn-success mt-6 bangers-regular" onClick={fetchFestivals}>
+          /></div>
+        <button className="btn btn-success mt-6 bangers-regular" style={{marginTop:"20px"}} onClick={fetchFestivals}>
           Get Festivals
         </button>
-        <HorizontalLinearStepper />
+      
       </div>
+      <HorizontalLinearStepper/>
     </Fragment>
   );
 };
