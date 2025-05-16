@@ -8,7 +8,7 @@ export const Homepage: FC = () => {
 
   return (
     <div
-      className="container-inline d-flex flex-column justify-content-center align-items-center text-white opacity-75"
+      className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
       style={{
         height: "100vh",
         backgroundImage: "url(/festival-bg.jpg)",

@@ -20,13 +20,14 @@ export const Festivals: FC = () => {
   return (
     isLoading ? 
     <Fragment>
-      <h1 className="display-1 bangers-regular" style={{ color: "black" }}>customizing your festival packages...</h1>
+      <h1 className="display-1 bangers-regular" style={{ color: "white" }}>customizing your festival packages...</h1>
       <div className="sweet-loading d-flex flex-row justify-content-center align-items-center">
     <ClipLoader
       loading={true}
       size={150}
       aria-label="Loading Spinner"
       data-testid="loader"
+      color="#FFFFFF"
     />
   </div>
   </Fragment>  :
