@@ -1,6 +1,6 @@
 import React, { FC, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppContext } from '../../App';
+import { AppContext } from '../App';
 import { useContext } from 'react';
 import HorizontalLinearStepper from '../Stepper/Stepper';
 
