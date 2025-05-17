@@ -1,15 +1,15 @@
 import './App.css'
-import HomePage from './components/homepage'
 import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import theme from './theme'; // Adjust the path to your theme file
-import HorizontalLinearStepper from './components/Stepper/Stepper';
 
 import React, { createContext, ReactNode, useState } from 'react';
 import { Festivals } from './components/Festivals/Festivals';
 import { Packages } from './components/Packages/Packages';
 import { Preferences } from './components/Preferences/Preferences';
 import SpotifyCallback from "./pages/spotifyCallback";
+import Homepage from './components/Homepage/Homepage';
+import { Checkout } from './components/Checkout/Checkout';
 
 export function App() {
   const [user, setUser] = useState<User>();
@@ -31,11 +31,12 @@ export function App() {
         style={{ height: "100vh", backgroundImage: "url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<Homepage />} />
             <Route path="/festivals" element={<Festivals />} />
             <Route path="/festivals/package" element={< Packages/>} />
             <Route path="/spotify/callback" element={<SpotifyCallback />} />
             <Route path="/preferences" element={<Preferences />} />
+            <Route path="/checkout" element={< Checkout/>} />
           </Routes>
         </BrowserRouter>
       </div>
