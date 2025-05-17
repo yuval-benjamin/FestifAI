@@ -5,9 +5,9 @@ const theme = createTheme({
    MuiStep: {
         styleOverrides: {
             root: {
-                backdropFilter: 'blur(5px)', // Apply blur effect
-                backgroundColor: 'rgba(255, 255, 255, 0.2)', // Semi-transparent background
-                borderRadius: '10px',
+                // backdropFilter: 'blur(5px)', // Apply blur effect
+                // backgroundColor: 'rgba(255, 255, 255, 0.2)', // Semi-transparent background
+                // borderRadius: '10px',
             },
         },
    },
@@ -23,6 +23,7 @@ const theme = createTheme({
           },
         },
         text: {
+            fontSize: '20px',
             fontFamily: 'bangers', // Font family for step icon text
         }
       },
@@ -32,6 +33,7 @@ const theme = createTheme({
     
         label: {
           color: 'white',
+          fontSize: '22px',
           fontFamily: 'bangers', // Default label color
           '&.Mui-active': {
             color: 'white', // Active label color

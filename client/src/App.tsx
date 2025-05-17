@@ -3,12 +3,12 @@ import HomePage from './components/homepage'
 import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import theme from './theme'; // Adjust the path to your theme file
-import HorizontalLinearStepper from './components/stepper';
+import HorizontalLinearStepper from './components/Stepper/Stepper';
 
 import React, { createContext, ReactNode, useState } from 'react';
 import { Festivals } from './components/Festivals/Festivals';
 import { Packages } from './components/Packages/Packages';
-import { Preferences } from './components/Preferences';
+import { Preferences } from './components/Preferences/Preferences';
 import SpotifyCallback from "./pages/spotifyCallback";
 
 export function App() {
@@ -39,7 +39,6 @@ export function App() {
           </Routes>
         </BrowserRouter>
       </div>
-      <HorizontalLinearStepper activeStep={0}/>
     </AppContext.Provider>
         </ThemeProvider>
 

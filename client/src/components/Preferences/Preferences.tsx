@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { Fragment, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppContext, FestivalInterface } from '../App';
-import HorizontalLinearStepper from './stepper';
+import { AppContext, FestivalInterface } from '../../App';
+import HorizontalLinearStepper from '../Stepper/Stepper';
 import { ClipLoader } from 'react-spinners';
 
 export const Preferences: React.FC = () => {
@@ -24,9 +24,16 @@ export const Preferences: React.FC = () => {
   };
 
   return (
+    <div className=' d-flex flex-column justify-content-center align-items-center' 
+    style={{
+      width: "100%",
+      height: "100%", backgroundImage: "url(/fest.jpg)", backgroundSize: "cover", backgroundPosition: "center" 
+    }}
+    >
+{(
     isLoading ?
     <Fragment>
-    <h1 className="display-1 bangers-regular" style={{ color: "white" }}>searching relavent festivals for you...</h1>
+    <h1 className="display-1 bangers-regular" style={{ color: "white"}}>searching relavent festivals for you...</h1>
     <div className="sweet-loading d-flex flex-row justify-content-center align-items-center">
   <ClipLoader
     loading={true}
@@ -40,16 +47,9 @@ export const Preferences: React.FC = () => {
     <Fragment>
         <div className="container mt-4 max-w-full lg:max-w-6xl mx-auto w-full"
           style={{
-            backdropFilter: 'blur(5px)', // Apply blur effect
-            backgroundColor: 'rgba(255, 255, 255, 0.2)', // Semi-transparent background
-            borderRadius: '10px', // Rounded corners
-            padding: '50px', // Padding for the container
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
             marginBottom: '100px',
           }}> 
-      <h1 className="display-1 bangers-regular text-center" style={{ color: 'white' }}>
+      <h1 className="display-1 bangers-regular" style={{ color: 'white' }}>
         Choose Your Preferences
       </h1>
         {/* Form Inputs */}
@@ -81,5 +81,7 @@ export const Preferences: React.FC = () => {
       </div>
       <HorizontalLinearStepper activeStep={0} />
     </Fragment>
+    )}
+    </div>
   );
 };
