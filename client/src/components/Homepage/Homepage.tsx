@@ -1,7 +1,7 @@
-import { SpotifyIcon } from "../assets/icons";
-import { loginWithSpotify } from "../services/spotifyService";
 import { FC } from "react";
 import { useNavigate } from 'react-router-dom';
+import { loginWithSpotify } from "../../services/spotifyService";
+import { SpotifyIcon } from "../../assets/icons";
 
 export const Homepage: FC = () => {
   const navigate = useNavigate();
