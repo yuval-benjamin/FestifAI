@@ -1,10 +1,10 @@
 import { FC, Fragment, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppContext, FestivalInterface } from '../App';
+import { AppContext, FestivalInterface } from '../../App';
 import { ClipLoader } from 'react-spinners';
-import { fetchAmadeusToken } from '../services/amaduesService';
-import HorizontalLinearStepper from './Stepper/Stepper';
-import { useFestivals } from './FetchFestivalsContext';
+import { fetchAmadeusToken } from '../../services/amaduesService';
+import HorizontalLinearStepper from '../Stepper/Stepper';
+import { useFestivals } from '../FetchFestivalsContext';
 
 export const Festivals: FC = () => {
   const { setPackages } = useContext(AppContext);
