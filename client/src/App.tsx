@@ -39,7 +39,7 @@ export function App() {
           </Routes>
         </BrowserRouter>
       </div>
-      <HorizontalLinearStepper />
+      <HorizontalLinearStepper activeStep={0}/>
     </AppContext.Provider>
         </ThemeProvider>
 

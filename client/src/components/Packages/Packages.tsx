@@ -2,6 +2,7 @@ import React, { FC, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../../App';
 import { useContext } from 'react';
+import HorizontalLinearStepper from '../stepper';
 
 export const Packages: FC = () => {
   const { packages } = useContext(AppContext)
@@ -9,7 +10,7 @@ export const Packages: FC = () => {
 
   return (
     <Fragment>
-      <h1 className="display-1 bangers-regular" style={{ color: "black" }}>choose your package</h1>
+      <h1 className="display-1 bangers-regular" style={{ color: "white" }}>choose your package</h1>
       <div className="d-flex flex-row justify-content-center align-items-center">
         {packages?.map((festivalPackage) => (
           <div key={festivalPackage._id} className="card text-center m-2" style={{
@@ -51,6 +52,8 @@ export const Packages: FC = () => {
           </div>
         ))}
       </div>
+            <HorizontalLinearStepper activeStep={2}/>
+    
     </Fragment>
   );
 };

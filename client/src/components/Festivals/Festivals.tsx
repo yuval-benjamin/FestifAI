@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { AppContext, FestivalInterface } from '../../App';
 import { ClipLoader } from 'react-spinners';
 import { fetchAmadeusToken } from '../../services/amaduesService';
+import HorizontalLinearStepper from '../stepper';
 
 export const Festivals: FC = () => {
   const {festivals, setPackages} = useContext(AppContext);
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);  
   
   const fetchPackages = async (festival: FestivalInterface) => {
     setIsLoading(true)
@@ -32,7 +33,7 @@ export const Festivals: FC = () => {
   </div>
   </Fragment>  :
     <Fragment>
-      <h1 className="display-1 bangers-regular" style={{ color: "black" }}>choose your festival</h1>
+      <h1 className="display-1 bangers-regular" style={{ color: "white" }}>choose your festival</h1>
       <div className="d-flex flex-row justify-content-center align-items-center">
         {festivals?.map((festival) => (
           <div
@@ -56,6 +57,8 @@ export const Festivals: FC = () => {
           </div>
         ))}
       </div>
+            <HorizontalLinearStepper activeStep={1} />
+      
     </Fragment>
   );
 };

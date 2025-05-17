@@ -3,23 +3,40 @@ import React, { Fragment, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext, FestivalInterface } from '../App';
 import HorizontalLinearStepper from './stepper';
+import { ClipLoader } from 'react-spinners';
 
 export const Preferences: React.FC = () => {
   const [lowPrice, setLowPrice] = useState<number | undefined>(undefined);
   const [highPrice, setHighPrice] = useState<number | undefined>(undefined);
   const { setFestivals } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(false);  
 
   const navigate = useNavigate();
 
   const fetchFestivals = async () => {
+    setIsLoading(true);
     const { data } = await axios.get<{ festivals: FestivalInterface[] }>(
       `http://localhost:3000/festivals?lowPrice=${lowPrice}&highPrice=${highPrice}`
     );
+    setIsLoading(false);
     setFestivals?.(data.festivals);
     navigate('/festivals');
   };
 
   return (
+    isLoading ?
+    <Fragment>
+    <h1 className="display-1 bangers-regular" style={{ color: "white" }}>searching relavent festivals for you...</h1>
+    <div className="sweet-loading d-flex flex-row justify-content-center align-items-center">
+  <ClipLoader
+    loading={true}
+    size={150}
+    aria-label="Loading Spinner"
+    data-testid="loader"
+    color="#FFFFFF"
+  />
+</div>
+</Fragment>  :
     <Fragment>
         <div className="container mt-4 max-w-full lg:max-w-6xl mx-auto w-full"
           style={{
@@ -58,11 +75,11 @@ export const Preferences: React.FC = () => {
             placeholder="Enter high price"
           /></div>
         <button className="btn mt-6 bangers-regular" style={{marginTop:"20px", backgroundColor: '#FF3366', color: 'white'}} onClick={fetchFestivals}>
-          Get Festivals
+          Search Festivals
         </button>
       
       </div>
-      <HorizontalLinearStepper />
+      <HorizontalLinearStepper activeStep={0} />
     </Fragment>
   );
 };

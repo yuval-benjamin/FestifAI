@@ -5,11 +5,13 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 
+interface HorizontalLinearStepperProps {
+  activeStep: number; // Accept activeStep as a prop
+}
+
 const steps = ['Preferences', 'Festivals', 'Packages' , 'Checkout'];
 
-export default function HorizontalLinearStepper() {
-  const [activeStep, setActiveStep] = React.useState(0);
-
+export default function HorizontalLinearStepper({ activeStep }: HorizontalLinearStepperProps) {
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
