@@ -57,12 +57,12 @@ export const Preferences: React.FC = () => {
             id="highPrice"
             placeholder="Enter high price"
           /></div>
-        <button className="btn btn-success mt-6 bangers-regular" style={{marginTop:"20px"}} onClick={fetchFestivals}>
+        <button className="btn mt-6 bangers-regular" style={{marginTop:"20px", backgroundColor: '#FF3366', color: 'white'}} onClick={fetchFestivals}>
           Get Festivals
         </button>
       
       </div>
-      <HorizontalLinearStepper/>
+      <HorizontalLinearStepper />
     </Fragment>
   );
 };

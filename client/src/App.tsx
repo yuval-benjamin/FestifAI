@@ -1,6 +1,9 @@
 import './App.css'
 import HomePage from './components/homepage'
+import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import theme from './theme'; // Adjust the path to your theme file
+import HorizontalLinearStepper from './components/stepper';
 
 import React, { createContext, ReactNode, useState } from 'react';
 import { Festivals } from './components/Festivals/Festivals';
@@ -14,6 +17,7 @@ export function App() {
   const [packages, setPackages] = useState<PackageInterface[]>([]);
 
   return (
+    <ThemeProvider theme={theme}>
     <AppContext.Provider
       value={{
         setFestivals,
@@ -23,7 +27,7 @@ export function App() {
         packages,
         setPackages
       }}>
-      <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white opacity-75"
+      <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
         style={{ height: "100vh", backgroundImage: "url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
         <BrowserRouter>
           <Routes>
@@ -35,7 +39,10 @@ export function App() {
           </Routes>
         </BrowserRouter>
       </div>
+      <HorizontalLinearStepper />
     </AppContext.Provider>
+        </ThemeProvider>
+
   );
 }
 
