@@ -2,7 +2,7 @@ import React, { FC, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../App';
 import { useContext } from 'react';
-import HorizontalLinearStepper from '../Stepper/Stepper';
+import HorizontalLinearStepper from './Stepper/Stepper';
 
 export const Packages: FC = () => {
   const { packages } = useContext(AppContext)
