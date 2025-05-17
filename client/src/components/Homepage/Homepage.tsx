@@ -1,14 +1,14 @@
-import { SpotifyIcon } from "../assets/icons";
-import { loginWithSpotify } from "../services/spotifyService";
 import { FC } from "react";
 import { useNavigate } from 'react-router-dom';
+import { loginWithSpotify } from "../../services/spotifyService";
+import { SpotifyIcon } from "../../assets/icons";
 
 export const Homepage: FC = () => {
   const navigate = useNavigate();
 
   return (
     <div
-      className="container-inline d-flex flex-column justify-content-center align-items-center text-white opacity-75"
+      className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
       style={{
         height: "100vh",
         backgroundImage: "url(/festival-bg.jpg)",

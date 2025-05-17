@@ -1,6 +1,8 @@
-import { useEffect, useRef  } from "react";
+import { useEffect, useRef, Fragment  } from "react";
 import { useNavigate } from "react-router-dom";
 import { parseSpotifyTokens } from "../services/spotifyService";
+import { ClipLoader } from 'react-spinners';
+
 
 const SpotifyCallback = () => {
   const navigate = useNavigate();
@@ -31,7 +33,20 @@ const SpotifyCallback = () => {
     }
   };
 
-  return <p>Logging in with Spotify...</p>; 
+  return (
+  <Fragment>
+        <h1 className="display-1 bangers-regular" style={{ color: "white" }}>login in with Spotify...</h1>
+        <div className="sweet-loading d-flex flex-row justify-content-center align-items-center">
+      <ClipLoader
+        loading={true}
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+        color="#FFFFFF"
+      />
+    </div>
+    </Fragment>
+  ); 
 };
 
 export default SpotifyCallback;
