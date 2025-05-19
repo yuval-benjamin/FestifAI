@@ -1,8 +1,8 @@
-import axios from 'axios';
-import React, { Fragment, useContext, useState } from 'react';
+import React, { Fragment  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HorizontalLinearStepper from '../Stepper/Stepper';
 import { ClipLoader } from 'react-spinners';
+import { useFestivals } from '../FetchFestivalsContext';
 
 export const Preferences: React.FC = () => {
   const { fetchFestivals, error, setHighPrice, setLowPrice, lowPrice, highPrice, isLoading } = useFestivals()
