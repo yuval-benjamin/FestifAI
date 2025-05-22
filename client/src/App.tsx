@@ -11,6 +11,7 @@ import SpotifyCallback from "./pages/spotifyCallback";
 import Homepage from './components/Homepage/Homepage';
 import { Checkout } from './components/Checkout/Checkout';
 import { FestivalProvider } from './components/FetchFestivalsContext';
+import Header from "./components/Header";
 
 export function App() {
   const [user, setUser] = useState<User>();
@@ -32,6 +33,7 @@ export function App() {
           <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
             style={{ height: "100vh", backgroundImage: "url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
             <BrowserRouter>
+             <Header />
               <Routes>
                 <Route path="/" element={<Homepage />} />
                 <Route path="/festivals" element={<Festivals />} />
