@@ -6,3 +6,10 @@ GET http://localhost:3000/amadeus/flight-offers?currencyCode=ILS&originLocationC
 # get amadeus token
 POST http://localhost:3000/amadeus
 
+###
+# get amadeus hotel offer search
+GET http://localhost:3000/amadeus/hotel-offers?hotelIds[]=RTBRSMRC&hotelIds[]=TGBRS838&cityCode=BRS&checkInDate=2025-07-31&checkOutDate=2025-08-02&roomQuantity=1&adults=1&currency=ILS
+
+###
+# get amadeus hotel offer details
+GET http://localhost:3000/amadeus/hotels?cityCode=PAR

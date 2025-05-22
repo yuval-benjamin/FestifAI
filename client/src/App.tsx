@@ -1,12 +1,16 @@
 import './App.css'
-import HomePage from './components/homepage'
+import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import theme from './theme'; // Adjust the path to your theme file
 
-import React, { createContext, ReactNode, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import { Festivals } from './components/Festivals/Festivals';
-import { Packages } from './components/Packages/Packages';
-import { Preferences } from './components/Preferences';
+import { Packages } from './components/Packages';
+import { Preferences } from './components/Preferences/Preferences';
 import SpotifyCallback from "./pages/spotifyCallback";
+import Homepage from './components/Homepage/Homepage';
+import { Checkout } from './components/Checkout/Checkout';
+import { FestivalProvider } from './components/FetchFestivalsContext';
 
 export function App() {
   const [user, setUser] = useState<User>();
@@ -14,28 +18,35 @@ export function App() {
   const [packages, setPackages] = useState<PackageInterface[]>([]);
 
   return (
-    <AppContext.Provider
-      value={{
-        setFestivals,
-        festivals,
-        user,
-        setUser,
-        packages,
-        setPackages
-      }}>
-      <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white opacity-75"
-        style={{ height: "100vh", backgroundImage: "url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/festivals" element={<Festivals />} />
-            <Route path="/festivals/package" element={< Packages/>} />
-            <Route path="/spotify/callback" element={<SpotifyCallback />} />
-            <Route path="/preferences" element={<Preferences />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </AppContext.Provider>
+    <ThemeProvider theme={theme}>
+      <FestivalProvider>
+        <AppContext.Provider
+          value={{
+            setFestivals,
+            festivals,
+            user,
+            setUser,
+            packages,
+            setPackages
+          }}>
+          <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
+            style={{ height: "100vh", backgroundImage: "url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Homepage />} />
+                <Route path="/festivals" element={<Festivals />} />
+                <Route path="/festivals/package" element={< Packages />} />
+                <Route path="/spotify/callback" element={<SpotifyCallback />} />
+                <Route path="/preferences" element={<Preferences />} />
+                <Route path="/checkout" element={< Checkout />} />
+              </Routes>
+            </BrowserRouter>
+          </div>
+        </AppContext.Provider>
+      </FestivalProvider>
+
+    </ThemeProvider>
+
   );
 }
 
@@ -53,6 +64,7 @@ export interface FestivalInterface {
   endDate: string;
   website: string;
   locationCode: string;
+  cityCode: string;
 }
 
 export interface PackageInterface {
@@ -62,8 +74,8 @@ export interface PackageInterface {
   startDay: string;
   endDay: string;
   flights: {
-    departure: FlightInterface;
-    return: FlightInterface;
+    departure: FlightInterface[];
+    return: FlightInterface[];
   };
   accommodation: string;
   packageType: PackageEnum;
