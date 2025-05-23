@@ -65,7 +65,7 @@ export const Festivals: FC = () => {
                     <h5 className="card-title" style={{fontSize:'25px'}}>{festival.name}</h5>
                     <p className="card-text" style={{fontSize:'18px'}}><b className='bangers-regular'>dates:</b> {festival.startDate}, {festival.endDate}</p>
                     <p className="card-text" style={{fontSize:'18px'}}><b className='bangers-regular'>location:</b> {festival.location}</p>
-                    <p className="card-text" style={{fontSize:'18px'}}>because you love pop</p>
+                    {/* <p className="card-text" style={{fontSize:'18px'}}>because you love pop</p> */}
                     <a onClick={(event) => event.stopPropagation()} href={festival.website} target="_blank" rel="noopener noreferrer" className="btn bangers-regular" style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white' }}>Checkout {festival.name}</a>
                   </div>
                 </div>

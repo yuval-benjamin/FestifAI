@@ -33,6 +33,7 @@ export const Packages: FC = () => {
             backgroundColor: "rgba(31, 31, 61, 0.8)",
             color: "white",
             border: "none",
+            cursor: "pointer",
           }} onClick={() => onSelectPackage(festivalPackage)}>
             <div className="card-body" style={{fontSize: '18px'}}>
               <h5 className="card-title bangers-regular text-center"style={{fontSize:'22px'}}>{festivalPackage.packageType}</h5>

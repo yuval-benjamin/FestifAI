@@ -13,7 +13,7 @@ export const Checkout: FC = () => {
               height: "100%", backgroundImage: "url(/sziget.png)", backgroundSize: "cover", backgroundPosition: "center" 
             }}>
             <h1 className="display-1 bangers-regular text-center" style={{ color: "white" }}>Your selected package</h1>
-            <div style={{display: 'flex', flexDirection:'row', marginBottom: '100px', height: '50vh', width: '80%'}}>
+            <div style={{display: 'flex', flexDirection:'row', marginBottom: '100px', width: '80%'}}>
         
             <div className=' d-flex flex-column bangers-regular text-left' style={{
               backdropFilter: 'blur(10px)',
