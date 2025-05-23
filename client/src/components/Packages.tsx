@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react';
+import { FC, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext, PackageInterface } from '../App';
 import { useContext } from 'react';
@@ -16,13 +16,13 @@ export const Packages: FC = () => {
 
   return (
     <Fragment>
-       <div className=' d-flex flex-column justify-content-center align-items-center' 
+       <div className=' d-flex flex-column justify-content-center align-items-center bangers-regular' 
     style={{
       width: "100%",
       height: "100%", backgroundImage: "url(/fest.jpg)", backgroundSize: "cover", backgroundPosition: "center" 
     }}
     >
-      <h1 className="display-1 bangers-regular" style={{ color: "white" }}>choose your package</h1>
+      <h1 className="display-1 bangers-regular text-center" style={{ color: "white" }}>choose your package</h1>
       <div className="d-flex flex-row justify-content-center align-items-center">
         {packages?.map((festivalPackage) => (
           <div key={festivalPackage._id} className="card text-center m-2" style={{
@@ -44,28 +44,12 @@ export const Packages: FC = () => {
               <p className="card-text"><b>travel class:</b> {festivalPackage.class}</p>
               <p className="card-text"><b>accommodation:</b> {festivalPackage.accommodation}</p>
               <p className="card-text"><b>checked bags:</b> {festivalPackage.checkedBags}</p>
-              {/* {
-                (festivalPackage.flights.departure[1] && festivalPackage.flights.return[1] ?
-              <div>  
-              <p className="card-text"><b>departure:</b> {festivalPackage.flights.departure[0].origin} - {festivalPackage.flights.departure[0].destination}</p>
-              <p className="card-text">{festivalPackage.flights.departure[1].origin} - {festivalPackage.flights.departure[1].destination}</p>
-              <p className="card-text"><b>return: </b>{festivalPackage.flights.return[0].origin} - {festivalPackage.flights.return[0].destination}</p>
-              <p className="card-text">{festivalPackage.flights.return[1].origin} - {festivalPackage.flights.return[1].destination}</p></div>
- :
- <div>
-  <p className="card-text"><b>departure:</b> {festivalPackage.flights.departure[0].origin} - {festivalPackage.flights.departure[0].destination}</p>
-              <p className="card-text"><b>return: </b>{festivalPackage.flights.return[0].origin} - {festivalPackage.flights.return[0].destination}</p> */}
- 
- {/* </div> */}
-            {/* ) */}
-              {/* } */}
-                          <p className="card-text"><b>total:</b> ₪{festivalPackage.price}</p>
+              <p className="card-text"><b>total:</b> ₪{festivalPackage.price}</p>
             </div>
           </div>
         ))}
       </div>
-            <HorizontalLinearStepper activeStep={2}/>
-    
+     <HorizontalLinearStepper activeStep={2}/>
     </div>
     </Fragment>
 

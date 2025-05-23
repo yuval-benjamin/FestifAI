@@ -46,7 +46,7 @@ export const Festivals: FC = () => {
         <Fragment>
           <div className="container max-w-full lg:max-w-6xl mx-auto w-full" style={{ marginBottom: '100px' }}
           >
-            <h1 className="display-1 bangers-regular" style={{ color: "white" }}>choose your festival</h1>
+            <h1 className="display-1 bangers-regular text-center" style={{ color: "white" }}>choose your festival</h1>
             <div className="d-flex flex-row justify-content-center align-items-center">
               {currentFestivals?.map((festival) => (
                 <div
