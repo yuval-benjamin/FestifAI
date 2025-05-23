@@ -22,16 +22,16 @@ export function App() {
   return (
     <ThemeProvider theme={theme}>
       <UserProvider>
-        <FestivalProvider>
-          <AppContext.Provider
-            value={{
-              setFestivals,
-              festivals,
-              user,
-              setUser,
-              packages,
-              setPackages
-            }}>
+        <AppContext.Provider
+          value={{
+            setFestivals,
+            festivals,
+            user,
+            setUser,
+            packages,
+            setPackages
+          }}>
+          <FestivalProvider>
             <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
               style={{ height: "100vh", backgroundImage: "url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
               <BrowserRouter>
@@ -39,15 +39,15 @@ export function App() {
                 <Routes>
                   <Route path="/" element={<Homepage />} />
                   <Route path="/festivals" element={<Festivals />} />
-                  <Route path="/festivals/package" element={< Packages />} />
+                  <Route path="/festivals/package" element={<Packages />} />
                   <Route path="/spotify/callback" element={<SpotifyCallback />} />
                   <Route path="/preferences" element={<Preferences />} />
-                  <Route path="/checkout" element={< Checkout />} />
+                  <Route path="/checkout" element={<Checkout />} />
                 </Routes>
               </BrowserRouter>
             </div>
-          </AppContext.Provider>
-        </FestivalProvider>
+          </FestivalProvider>
+        </AppContext.Provider>
       </UserProvider>
     </ThemeProvider>
   );

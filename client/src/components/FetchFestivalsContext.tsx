@@ -27,6 +27,7 @@ type FestivalContextType = {
 export const FestivalContext = createContext<FestivalContextType | undefined>(undefined);
 
 export const FestivalProvider = ({ children }: { children: ReactNode }) => {
+    const { email } = useUser();
     const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
     const [page, setPage] = useState(0);
     const [priceArea, setPriceArea] = useState(0);
@@ -38,8 +39,6 @@ export const FestivalProvider = ({ children }: { children: ReactNode }) => {
     const currentFestivals = useMemo(() => {
         return festivals.slice((page - 1) * 3, page * 3);
     }, [page, festivals]);
-
-    const { email } = useUser();
 
     const fetchFestivals = async () => {
         setIsLoading(true);

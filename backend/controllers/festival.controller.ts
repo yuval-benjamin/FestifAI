@@ -34,10 +34,8 @@ export async function getFestivalsFromAi(req: Request, res: Response) {
     return;
   }
 
-  const genreList = genres.slice(0, 3).join(", ");
-  const question = `Return a JSON array of 3 *different* ${genreList} music festivals in 2025 that have not been listed in previous pages (this is page ${page}), price area:${priceArea}$,general location-${location} general date-${date} - Ensure dates are correct using official websites. Each object must have: name, location,startDate,endDate,locationCode (nearest airport), cityCode (nearest city), website. Dates in YYYY-MM-DD. Response must be max 256 characters.`;
-
-  console.log("AI question:", question);
+  const genreList = genres.join(", ");
+  const question = `Return a JSON array of 3 *different* ${genreList} music festivals in 2025 that have not been listed in previous pages (this is page ${page}), price area:${priceArea}$,general location-${location}, genre, general date-${date} Each object must have: name, location,startDate,endDate,locationCode (nearest airport), cityCode (nearest city), website. Dates in YYYY-MM-DD. Response must be max 256 characters.`;
 
   try {
     const completion = await api.chat.completions.create({
