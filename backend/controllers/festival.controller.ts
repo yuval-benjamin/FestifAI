@@ -12,15 +12,16 @@ const api = new OpenAI({
 });
 
 type GetFestivalsFromAiRequestBody = {
-  highPrice: number;
-  lowPrice: number;
+  priceArea: number;
+  location: string;
+  date: string;
   page: number
 }
 
 export async function getFestivalsFromAi(req: Request, res: Response) {
-  const { lowPrice, highPrice, page } = req.query as unknown as GetFestivalsFromAiRequestBody;
+  const { date, priceArea, location, page } = req.query as unknown as GetFestivalsFromAiRequestBody;
   const genre = "pop"
-  const question = `Return a JSON array of 3 *different* ${genre} music festivals in 2025 that have not been listed in previous pages (this is page ${page}), within ${lowPrice}$-${highPrice}$. Ensure dates are correct using official websites. Each object must have: name, location,startDate,endDate,locationCode (nearest airport), cityCode (nearest city), website. Dates in YYYY-MM-DD. Response must be max 256 characters.`;
+  const question = `Return a JSON array of 3 *different* ${genre} music festivals in 2025 that have not been listed in previous pages (this is page ${page}), price area:${priceArea}$,general location-${location} general date-${date} - Ensure dates are correct using official websites. Each object must have: name, location,startDate,endDate,locationCode (nearest airport), cityCode (nearest city), website. Dates in YYYY-MM-DD. Response must be max 256 characters.`;
 
   try {
     const completion = await api.chat.completions.create({

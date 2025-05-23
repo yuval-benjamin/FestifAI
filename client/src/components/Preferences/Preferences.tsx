@@ -1,11 +1,11 @@
-import React, { Fragment  } from 'react';
+import React, { Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HorizontalLinearStepper from '../Stepper/Stepper';
 import { ClipLoader } from 'react-spinners';
 import { useFestivals } from '../FetchFestivalsContext';
 
 export const Preferences: React.FC = () => {
-  const { fetchFestivals, error, setHighPrice, setLowPrice, lowPrice, highPrice, isLoading } = useFestivals()
+  const { fetchFestivals, error, setCountry, setPriceArea, priceArea, date, setDate, country, isLoading } = useFestivals()
   const navigate = useNavigate();
 
   return (
@@ -39,28 +39,39 @@ export const Preferences: React.FC = () => {
               <h1 className="display-1 bangers-regular" style={{ color: 'white' }}>
                 Choose Your Preferences
               </h1>
-              {/* Form Inputs */}
               <div className="form-group mt-6 bangers-regular">
-                <label htmlFor="lowPrice">Low Price</label>
+                <label htmlFor="lowPrice">Price Area</label>
                 <input
-                  value={lowPrice}
-                  onChange={(e) => setLowPrice(Number(e.target.value))}
+                  value={priceArea}
+                  onChange={(e) => setPriceArea(Number(e.target.value))}
                   type="number"
                   className="form-control rounded-lg focus:ring-blue-600 focus:border-blue-600"
                   id="lowPrice"
-                  placeholder="Enter low price"
+                  placeholder="Enter Price Area"
                 />
               </div>
               <div className="form-group mt-6 bangers-regular">
-                <label htmlFor="highPrice">High Price</label>
+                <label htmlFor="location">Location - country or area</label>
                 <input
-                  value={highPrice}
-                  onChange={(e) => setHighPrice(Number(e.target.value))}
-                  type="number"
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
                   className="form-control rounded-lg focus:ring-blue-600 focus:border-blue-600"
-                  id="highPrice"
-                  placeholder="Enter high price"
-                /></div>
+                  id="location"
+                  placeholder="Enter Location"
+                />
+              </div>
+              <div className="form-group mt-6 bangers-regular">
+                <label htmlFor="date">Date Area</label>
+                <input
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="form-control rounded-lg focus:ring-blue-600 focus:border-blue-600"
+                  id="date"
+                  placeholder="Select a date area"
+                />
+              </div>
+
               <button
                 className="btn mt-6 bangers-regular"
                 style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white' }}
