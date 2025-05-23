@@ -1,6 +1,7 @@
 import { OpenAI, RateLimitError } from 'openai';
 import { Request, Response } from 'express';
 import { Festival } from '../models/Festival';
+import { User } from '../models/User';
 import dotenv from "dotenv";
 dotenv.config();
 const baseURL = "https://api.aimlapi.com/v1";
@@ -19,9 +20,24 @@ type GetFestivalsFromAiRequestBody = {
 }
 
 export async function getFestivalsFromAi(req: Request, res: Response) {
-  const { date, priceArea, location, page } = req.query as unknown as GetFestivalsFromAiRequestBody;
-  const genre = "pop"
-  const question = `Return a JSON array of 3 *different* ${genre} music festivals in 2025 that have not been listed in previous pages (this is page ${page}), price area:${priceArea}$,general location-${location} general date-${date} - Ensure dates are correct using official websites. Each object must have: name, location,startDate,endDate,locationCode (nearest airport), cityCode (nearest city), website. Dates in YYYY-MM-DD. Response must be max 256 characters.`;
+  const { date, priceArea, location, page, email } = req.query as unknown as GetFestivalsFromAiRequestBody & { email: string };
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    res.status(404).json({ error: "User not found" });
+    return;
+  }
+
+  const genres = user.favoriteGenres;
+  if (!genres || genres.length === 0) {
+    res.status(400).json({ error: "User has no favorite genres saved" });
+    return;
+  }
+
+  const genreList = genres.slice(0, 3).join(", ");
+  const question = `Return a JSON array of 3 *different* ${genreList} music festivals in 2025 that have not been listed in previous pages (this is page ${page}), price area:${priceArea}$,general location-${location} general date-${date} - Ensure dates are correct using official websites. Each object must have: name, location,startDate,endDate,locationCode (nearest airport), cityCode (nearest city), website. Dates in YYYY-MM-DD. Response must be max 256 characters.`;
+
+  console.log("AI question:", question);
 
   try {
     const completion = await api.chat.completions.create({
