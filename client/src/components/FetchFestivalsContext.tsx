@@ -11,14 +11,16 @@ import { FestivalInterface } from "../App";
 type FestivalContextType = {
     festivals: FestivalInterface[];
     currentFestivals: FestivalInterface[];
+    date: string;
     page: number;
-    lowPrice: number;
-    highPrice: number;
+    priceArea: number;
+    country: string;
     isLoading: boolean;
     error: string | null;
-    setLowPrice: (n: number) => void;
-    setHighPrice: (n: number) => void;
-    fetchFestivals: () => void;
+    setCountry: (n: string) => void;
+    setPriceArea: (n: number) => void;
+    setDate: (n: string) => void;
+    fetchFestivals: () => Promise<void>;
 };
 
 export const FestivalContext = createContext<FestivalContextType | undefined>(undefined);
@@ -26,8 +28,9 @@ export const FestivalContext = createContext<FestivalContextType | undefined>(un
 export const FestivalProvider = ({ children }: { children: ReactNode }) => {
     const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
     const [page, setPage] = useState(0);
-    const [lowPrice, setLowPrice] = useState(0);
-    const [highPrice, setHighPrice] = useState(0);
+    const [priceArea, setPriceArea] = useState(0);
+    const [date, setDate] = useState("");
+    const [country, setCountry] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -42,7 +45,7 @@ export const FestivalProvider = ({ children }: { children: ReactNode }) => {
             const response = await axios.get<{ festivals: FestivalInterface[] }>(
                 `http://localhost:3000/festivals`,
                 {
-                    params: { lowPrice, highPrice, page },
+                    params: { priceArea, date, location: country, page },
                 }
             );
             setFestivals((prev) => [...prev, ...response.data.festivals]);
@@ -57,15 +60,17 @@ export const FestivalProvider = ({ children }: { children: ReactNode }) => {
     return (
         <FestivalContext.Provider
             value={{
+                setDate,
+                date,
                 festivals,
                 currentFestivals,
                 page,
-                lowPrice,
-                highPrice,
+                priceArea,
+                country,
                 isLoading,
                 error,
-                setLowPrice,
-                setHighPrice,
+                setPriceArea: setPriceArea,
+                setCountry,
                 fetchFestivals,
             }} >
             {children}

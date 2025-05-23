@@ -18,6 +18,7 @@ export function App() {
   const [user, setUser] = useState<User>();
   const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
   const [packages, setPackages] = useState<PackageInterface[]>([]);
+  const [selectedPackage, setSelectedPackage] = useState<PackageInterface>({} as PackageInterface);
   return (
     <ThemeProvider theme={theme}>
       <UserProvider>
@@ -47,10 +48,8 @@ export function App() {
             </div>
           </AppContext.Provider>
         </FestivalProvider>
-
       </UserProvider>
     </ThemeProvider>
-
   );
 }
 
@@ -190,4 +189,6 @@ interface AppContextProps {
   setUser?: (user: User) => void;
   packages?: PackageInterface[];
   setPackages?: (packages: PackageInterface[]) => void;
+  selectedPackage?: PackageInterface;
+  setSelectedPackage?: (selectedPackage: PackageInterface) => void;
 }
