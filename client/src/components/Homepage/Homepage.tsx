@@ -5,8 +5,7 @@ import { SpotifyIcon } from "../../assets/icons";
 
 export const Homepage: FC = () => {
   const navigate = useNavigate();
-  localStorage.setItem("spotify_user_name", "");
-  localStorage.setItem("spotify_user_email", "");
+
   return (
     <div
       className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
@@ -32,9 +31,10 @@ export const Homepage: FC = () => {
         className="btn btn-success bangers-regular btn-lg mt-3"
         onClick={() => navigate('/preferences')}
       >
-        Go to Preferences without soptify</button> </div>
-
-   );
+        Go to Preferences without Spotify
+      </button>
+    </div>
+  );
 };
 
 export default Homepage;

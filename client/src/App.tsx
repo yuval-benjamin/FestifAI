@@ -3,6 +3,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import theme from './theme'; // Adjust the path to your theme file
 
+import { UserProvider } from "./context/UserContext";
 import React, { createContext, useState } from 'react';
 import { Festivals } from './components/Festivals/Festivals';
 import { Packages } from './components/Packages';
@@ -18,6 +19,7 @@ export function App() {
   const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
   const [packages, setPackages] = useState<PackageInterface[]>([]);
   return (
+    <UserProvider>
     <ThemeProvider theme={theme}>
       <FestivalProvider>
         <AppContext.Provider
@@ -47,6 +49,7 @@ export function App() {
       </FestivalProvider>
 
     </ThemeProvider>
+    </UserProvider>
 
   );
 }
