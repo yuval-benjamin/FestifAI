@@ -3,7 +3,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import theme from './theme'; // Adjust the path to your theme file
 
-import React, { createContext, useState } from 'react';
+import { createContext, useState } from 'react';
 import { Festivals } from './components/Festivals/Festivals';
 import { Packages } from './components/Packages';
 import { Preferences } from './components/Preferences/Preferences';
@@ -16,6 +16,7 @@ export function App() {
   const [user, setUser] = useState<User>();
   const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
   const [packages, setPackages] = useState<PackageInterface[]>([]);
+  const [selectedPackage, setSelectedPackage] = useState<PackageInterface>({} as PackageInterface);
 
   return (
     <ThemeProvider theme={theme}>
@@ -27,7 +28,9 @@ export function App() {
             user,
             setUser,
             packages,
-            setPackages
+            setPackages,
+            selectedPackage,
+            setSelectedPackage
           }}>
           <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
             style={{ height: "100vh", backgroundImage: "url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
@@ -186,4 +189,6 @@ interface AppContextProps {
   setUser?: (user: User) => void;
   packages?: PackageInterface[];
   setPackages?: (packages: PackageInterface[]) => void;
+  selectedPackage?: PackageInterface;
+  setSelectedPackage?: (selectedPackage: PackageInterface) => void;
 }

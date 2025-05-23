@@ -36,7 +36,7 @@ export const Preferences: React.FC = () => {
               style={{
                 marginBottom: '100px',
               }}>
-              <h1 className="display-1 bangers-regular" style={{ color: 'white' }}>
+              <h1 className="display-1 bangers-regular text-center" style={{ color: 'white' }}>
                 Choose Your Preferences
               </h1>
               <div className="form-group mt-6 bangers-regular">
