@@ -31,9 +31,10 @@ export const Homepage: FC = () => {
         className="btn btn-success bangers-regular btn-lg mt-3"
         onClick={() => navigate('/preferences')}
       >
-        Go to Preferences without soptify</button> </div>
-
-   );
+        Go to Preferences without Spotify
+      </button>
+    </div>
+  );
 };
 
 export default Homepage;

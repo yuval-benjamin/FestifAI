@@ -1,12 +1,13 @@
-import { useEffect, useRef, Fragment  } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { parseSpotifyTokens } from "../services/spotifyService";
 import { ClipLoader } from 'react-spinners';
-
+import { useUser } from "../context/UserContext";
 
 const SpotifyCallback = () => {
   const navigate = useNavigate();
   const hasParsed = useRef(false);
+  const { setUser } = useUser();
 
   useEffect(() => {
     if (hasParsed.current) return;
@@ -26,6 +27,7 @@ const SpotifyCallback = () => {
       try {
         const response = await fetch(`http://localhost:3000/spotify/getUserData?access_token=${accessToken}`);
         const data = await response.json();
+        setUser(data.name, data.email);
         navigate("/preferences");
       } catch (error) {
         console.error("Sync error:", error);
@@ -34,19 +36,13 @@ const SpotifyCallback = () => {
   };
 
   return (
-  <Fragment>
-        <h1 className="display-1 bangers-regular" style={{ color: "white" }}>login in with Spotify...</h1>
-        <div className="sweet-loading d-flex flex-row justify-content-center align-items-center">
-      <ClipLoader
-        loading={true}
-        size={150}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-        color="#FFFFFF"
-      />
-    </div>
-    </Fragment>
-  ); 
+    <>
+      <h1 className="display-1 bangers-regular" style={{ color: "white" }}>logging in with Spotify...</h1>
+      <div className="sweet-loading d-flex flex-row justify-content-center align-items-center">
+        <ClipLoader loading={true} size={150} color="#FFFFFF" />
+      </div>
+    </>
+  );
 };
 
 export default SpotifyCallback;
