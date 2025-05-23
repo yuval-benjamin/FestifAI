@@ -1,12 +1,18 @@
 import React, { FC, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppContext } from '../App';
+import { AppContext, PackageInterface } from '../App';
 import { useContext } from 'react';
 import HorizontalLinearStepper from './Stepper/Stepper';
 
 export const Packages: FC = () => {
   const { packages } = useContext(AppContext)
   const navigate = useNavigate();
+  const { setSelectedPackage } = useContext(AppContext)
+
+  const onSelectPackage = (selectedPackage: PackageInterface) => {
+    setSelectedPackage?.(selectedPackage)
+    navigate(`/checkout`)
+  }
 
   return (
     <Fragment>
@@ -25,7 +31,7 @@ export const Packages: FC = () => {
             backgroundColor: "rgba(31, 31, 61, 0.8)",
             color: "white",
             border: "none",
-          }} onClick={() => navigate(`/checkout`)}>
+          }} onClick={() => onSelectPackage(festivalPackage)}>
             <div className="card-body">
               <h5 className="card-title bangers-regular">{festivalPackage.packageType}</h5>
               <p className="card-text">dates: {(festivalPackage.startDay)} til {festivalPackage.endDay}</p>

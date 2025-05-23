@@ -54,34 +54,36 @@ export const Festivals: FC = () => {
                   className="card text-center m-2"
                   style={{
                     width: "20rem",
-                    height: "22rem",
+                    height: "288px",
                     backgroundColor: "rgba(31, 31, 61, 0.8)",
                     color: "white",
                     border: "none",
+                    cursor: "pointer"
                   }}
                   onClick={() => fetchPackages(festival)}>
-                  <div className="card-body">
-                    <h5 className="card-title bangers-regular">{festival.name}</h5>
-                    <p className="card-text">dates: {festival.startDate}, {festival.endDate}</p>
-                    <p className="card-text">location: {festival.location}</p>
-                    {/* <p className="card-text">estimated cost: ${festival.price}</p> */}
-                    <a onClick={(event) => event.stopPropagation()} href={festival.website} target="_blank" rel="noopener noreferrer" className="btn" style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white' }}>Checkout {festival.name} website</a>
+                  <div className="card-body bangers-regular">
+                    <h5 className="card-title" style={{fontSize:'25px'}}>{festival.name}</h5>
+                    <p className="card-text" style={{fontSize:'18px'}}><b className='bangers-regular'>dates:</b> {festival.startDate}, {festival.endDate}</p>
+                    <p className="card-text" style={{fontSize:'18px'}}><b className='bangers-regular'>location:</b> {festival.location}</p>
+                    <p className="card-text" style={{fontSize:'18px'}}>because you love pop</p>
+                    <a onClick={(event) => event.stopPropagation()} href={festival.website} target="_blank" rel="noopener noreferrer" className="btn bangers-regular" style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white' }}>Checkout {festival.name}</a>
                   </div>
                 </div>
               ))}
             </div>
             <div className="d-flex justify-content-end mt-4 me-4">
               <div
-                className="d-flex align-items-center gap-2 px-4 py-2 bg-dark text-white rounded-pill shadow-sm"
-                style={{ cursor: "pointer" }}
+                className="d-flex align-items-center gap-2 px-4 py-2 text-white rounded-pill shadow-sm"
+                style={{ cursor: "pointer", backgroundColor: '#FF3366' }}
                 onClick={fetchFestivals}>
-                <span className="fw-bold">Fetch More Festivals</span>
+                <span className="fw-bold bangers-regular" >Fetch More Festivals</span>
                 {isFestivalsLoading &&
                   <ClipLoader
                     loading={true}
                     size={15}
                     aria-label="Loading Spinner"
                     data-testid="loader"
+                    color='#FFFFFF'
                   />}
               </div>
             </div>
