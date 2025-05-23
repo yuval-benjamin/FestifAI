@@ -30,6 +30,7 @@ const SpotifyCallback = () => {
         // Save name and email locally
         localStorage.setItem("spotify_user_name", data.name);
         localStorage.setItem("spotify_user_email", data.email);
+        window.dispatchEvent(new Event("spotify_user_name_updated"));
 
         navigate("/preferences");
       } catch (error) {

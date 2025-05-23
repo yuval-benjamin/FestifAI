@@ -17,7 +17,6 @@ export function App() {
   const [user, setUser] = useState<User>();
   const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
   const [packages, setPackages] = useState<PackageInterface[]>([]);
-
   return (
     <ThemeProvider theme={theme}>
       <FestivalProvider>

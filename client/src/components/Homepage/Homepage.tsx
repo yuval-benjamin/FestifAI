@@ -5,7 +5,8 @@ import { SpotifyIcon } from "../../assets/icons";
 
 export const Homepage: FC = () => {
   const navigate = useNavigate();
-
+  localStorage.setItem("spotify_user_name", "");
+  localStorage.setItem("spotify_user_email", "");
   return (
     <div
       className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
