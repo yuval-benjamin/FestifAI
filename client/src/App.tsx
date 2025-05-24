@@ -84,6 +84,8 @@ export interface PackageInterface {
   packageType: PackageEnum;
   checkedBags: number;
   class: string;
+  hotelRaating?: number;
+  hotelId: string
 }
 
 export interface FlightInterface {

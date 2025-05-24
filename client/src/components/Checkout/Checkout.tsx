@@ -27,16 +27,16 @@ export const Checkout: FC = () => {
             }}
             >
             <div className="bangers-regular" style={{ color: "white", fontSize: '25px' }}>{selectedPackage?.festivalId} with a {selectedPackage?.packageType} package</div>            
-              <p className="card-text"><b className="bangers-regular">departure:</b> {selectedPackage?.flights.departure[0].origin} - {selectedPackage?.flights.departure[0].destination}</p>
-              {
-                selectedPackage?.flights.departure[1] ? <p className="card-text">{selectedPackage?.flights.departure[1].origin} - {selectedPackage?.flights.departure[1].destination}</p>
-                : <></>
-              }
-              <p className="card-text"><b className="bangers-regular">return: </b>{selectedPackage?.flights.return[0].origin} - {selectedPackage?.flights.return[0].destination}</p>
-              {
-                selectedPackage?.flights.return[1] ?  <p className="card-text">{selectedPackage?.flights.return[1].origin} - {selectedPackage?.flights.return[1].destination}</p>
-                : <></>
-              }
+              <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-evenly'}}>
+              <p className="card-text"><b className="bangers-regular">departure:</b>
+              {selectedPackage?.flights.departure.map((flight, index) => (
+                <p key={index} className="card-text">{flight.origin} - {flight.destination}</p>
+              ))}</p>
+              <p className="card-text"><b className="bangers-regular">return: </b>
+              {selectedPackage?.flights.return.map((flight, index) => (
+                <p key={index} className="card-text">{flight.origin} - {flight.destination}</p>
+              ))}</p>
+              </div>
               <p className="card-text">dates: {(selectedPackage?.startDay)} til {selectedPackage?.endDay}</p>
                 { (selectedPackage?.flights.departure[0].airline == selectedPackage?.flights.return[0].airline) ? 
               <p className="card-text">airline: {selectedPackage?.flights.departure[0].airline}</p>
