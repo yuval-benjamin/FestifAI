@@ -126,12 +126,38 @@ const req = https.request(options, (response) => {
     });
 })
 req.on('error', (error) => {
-    console.log('An error in hotel night offers', error);
+    console.log('An error in hotel stay offers', error);
     res.status(500).send(error.message);
 }
 );
 req.end()
 }
 
-
-
+export const hotelRatings = async (request: Request, res: Response) => {
+const options = {
+    hostname: process.env.AMADEUS_API_BASE_URL,
+    headers: { authorization:
+        `Bearer ${request.headers.amadeus_access_token}`},
+    agent: new https.Agent({ rejectUnauthorized: false }),
+    method: 'GET',
+    path: `/v2/e-reputation/hotel-sentiments?hotelIds=${request.query.hotelIds}`,
+}
+const req = https.request(options, (response) => {
+    let data = '';
+    response.on('data', (chunk) => {
+    data = data + chunk.toString();
+    }
+    );
+    response.on('end', () => {
+        const body = JSON.parse(data);
+        console.log(data)
+        res.status(response.statusCode!).send(body);
+    });
+})
+req.on('error', (error) => {
+    console.log('An error in hotel rating search', error);
+    res.status(500).send(error.message);
+}
+);
+req.end()
+}

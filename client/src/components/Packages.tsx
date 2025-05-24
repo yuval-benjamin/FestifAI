@@ -45,7 +45,10 @@ export const Packages: FC = () => {
               <p className="card-text"><b>return airline:</b> {festivalPackage.flights.return[0].airline}</p>
               </>}
               <p className="card-text"><b>travel class:</b> {festivalPackage.class}</p>
-              <p className="card-text"><b>accommodation:</b> {festivalPackage.accommodation}</p>
+              <p className="card-text"><b>accommodation:</b> {festivalPackage.accommodation}
+                {Array.from({ length: festivalPackage?.hotelRating ?? 0 }, (_, i) => (
+                  <span key={i}>⭐</span>
+                ))}</p>
               <p className="card-text"><b>checked bags:</b> {festivalPackage.checkedBags}</p>
               <p className="card-text"><b>total:</b> ₪{festivalPackage.price}</p>
             </div>
