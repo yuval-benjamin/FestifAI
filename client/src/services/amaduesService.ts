@@ -58,11 +58,11 @@ const fetchFlights = async () => {
         airline: data.dictionaries.carriers[segment.operating?.carrierCode ?? segment.carrierCode]
       })),   
     },
-    accommodation: "-",
+    accommodation: "no avalible accommodation",
     checkedBags: flightOffer.travelerPricings[0].fareDetailsBySegment[0].includedCheckedBags.quantity,
     class: flightOffer.travelerPricings[0].fareDetailsBySegment[0].cabin,
     packageType: flightOffer.packageType,
-    hotelId: "-",
+    hotelId: "",
   }))
   shallowFlights = packages;
   return fetchHotels(selectedFestival?.locationCode)
@@ -78,6 +78,9 @@ const fetchHotels = async (cityCode: string | undefined) => {
       AMADEUS_ACCESS_TOKEN: retrieveAmadeusTokenFromStorage()
     }
   })
+  if(!data || !data.data || data.data.length === 0) {
+    return shallowFlights
+  }
   data.data.splice(20, data.data.length)
   const hotels = data.data.map((hotelOffer) => hotelOffer.hotelId)
   return fetchHotelOffers(hotels, cityCode)
@@ -96,21 +99,19 @@ const fetchHotelOffers = async (hotelIds: any[], cityCode: string | undefined) =
       AMADEUS_ACCESS_TOKEN: retrieveAmadeusTokenFromStorage()
     },
   })
-  
+  if(!data || !data.data || data.data.length === 0) {
+    return shallowFlights
+  }
   let fullPackages: PackageInterface[] = [];
 
   data.data.filter((hotelOffer) => hotelOffer.isAvalible)
   if (data.data.length >= 3) {
     data.data.sort((hotelA, hotelB) => (hotelA.offers[0].price.total) - (hotelB.offers[0].price.total))
-
-    console.log(data.data[0].offers[0].price.total, "Hotel price");
     
     data.data.map((hotelOffer) => {
       hotelOffer.offers[0].price.total = parseInt(hotelOffer.offers[0].price.total) * 
       parseInt(data.dictionaries.currencyConversionLookupRates[hotelOffer.offers[0].price.currency].rate) // Convert to ILS
     }) 
-    console.log(data.data[0].offers[0].price.total, "Hotel price in ILS");
-
 
     fullPackages = shallowFlights.map((flightPackage, index) => ({
       ...flightPackage,
@@ -118,8 +119,6 @@ const fetchHotelOffers = async (hotelIds: any[], cityCode: string | undefined) =
       hotelId: data.data[index].hotel.hotelId,
       price: (parseInt(flightPackage.price) + parseInt(data.data[index].offers[0].price.total)).toString(), // Add hotel price to flight package price
     }))
-
-    console.log(fullPackages[0].price, "Hotel and flight price in ILS");
 
   } else {
     fullPackages = shallowFlights.map((packageItem) => ({
@@ -147,10 +146,6 @@ const fetchHotelRatings = async (packagesWithoutRating: PackageInterface[]): Pro
     hotelRating: 5
     // hotelRating: data?.data ? (data?.data?.find((hotelRating) => hotelRating.hotelId === packageItem.hotelId)?.overallRating ?? 0)/20 : 0 // Convert to 1-5 stars
   }))
-
-  packagesWithoutRating.forEach((packageItem) => {
-    console.log("Packages with ratings:", packageItem.hotelRating);
-  });
 
   return packagesWithoutRating;
 }
