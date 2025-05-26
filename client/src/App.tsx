@@ -30,7 +30,9 @@ export function App() {
               user,
               setUser,
               packages,
-              setPackages
+              setPackages,
+              selectedPackage,
+              setSelectedPackage
             }}>
             <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
               style={{ height: "100vh", backgroundImage: "url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
