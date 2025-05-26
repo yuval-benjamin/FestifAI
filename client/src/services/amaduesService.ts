@@ -142,13 +142,14 @@ const fetchHotelRatings = async (packagesWithoutRating: PackageInterface[]): Pro
     }
   })
 
-  packagesWithoutRating.map((packageItem) => ({
+  packagesWithoutRating = packagesWithoutRating.map((packageItem) => ({
     ...packageItem,
-    hotelRating: (data?.data?.find((hotelRating) => hotelRating.hotelId === packageItem.hotelId)?.overallRating ?? 0)/20 // Convert to 1-5 stars
+    hotelRating: 5
+    // hotelRating: data?.data ? (data?.data?.find((hotelRating) => hotelRating.hotelId === packageItem.hotelId)?.overallRating ?? 0)/20 : 0 // Convert to 1-5 stars
   }))
 
   packagesWithoutRating.forEach((packageItem) => {
-    console.log("Packages with ratings:", packageItem.hotelRaating);
+    console.log("Packages with ratings:", packageItem.hotelRating);
   });
 
   return packagesWithoutRating;

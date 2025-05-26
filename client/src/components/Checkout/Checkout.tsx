@@ -15,7 +15,7 @@ export const Checkout: FC = () => {
             <h1 className="display-1 bangers-regular text-center" style={{ color: "white" }}>Your selected package</h1>
             <div style={{display: 'flex', flexDirection:'row', marginBottom: '100px', width: '80%'}}>
         
-            <div className=' d-flex flex-column bangers-regular text-left' style={{
+            <div className=' d-flex flex-column bangers-regular text-center' style={{
               backdropFilter: 'blur(10px)',
               backgroundColor: 'rgba(255, 255, 255, 0.2)',
               borderRadius: '10px',
@@ -30,23 +30,25 @@ export const Checkout: FC = () => {
               <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-evenly'}}>
               <p className="card-text"><b className="bangers-regular">departure:</b>
               {selectedPackage?.flights.departure.map((flight, index) => (
-                <p key={index} className="card-text">{flight.origin} - {flight.destination}</p>
+                <p key={index} className="card-text">{flight.origin} - {flight.destination} operated by {flight.airline}</p>
               ))}</p>
               <p className="card-text"><b className="bangers-regular">return: </b>
               {selectedPackage?.flights.return.map((flight, index) => (
-                <p key={index} className="card-text">{flight.origin} - {flight.destination}</p>
+                <p key={index} className="card-text">{flight.origin} - {flight.destination} operated by {flight.airline}</p>
               ))}</p>
               </div>
               <p className="card-text">dates: {(selectedPackage?.startDay)} til {selectedPackage?.endDay}</p>
-                { (selectedPackage?.flights.departure[0].airline == selectedPackage?.flights.return[0].airline) ? 
-              <p className="card-text">airline: {selectedPackage?.flights.departure[0].airline}</p>
-              :<>
-              <p className="card-text"><b>departure airline:</b> {selectedPackage?.flights.departure[0].airline}</p>
-              <p className="card-text"><b>return airline:</b> {selectedPackage?.flights.return[0].airline}</p>
-              </>}
               <p className="card-text"><b>travel class:</b> {selectedPackage?.class}</p>
-              <p className="card-text"><b>accommodation:</b> {selectedPackage?.accommodation}</p>
-              <p className="card-text"><b>checked bags:</b> {selectedPackage?.checkedBags}</p>
+              <p className="card-text"><b>accommodation:</b> {selectedPackage?.accommodation} 
+              {Array.from({ length: selectedPackage?.hotelRating ?? 0 }, (_, i) => (
+                  <span key={i}>⭐</span>
+                ))}</p>
+              <p className="card-text"><b>checked bags:</b> 
+              {
+                selectedPackage?.checkedBags === 0 ? "No checked bags" : 
+                selectedPackage?.checkedBags
+              }
+              </p>
               <p className="card-text"><b>total:</b> ₪{selectedPackage?.price}</p>
 
             </div>
