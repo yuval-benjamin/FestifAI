@@ -63,6 +63,7 @@ export interface User {
 export interface FestivalInterface {
   name: string;
   location: string;
+  genre: string;
   startDate: string;
   endDate: string;
   website: string;
