@@ -22,6 +22,7 @@ const Header = () => {
       WebkitBackdropFilter: "blur(6px)",
       border: "1px solid rgba(255, 255, 255, 0.15)",
       pointerEvents: "none",
+      fontFamily: "bangers",
     }}>
       Welcome, {name}
     </div>

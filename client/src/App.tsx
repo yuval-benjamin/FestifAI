@@ -1,7 +1,7 @@
-import './App.css'
+import './App.css';
 import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import theme from './theme'; // Adjust the path to your theme file
+import theme from './theme';
 
 import { UserProvider } from "./context/UserContext";
 import React, { createContext, useState } from 'react';
@@ -19,6 +19,7 @@ export function App() {
   const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
   const [packages, setPackages] = useState<PackageInterface[]>([]);
   const [selectedPackage, setSelectedPackage] = useState<PackageInterface>({} as PackageInterface);
+
   return (
     <ThemeProvider theme={theme}>
       <UserProvider>
@@ -29,11 +30,19 @@ export function App() {
             user,
             setUser,
             packages,
-            setPackages
+            setPackages,
+            selectedPackage,
+            setSelectedPackage
           }}>
           <FestivalProvider>
-            <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
-              style={{ height: "100vh", backgroundImage: "url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
+            <div
+              className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
+              style={{
+                height: "100vh",
+                backgroundImage: "url(/festival-bg.jpg)",
+                backgroundSize: "cover",
+                backgroundPosition: "center"
+              }}>
               <BrowserRouter>
                 <Header />
                 <Routes>
@@ -56,7 +65,7 @@ export function App() {
 export interface User {
   _id: string;
   username: string;
-  generes: string[];
+  genres: string[]; // fixed typo here
   email: string;
 }
 
@@ -85,6 +94,8 @@ export interface PackageInterface {
   packageType: PackageEnum;
   checkedBags: number;
   class: string;
+  hotelRating?: number;
+  hotelId: string;
 }
 
 export interface FlightInterface {
@@ -121,6 +132,7 @@ export interface Itinerary {
   duration: string;
   segments: Segment[];
 }
+
 export interface Segment {
   departure: Departure;
   arrival: Arrival;
@@ -129,6 +141,7 @@ export interface Segment {
   aircraft: Aircraft;
   operating: Operating;
 }
+
 export interface Departure {
   iataCode: string;
   terminal: string;
@@ -156,6 +169,7 @@ export interface Price {
   fees: Fee[];
   grandTotal: string;
 }
+
 export interface Fee {
   amount: string;
 }
@@ -180,8 +194,17 @@ export interface IncludedCheckedBags {
   quantity: number;
 }
 
-
-export const AppContext = createContext<AppContextProps>({});
+// ✅ FIXED context initialization
+export const AppContext = createContext<AppContextProps>({
+  festivals: undefined,
+  setFestivals: undefined,
+  user: undefined,
+  setUser: undefined,
+  packages: undefined,
+  setPackages: undefined,
+  selectedPackage: undefined,
+  setSelectedPackage: undefined
+});
 
 interface AppContextProps {
   festivals?: FestivalInterface[];
