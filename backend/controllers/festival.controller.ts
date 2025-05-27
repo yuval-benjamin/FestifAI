@@ -29,7 +29,7 @@ export async function getFestivalsFromAi(req: Request, res: Response) {
   }
 
   const genreList = (!user.favoriteGenres || user.favoriteGenres.length === 0)
-  ? "pop, hip-hop" // Default genres if none are set
+  ? "pop" // Default genre if none are set
   : user.favoriteGenres.join(", ");
 
   const question = `Return a JSON array of 2 *different* ${genreList} music festivals in 2025 that have not been listed in previous pages (this is page ${page}), price area:${priceArea}$,general location-${location}, genre, general date-${date} Each object must have: name, genre, location,startDate,endDate,locationCode (nearest airport), cityCode (nearest city), website. Dates in YYYY-MM-DD. Response must be max 256 characters.`;
