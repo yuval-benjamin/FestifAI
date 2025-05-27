@@ -1,7 +1,7 @@
-import './App.css'
+import './App.css';
 import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import theme from './theme'; // Adjust the path to your theme file
+import theme from './theme';
 
 import { UserProvider } from "./context/UserContext";
 import React, { createContext, useState } from 'react';
@@ -19,37 +19,44 @@ export function App() {
   const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
   const [packages, setPackages] = useState<PackageInterface[]>([]);
   const [selectedPackage, setSelectedPackage] = useState<PackageInterface>({} as PackageInterface);
+
   return (
     <ThemeProvider theme={theme}>
       <UserProvider>
-        <FestivalProvider>
-          <AppContext.Provider
-            value={{
-              setFestivals,
-              festivals,
-              user,
-              setUser,
-              packages,
-              setPackages,
-              selectedPackage,
-              setSelectedPackage
-            }}>
-            <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
-              style={{ height: "100vh", backgroundImage: "url(/festival-bg.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}>
+        <AppContext.Provider
+          value={{
+            setFestivals,
+            festivals,
+            user,
+            setUser,
+            packages,
+            setPackages,
+            selectedPackage,
+            setSelectedPackage
+          }}>
+          <FestivalProvider>
+            <div
+              className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
+              style={{
+                height: "100vh",
+                backgroundImage: "url(/festival-bg.jpg)",
+                backgroundSize: "cover",
+                backgroundPosition: "center"
+              }}>
               <BrowserRouter>
                 <Header />
                 <Routes>
                   <Route path="/" element={<Homepage />} />
                   <Route path="/festivals" element={<Festivals />} />
-                  <Route path="/festivals/package" element={< Packages />} />
+                  <Route path="/festivals/package" element={<Packages />} />
                   <Route path="/spotify/callback" element={<SpotifyCallback />} />
                   <Route path="/preferences" element={<Preferences />} />
-                  <Route path="/checkout" element={< Checkout />} />
+                  <Route path="/checkout" element={<Checkout />} />
                 </Routes>
               </BrowserRouter>
             </div>
-          </AppContext.Provider>
-        </FestivalProvider>
+          </FestivalProvider>
+        </AppContext.Provider>
       </UserProvider>
     </ThemeProvider>
   );
@@ -58,13 +65,14 @@ export function App() {
 export interface User {
   _id: string;
   username: string;
-  generes: string[];
+  genres: string[]; // fixed typo here
   email: string;
 }
 
 export interface FestivalInterface {
   name: string;
   location: string;
+  genre: string;
   startDate: string;
   endDate: string;
   website: string;
@@ -87,7 +95,7 @@ export interface PackageInterface {
   checkedBags: number;
   class: string;
   hotelRating?: number;
-  hotelId: string
+  hotelId: string;
 }
 
 export interface FlightInterface {
@@ -124,6 +132,7 @@ export interface Itinerary {
   duration: string;
   segments: Segment[];
 }
+
 export interface Segment {
   departure: Departure;
   arrival: Arrival;
@@ -132,6 +141,7 @@ export interface Segment {
   aircraft: Aircraft;
   operating: Operating;
 }
+
 export interface Departure {
   iataCode: string;
   terminal: string;
@@ -159,6 +169,7 @@ export interface Price {
   fees: Fee[];
   grandTotal: string;
 }
+
 export interface Fee {
   amount: string;
 }
@@ -183,8 +194,17 @@ export interface IncludedCheckedBags {
   quantity: number;
 }
 
-
-export const AppContext = createContext<AppContextProps>({});
+// ✅ FIXED context initialization
+export const AppContext = createContext<AppContextProps>({
+  festivals: undefined,
+  setFestivals: undefined,
+  user: undefined,
+  setUser: undefined,
+  packages: undefined,
+  setPackages: undefined,
+  selectedPackage: undefined,
+  setSelectedPackage: undefined
+});
 
 interface AppContextProps {
   festivals?: FestivalInterface[];

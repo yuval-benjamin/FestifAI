@@ -6,6 +6,7 @@ export interface IFestival extends Document {
   startDate: string;
   endDate: string;
   locationCode: string;
+  genre: string;
   website: string;
 }
 
@@ -15,6 +16,7 @@ const FestivalSchema: Schema = new Schema({
   startDate: { type: String, required: true },
   endDate: { type: String, required: true },
   locationCode: { type: String, required: true },
+  genre: { type: String, required: true },
   website: { type: String, required: true }
 });
 

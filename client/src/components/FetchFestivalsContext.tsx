@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import axios from "axios";
 import { FestivalInterface } from "../App";
+import { useUser } from "../context/UserContext";
 
 type FestivalContextType = {
     festivals: FestivalInterface[];
@@ -26,6 +27,7 @@ type FestivalContextType = {
 export const FestivalContext = createContext<FestivalContextType | undefined>(undefined);
 
 export const FestivalProvider = ({ children }: { children: ReactNode }) => {
+    const { email } = useUser();
     const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
     const [page, setPage] = useState(0);
     const [priceArea, setPriceArea] = useState(0);
@@ -45,7 +47,7 @@ export const FestivalProvider = ({ children }: { children: ReactNode }) => {
             const response = await axios.get<{ festivals: FestivalInterface[] }>(
                 `http://localhost:3000/festivals`,
                 {
-                    params: { priceArea, date, location: country, page },
+                    params: { priceArea, date, location: country, page, email },
                 }
             );
             setFestivals((prev) => [...prev, ...response.data.festivals]);
