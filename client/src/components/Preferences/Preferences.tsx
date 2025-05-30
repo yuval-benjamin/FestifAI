@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HorizontalLinearStepper from '../Stepper/Stepper';
 import { ClipLoader } from 'react-spinners';
@@ -7,6 +7,21 @@ import { useFestivals } from '../FetchFestivalsContext';
 export const Preferences: React.FC = () => {
   const { fetchFestivals, error, setCountry, setPriceArea, priceArea, date, setDate, country, isLoading } = useFestivals()
   const navigate = useNavigate();
+  const [loadingText, setLoadingText] = useState('🎉 Searching relavent festivals for you...');
+
+  const loadingMessages = [
+    '🎉 Searching relavent festivals for you...',
+    '🎶 Evaluting your musical taste...',
+  ];
+
+   useEffect(() => {
+      let index = 0;
+      const interval = setInterval(() => {
+        index = (index + 1) % loadingMessages.length; 
+        setLoadingText(loadingMessages[index]);
+      }, 4000); 
+      return () => clearInterval(interval); // Cleanup interval on component unmount
+    }, []);
 
   return (
     <div className=' d-flex flex-column justify-content-center align-items-center'
@@ -20,7 +35,7 @@ export const Preferences: React.FC = () => {
       {(
         isLoading ?
           <Fragment>
-            <h1 className="display-1 bangers-regular" style={{ color: "white" }}>searching relavent festivals for you...</h1>
+            <h1 className="display-1 bangers-regular" style={{ color: "white", fontSize:'70px' }}>{loadingText}</h1>
             <div className="sweet-loading d-flex flex-row justify-content-center align-items-center">
               <ClipLoader
                 loading={true}

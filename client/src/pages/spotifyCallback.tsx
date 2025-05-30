@@ -37,7 +37,7 @@ const SpotifyCallback = () => {
 
   return (
     <>
-      <h1 className="display-1 bangers-regular" style={{ color: "white" }}>logging in with Spotify...</h1>
+      <h1 className="display-1 bangers-regular" style={{ color: "white" }}>🎶 logging in with Spotify...</h1>
       <div className="sweet-loading d-flex flex-row justify-content-center align-items-center">
         <ClipLoader loading={true} size={150} color="#FFFFFF" />
       </div>

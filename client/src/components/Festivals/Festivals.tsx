@@ -1,4 +1,4 @@
-import { FC, Fragment, useContext, useState } from 'react';
+import { FC, Fragment, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppContext, FestivalInterface } from '../../App';
 import { ClipLoader } from 'react-spinners';
@@ -10,8 +10,25 @@ export const Festivals: FC = () => {
   const { setPackages } = useContext(AppContext);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-
+  const [loadingText, setLoadingText] = useState('🎉 Customizing your festival packages...');
   const { fetchFestivals, currentFestivals, isLoading: isFestivalsLoading } = useFestivals();
+
+  const loadingMessages = [
+    '🎉 Customizing your festival packages...',
+    '✈️ Finding the best flight deals for you...',
+    '🏨 Looking for the nicest accommodations...',
+    '🎶 Preparing your festival experience...',
+  ];
+
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      index = (index + 1) % loadingMessages.length; 
+      setLoadingText(loadingMessages[index]);
+    }, 4000); 
+
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []);
 
   const fetchPackages = async (festival: FestivalInterface) => {
     setIsLoading(true)
@@ -32,7 +49,7 @@ export const Festivals: FC = () => {
       }}>
       {(isLoading ?
         <Fragment>
-          <h1 className="display-1 bangers-regular" style={{ color: "white" }}>customizing your festival packages...</h1>
+          <h1 className="display-1 bangers-regular" style={{ color: "white", fontSize:'70px' }}>{loadingText}</h1>
           <div className="sweet-loading d-flex flex-row justify-content-center align-items-center">
             <ClipLoader
               loading={true}
