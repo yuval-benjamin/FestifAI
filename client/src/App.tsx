@@ -96,6 +96,7 @@ export interface PackageInterface {
   class: string;
   hotelRating?: number;
   hotelId: string;
+  festivalLink: string;
 }
 
 export interface FlightInterface {

@@ -50,8 +50,8 @@ export const Checkout: FC = () => {
               }
               </p>
               <p className="card-text"><b>total:</b> ₪{selectedPackage?.price}</p>
-
-            </div>
+              <a onClick={(event) => event.stopPropagation()} href={selectedPackage?.festivalLink.startsWith("http") ? selectedPackage.festivalLink : `https://${selectedPackage?.festivalLink}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular" style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white', width: '300px', display: 'flex',justifyContent: 'center', alignSelf: 'center' }} > Buy {selectedPackage?.festivalId} ticket here </a>
+              </div>
             </div>
               <HorizontalLinearStepper activeStep={4} />
             </div>

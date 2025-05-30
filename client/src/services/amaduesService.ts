@@ -63,6 +63,7 @@ const fetchFlights = async () => {
     class: flightOffer.travelerPricings[0].fareDetailsBySegment[0].cabin,
     packageType: flightOffer.packageType,
     hotelId: "",
+    festivalLink: selectedFestival.website ?? ""
   }))
   shallowFlights = packages;
   return fetchHotels(selectedFestival?.locationCode)
