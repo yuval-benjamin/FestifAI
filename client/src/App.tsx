@@ -13,6 +13,7 @@ import Homepage from './components/Homepage/Homepage';
 import { Checkout } from './components/Checkout/Checkout';
 import { FestivalProvider } from './components/FetchFestivalsContext';
 import Header from "./components/Header";
+import { Artists } from './components/Artists/Artists';
 
 export function App() {
   const [user, setUser] = useState<User>();
@@ -52,6 +53,7 @@ export function App() {
                   <Route path="/spotify/callback" element={<SpotifyCallback />} />
                   <Route path="/preferences" element={<Preferences />} />
                   <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/artists" element={<Artists  />} />
                 </Routes>
               </BrowserRouter>
             </div>
