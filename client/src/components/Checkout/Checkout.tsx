@@ -1,60 +1,96 @@
-import { FC, Fragment, useContext } from "react";
+import { FC, Fragment, useContext, useState } from "react";
 import { AppContext } from "../../App";
 import HorizontalLinearStepper from "../Stepper/Stepper";
+import { useFestivals } from "../FetchFestivalsContext";
+import { CategoryItem, fetchCategories } from "../../services/categoryService";
 
 export const Checkout: FC = () => {
-    const { selectedPackage } = useContext(AppContext)
+  const { selectedPackage } = useContext(AppContext)
+  const { chosenFestivalCategory } = useFestivals();
+  const [categoryItems, setCategoryItems] = useState<CategoryItem[]>([]);
 
-    return (
-            <Fragment>
-               <div className=' d-flex flex-column justify-content-center align-items-center' 
-            style={{
-              width: "100%",
-              height: "100%", backgroundImage: "url(/sziget.png)", backgroundSize: "cover", backgroundPosition: "center" 
-            }}>
-            <h1 className="display-1 bangers-regular text-center" style={{ color: "white" }}>Your selected package</h1>
-            <div style={{display: 'flex', flexDirection:'row', marginBottom: '100px', width: '80%'}}>
-        
-            <div className=' d-flex flex-column bangers-regular text-center' style={{
-              backdropFilter: 'blur(10px)',
-              backgroundColor: 'rgba(255, 255, 255, 0.2)',
-              borderRadius: '10px',
-              padding: '20px',
-              margin: '20px',
-              color: 'white',
-              width: "100%",
-              fontSize: '22px',
-            }}
-            >
-            <div className="bangers-regular" style={{ color: "white", fontSize: '25px' }}>{selectedPackage?.festivalId} with a {selectedPackage?.packageType} package</div>            
-              <div style={{display:'flex', flexDirection: 'row', justifyContent:'space-evenly'}}>
+  async function onFetchCategoriesClick() {
+    const item = await fetchCategories(chosenFestivalCategory!);
+    setCategoryItems(item.items);
+  };
+
+  return (
+    <Fragment>
+      <div className=' d-flex flex-column justify-content-center align-items-center'
+        style={{
+          width: "100%",
+          height: "100%", backgroundImage: "url(/sziget.png)", backgroundSize: "cover", backgroundPosition: "center"
+        }}>
+        <h1 className="display-1 bangers-regular text-center" style={{ color: "white" }}>Your selected package</h1>
+        <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '100px', width: '80%' }}>
+          <div className=' d-flex flex-column bangers-regular text-center' style={{
+            backdropFilter: 'blur(10px)',
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            borderRadius: '10px',
+            padding: '20px',
+            margin: '20px',
+            color: 'white',
+            width: "100%",
+            fontSize: '22px',
+          }}
+          >
+            <div className="bangers-regular" style={{ color: "white", fontSize: '25px' }}>{selectedPackage?.festivalId} with a {selectedPackage?.packageType} package</div>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
               <p className="card-text"><b className="bangers-regular">departure:</b>
-              {selectedPackage?.flights.departure.map((flight, index) => (
-                <p key={index} className="card-text">{flight.origin} - {flight.destination} operated by {flight.airline}</p>
-              ))}</p>
-              <p className="card-text"><b className="bangers-regular">return: </b>
-              {selectedPackage?.flights.return.map((flight, index) => (
-                <p key={index} className="card-text">{flight.origin} - {flight.destination} operated by {flight.airline}</p>
-              ))}</p>
-              </div>
-              <p className="card-text">dates: {(selectedPackage?.startDay)} til {selectedPackage?.endDay}</p>
-              <p className="card-text"><b>travel class:</b> {selectedPackage?.class}</p>
-              <p className="card-text"><b>accommodation:</b> {selectedPackage?.accommodation} 
-              {Array.from({ length: selectedPackage?.hotelRating ?? 0 }, (_, i) => (
-                  <span key={i}>⭐</span>
+                {selectedPackage?.flights.departure.map((flight, index) => (
+                  <p key={index} className="card-text">{flight.origin} - {flight.destination} operated by {flight.airline}</p>
                 ))}</p>
-              <p className="card-text"><b>checked bags:</b> 
+              <p className="card-text"><b className="bangers-regular">return: </b>
+                {selectedPackage?.flights.return.map((flight, index) => (
+                  <p key={index} className="card-text">{flight.origin} - {flight.destination} operated by {flight.airline}</p>
+                ))}</p>
+            </div>
+            <p className="card-text">dates: {(selectedPackage?.startDay)} til {selectedPackage?.endDay}</p>
+            <p className="card-text"><b>travel class:</b> {selectedPackage?.class}</p>
+            <p className="card-text"><b>accommodation:</b> {selectedPackage?.accommodation}
+              {Array.from({ length: selectedPackage?.hotelRating ?? 0 }, (_, i) => (
+                <span key={i}>⭐</span>
+              ))}</p>
+            <p className="card-text"><b>checked bags:</b>
               {
-                selectedPackage?.checkedBags === 0 ? "No checked bags" : 
-                selectedPackage?.checkedBags
+                selectedPackage?.checkedBags === 0 ? "No checked bags" :
+                  selectedPackage?.checkedBags
               }
-              </p>
-              <p className="card-text"><b>total:</b> ₪{selectedPackage?.price}</p>
-              <a onClick={(event) => event.stopPropagation()} href={selectedPackage?.festivalLink.startsWith("http") ? selectedPackage.festivalLink : `https://${selectedPackage?.festivalLink}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular" style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white', width: '300px', display: 'flex',justifyContent: 'center', alignSelf: 'center' }} > Buy {selectedPackage?.festivalId} ticket here </a>
-              </div>
+            </p>
+            <p className="card-text"><b>total:</b> ₪{selectedPackage?.price}</p>
+            <div className="d-flex">
+              <p className="card-text btn bangers-regular" onClick={() => onFetchCategoriesClick()} >Check out items for festival</p>
+              <a onClick={(event) => event.stopPropagation()} href={selectedPackage?.festivalLink.startsWith("http") ? selectedPackage.festivalLink : `https://${selectedPackage?.festivalLink}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular" style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white', width: '300px', display: 'flex', justifyContent: 'center', alignSelf: 'center' }} > Buy {selectedPackage?.festivalId} ticket here </a>
             </div>
-              <HorizontalLinearStepper activeStep={4} />
-            </div>
-            </Fragment>
-    )
+          </div>
+        </div>
+        {categoryItems.length > 0 && (
+          <div className="bangers-regular" style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: '10px',
+            padding: '20px',
+            marginBottom: '40px',
+            color: 'white',
+            width: '80%',
+          }}>
+            <h2 className="text-center mb-4" style={{ fontSize: '30px' }}>Recommended Items for {chosenFestivalCategory}</h2>
+            <ul style={{ listStyleType: 'none', paddingLeft: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
+              {categoryItems.map((item, index) => (
+                <li key={index} style={{
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                  padding: '10px 15px',
+                  borderRadius: '8px',
+                  textAlign: 'center'
+                }}>
+                  <p style={{ marginBottom: '0' }}>{item.name}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <HorizontalLinearStepper activeStep={4} />
+      </div>
+    </Fragment>
+  )
 }

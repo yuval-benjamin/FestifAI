@@ -11,7 +11,7 @@ export const Festivals: FC = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingText, setLoadingText] = useState('🎉 Customizing your festival packages...');
-  const { fetchFestivals, currentFestivals, isLoading: isFestivalsLoading } = useFestivals();
+  const { fetchFestivals, currentFestivals, isLoading: isFestivalsLoading, setChosenFestivalCategory } = useFestivals();
 
   const loadingMessages = [
     '🎉 Customizing your festival packages...',
@@ -23,14 +23,15 @@ export const Festivals: FC = () => {
   useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {
-      index = (index + 1) % loadingMessages.length; 
+      index = (index + 1) % loadingMessages.length;
       setLoadingText(loadingMessages[index]);
-    }, 4000); 
+    }, 4000);
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    return () => clearInterval(interval);
   }, []);
 
   const fetchPackages = async (festival: FestivalInterface) => {
+    setChosenFestivalCategory(festival.category);
     setIsLoading(true)
     const packages = await fetchAmadeusToken(festival)
     setIsLoading(false)
@@ -49,7 +50,7 @@ export const Festivals: FC = () => {
       }}>
       {(isLoading ?
         <Fragment>
-          <h1 className="display-1 bangers-regular" style={{ color: "white", fontSize:'70px' }}>{loadingText}</h1>
+          <h1 className="display-1 bangers-regular" style={{ color: "white", fontSize: '70px' }}>{loadingText}</h1>
           <div className="sweet-loading d-flex flex-row justify-content-center align-items-center">
             <ClipLoader
               loading={true}
@@ -79,10 +80,11 @@ export const Festivals: FC = () => {
                   }}
                   onClick={() => fetchPackages(festival)}>
                   <div className="card-body bangers-regular">
-                    <h5 className="card-title" style={{fontSize:'25px'}}>{festival.name}</h5>
-                    <p className="card-text" style={{fontSize:'18px'}}><b className='bangers-regular'>dates:</b> {festival.startDate}, {festival.endDate}</p>
-                    <p className="card-text" style={{fontSize:'18px'}}><b className='bangers-regular'>location:</b> {festival.location}</p>
-                    <p className="card-text" style={{fontSize:'18px'}}>Because you like {festival.genre}</p>
+                    <h5 className="card-title" style={{ fontSize: '25px' }}>{festival.name}</h5>
+                    <p className="card-text" style={{ fontSize: '18px' }}><b className='bangers-regular'>dates:</b> {festival.startDate}, {festival.endDate}</p>
+                    <p className="card-text" style={{ fontSize: '18px' }}><b className='bangers-regular'>location:</b> {festival.location}</p>
+                    <p className="card-text" style={{ fontSize: '18px' }}><b className='bangers-regular'>category:</b> {festival.category}</p>
+                    <p className="card-text" style={{ fontSize: '18px' }}>Because you like {festival.genre}</p>
                     <a onClick={(event) => event.stopPropagation()} href={festival.website.startsWith("http") ? festival.website : `https://${festival.website}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular" style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white' }} > Checkout {festival.name}'s Website </a>
 
                   </div>
