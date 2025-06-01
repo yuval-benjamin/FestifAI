@@ -4,7 +4,7 @@ import { Category } from "../models/Category";
 export async function retreiveCategoryItems(req: Request, res: Response) {
     try {
         const category = req.params.category;
-        const categoryItem = await Category.findOne({ name: category });
+        const categoryItem = await Category.findOne({ name: category.toLocaleLowerCase() });
 
         res.status(200).send({ items:  categoryItem?.items || [] });
     } catch (error) {

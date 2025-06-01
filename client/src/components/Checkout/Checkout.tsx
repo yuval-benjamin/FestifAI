@@ -8,14 +8,75 @@ export const Checkout: FC = () => {
   const { selectedPackage } = useContext(AppContext)
   const { chosenFestivalCategory } = useFestivals();
   const [categoryItems, setCategoryItems] = useState<CategoryItem[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  async function onFetchCategoriesClick() {
+
+  const handleOpenModal = async () => {
     const item = await fetchCategories(chosenFestivalCategory!);
     setCategoryItems(item.items);
+    setIsModalOpen(true);
   };
 
   return (
     <Fragment>
+      {isModalOpen && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)', display: 'flex',
+          justifyContent: 'center', alignItems: 'center', zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(12px)',
+            borderRadius: '15px', padding: '30px', width: '80%', maxHeight: '80vh',
+            overflowY: 'auto', color: 'white'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+              <h2 style={{ fontSize: '28px' }}>Recommended Items for {chosenFestivalCategory}</h2>
+              <button onClick={() => setIsModalOpen(false)} style={{
+                backgroundColor: '#FF3366', border: 'none', color: 'white',
+                padding: '8px 16px', borderRadius: '8px', cursor: 'pointer'
+              }}>Close</button>
+            </div>
+            <ul style={{
+              listStyleType: 'none', paddingLeft: 0,
+              display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '20px'
+            }}>
+              {categoryItems.map((item, index) => (
+                <li key={index} style={{
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)', padding: '10px 15px',
+                  borderRadius: '8px', textAlign: 'center'
+                }}>
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'block',
+                      padding: '10px',
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      color: 'white',
+                      textDecoration: 'none',
+                      borderRadius: '6px',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                      e.currentTarget.style.transform = 'scale(1.03)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                      e.currentTarget.style.transform = 'scale(1)';
+                    }}
+                  >
+                    {item.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
       <div className=' d-flex flex-column justify-content-center align-items-center'
         style={{
           width: "100%",
@@ -58,37 +119,21 @@ export const Checkout: FC = () => {
               }
             </p>
             <p className="card-text"><b>total:</b> ₪{selectedPackage?.price}</p>
-            <div className="d-flex">
-              <p className="card-text btn bangers-regular" onClick={() => onFetchCategoriesClick()} >Check out items for festival</p>
-              <a onClick={(event) => event.stopPropagation()} href={selectedPackage?.festivalLink.startsWith("http") ? selectedPackage.festivalLink : `https://${selectedPackage?.festivalLink}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular" style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white', width: '300px', display: 'flex', justifyContent: 'center', alignSelf: 'center' }} > Buy {selectedPackage?.festivalId} ticket here </a>
-            </div>
+            <button
+              onClick={handleOpenModal}
+              className="card-text btn bangers-regular"
+              style={{
+                outline: 'none',
+                border: 'none',
+                fontSize: '22px',
+                cursor: 'pointer'
+              }}
+            >
+              Check out items for festival
+            </button>
+            <a onClick={(event) => event.stopPropagation()} href={selectedPackage?.festivalLink.startsWith("http") ? selectedPackage.festivalLink : `https://${selectedPackage?.festivalLink}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular" style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white', width: '300px', display: 'flex', justifyContent: 'center', alignSelf: 'center' }} > Buy {selectedPackage?.festivalId} ticket here </a>
           </div>
         </div>
-        {categoryItems.length > 0 && (
-          <div className="bangers-regular" style={{
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            backdropFilter: 'blur(10px)',
-            borderRadius: '10px',
-            padding: '20px',
-            marginBottom: '40px',
-            color: 'white',
-            width: '80%',
-          }}>
-            <h2 className="text-center mb-4" style={{ fontSize: '30px' }}>Recommended Items for {chosenFestivalCategory}</h2>
-            <ul style={{ listStyleType: 'none', paddingLeft: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
-              {categoryItems.map((item, index) => (
-                <li key={index} style={{
-                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
-                  padding: '10px 15px',
-                  borderRadius: '8px',
-                  textAlign: 'center'
-                }}>
-                  <p style={{ marginBottom: '0' }}>{item.name}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
         <HorizontalLinearStepper activeStep={4} />
       </div>
     </Fragment>
