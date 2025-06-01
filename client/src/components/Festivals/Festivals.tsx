@@ -85,7 +85,7 @@ export const Festivals: FC = () => {
                     <p className="card-text" style={{ fontSize: '18px' }}><b className='bangers-regular'>location:</b> {festival.location}</p>
                     <p className="card-text" style={{ fontSize: '18px' }}><b className='bangers-regular'>category:</b> {festival.category}</p>
                     <p className="card-text" style={{ fontSize: '18px' }}>Because you like {festival.genre}</p>
-                    <a onClick={(event) => event.stopPropagation()} href={festival.website.startsWith("http") ? festival.website : `https://${festival.website}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular" style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white' }} > Checkout {festival.name}'s Website </a>
+                    <a onClick={(event) => event.stopPropagation()} href={festival.website.startsWith("http") ? festival.website : `https://${festival.website}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular" style={{ backgroundColor: '#FF3366', color: 'white' }} > Checkout {festival.name}'s Website </a>
 
                   </div>
                 </div>

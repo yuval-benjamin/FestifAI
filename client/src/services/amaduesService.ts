@@ -104,13 +104,12 @@ const fetchHotelOffers = async (hotelIds: any[], cityCode: string | undefined) =
     })
 
 
-    if (_.isEmpty(data?.data?.length)) {
+    if (_.isEmpty(data?.data)) {
       return shallowFlights
     }
     let fullPackages: PackageInterface[] = [];
 
     data.data.filter((hotelOffer) => hotelOffer.isAvalible)
-    if (data?.data?.length >= 3) {
       data.data.sort((hotelA, hotelB) => (hotelA.offers[0].price.total) - (hotelB.offers[0].price.total))
 
       data.data.map((hotelOffer) => {
@@ -120,19 +119,11 @@ const fetchHotelOffers = async (hotelIds: any[], cityCode: string | undefined) =
 
       fullPackages = shallowFlights.map((flightPackage, index) => ({
         ...flightPackage,
-        accommodation: data.data[index].hotel.name,
-        hotelId: data.data[index].hotel.hotelId,
-        price: (parseInt(flightPackage.price) + parseInt(data.data[index].offers[0].price.total)).toString(), // Add hotel price to flight package price
+        accommodation: data.data[index%data.data.length].hotel.name,
+        hotelId: data.data[index%data.data.length].hotel.hotelId,
+        price: (parseInt(flightPackage.price) + parseInt(data.data[index%data.data.length].offers[0].price.total)).toString(), // Add hotel price to flight package price
       }))
 
-    } else {
-      fullPackages = shallowFlights.map((packageItem) => ({
-        ...packageItem,
-        accommodation: data.data[0].hotel.name,
-        price: (parseInt(packageItem.price) + parseInt(data.data[0].offers[0].price.total)).toString(),
-        hotelId: data.data[0].hotel.hotelId,
-      }))
-    }
     return fetchHotelRatings(fullPackages)
   } catch (error) {
     return shallowFlights
