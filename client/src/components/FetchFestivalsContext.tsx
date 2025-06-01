@@ -6,11 +6,13 @@ import React, {
     ReactNode,
 } from "react";
 import axios from "axios";
-import { FestivalInterface } from "../App";
+import { FestivalCategory, FestivalInterface } from "../App";
 import { useUser } from "../context/UserContext";
 
 type FestivalContextType = {
     festivals: FestivalInterface[];
+    chosenFestivalCategory?: FestivalCategory;
+    setChosenFestivalCategory: (category: FestivalCategory) => void;
     currentFestivals: FestivalInterface[];
     date: string;
     page: number;
@@ -27,6 +29,7 @@ type FestivalContextType = {
 export const FestivalContext = createContext<FestivalContextType | undefined>(undefined);
 
 export const FestivalProvider = ({ children }: { children: ReactNode }) => {
+    const [chosenFestivalCategory, setChosenFestivalCategory] = useState<string>();
     const { email } = useUser();
     const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
     const [page, setPage] = useState(0);
@@ -63,6 +66,8 @@ export const FestivalProvider = ({ children }: { children: ReactNode }) => {
         <FestivalContext.Provider
             value={{
                 setDate,
+                chosenFestivalCategory,
+                setChosenFestivalCategory,
                 date,
                 festivals,
                 currentFestivals,
@@ -71,7 +76,7 @@ export const FestivalProvider = ({ children }: { children: ReactNode }) => {
                 country,
                 isLoading,
                 error,
-                setPriceArea: setPriceArea,
+                setPriceArea,
                 setCountry,
                 fetchFestivals,
             }} >

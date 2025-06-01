@@ -29,11 +29,11 @@ export async function getFestivalsFromAi(req: Request, res: Response) {
   }
 
   const genreList = (!user.favoriteGenres || user.favoriteGenres.length === 0)
-  ? "pop" // Default genre if none are set
-  : user.favoriteGenres.join(", ");
+    ? "pop" // Default genre if none are set
+    : user.favoriteGenres.join(", ");
 
-  const question = `Return a JSON array of 2 *different* ${genreList} music festivals in 2025 that have not been listed in previous pages (this is page ${page}), price area:${priceArea}$,general location-${location}, genre, general date-${date} Each object must have: name, genre, location,startDate,endDate,locationCode (nearest airport), cityCode (nearest city), website. Dates in YYYY-MM-DD. Response must be max 256 characters.`;
-  
+  const question = `Return a JSON array of 2 *different* ${genreList} music festivals in 2025 that have not been listed in previous pages (this is page ${page}), price area:${priceArea}$,general location-${location}, genre, general date-${date} Each object must have: name, genre, location,startDate,endDate,locationCode (nearest airport), cityCode (nearest city),category - Only One of three types urban, nature or desert, website. Dates in YYYY-MM-DD. Response must be max 256 characters.`;
+
   try {
     const completion = await api.chat.completions.create({
       model: "gpt-3.5-turbo",
@@ -76,6 +76,7 @@ export async function getFestivalsFromAi(req: Request, res: Response) {
       }
 
       const newFestival = await Festival.create({
+        category: fest.category,
         name: fest.name,
         location: fest.location,
         startDate: fest.startDate,

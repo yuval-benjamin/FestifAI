@@ -14,14 +14,14 @@ export const Preferences: React.FC = () => {
     '🎶 Evaluting your musical taste...',
   ];
 
-   useEffect(() => {
-      let index = 0;
-      const interval = setInterval(() => {
-        index = (index + 1) % loadingMessages.length; 
-        setLoadingText(loadingMessages[index]);
-      }, 4000); 
-      return () => clearInterval(interval); // Cleanup interval on component unmount
-    }, []);
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      index = (index + 1) % loadingMessages.length;
+      setLoadingText(loadingMessages[index]);
+    }, 4000);
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []);
 
   return (
     <div className=' d-flex flex-column justify-content-center align-items-center'
@@ -35,7 +35,7 @@ export const Preferences: React.FC = () => {
       {(
         isLoading ?
           <Fragment>
-            <h1 className="display-1 bangers-regular" style={{ color: "white", fontSize:'70px' }}>{loadingText}</h1>
+            <h1 className="display-1 bangers-regular" style={{ color: "white", fontSize: '70px' }}>{loadingText}</h1>
             <div className="sweet-loading d-flex flex-row justify-content-center align-items-center">
               <ClipLoader
                 loading={true}
@@ -76,17 +76,18 @@ export const Preferences: React.FC = () => {
                 />
               </div>
               <div className="form-group mt-6 bangers-regular">
-                <label htmlFor="date">Date Area</label>
+                <label htmlFor="month">Month Area</label>
                 <input
-                  type="date"
+                  type="month"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   className="form-control rounded-lg focus:ring-blue-600 focus:border-blue-600"
-                  id="date"
-                  placeholder="Select a date area"
+                  id="month"
+                  min={new Date().toISOString().slice(0, 7)}
+                  max={new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().slice(0, 7)}
+                  placeholder="Select a month"
                 />
               </div>
-
               <button
                 className="btn mt-6 bangers-regular"
                 style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white' }}

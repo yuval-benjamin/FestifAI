@@ -15,8 +15,6 @@ import { FestivalProvider } from './components/FetchFestivalsContext';
 import Header from "./components/Header";
 
 export function App() {
-  const [user, setUser] = useState<User>();
-  const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
   const [packages, setPackages] = useState<PackageInterface[]>([]);
   const [selectedPackage, setSelectedPackage] = useState<PackageInterface>({} as PackageInterface);
 
@@ -25,10 +23,6 @@ export function App() {
       <UserProvider>
         <AppContext.Provider
           value={{
-            setFestivals,
-            festivals,
-            user,
-            setUser,
             packages,
             setPackages,
             selectedPackage,
@@ -65,11 +59,12 @@ export function App() {
 export interface User {
   _id: string;
   username: string;
-  genres: string[]; // fixed typo here
+  genres: string[];
   email: string;
 }
 
 export interface FestivalInterface {
+  category: FestivalCategory
   name: string;
   location: string;
   genre: string;
@@ -78,6 +73,12 @@ export interface FestivalInterface {
   website: string;
   locationCode: string;
   cityCode: string;
+}
+
+export enum FestivalCategory {
+  URBAN = "urban",
+  NATURE = "nature",
+  DESERT = "desert"
 }
 
 export interface PackageInterface {
@@ -195,12 +196,7 @@ export interface IncludedCheckedBags {
   quantity: number;
 }
 
-// ✅ FIXED context initialization
 export const AppContext = createContext<AppContextProps>({
-  festivals: undefined,
-  setFestivals: undefined,
-  user: undefined,
-  setUser: undefined,
   packages: undefined,
   setPackages: undefined,
   selectedPackage: undefined,
@@ -208,10 +204,6 @@ export const AppContext = createContext<AppContextProps>({
 });
 
 interface AppContextProps {
-  festivals?: FestivalInterface[];
-  setFestivals?: (festivals: FestivalInterface[]) => void;
-  user?: User;
-  setUser?: (user: User) => void;
   packages?: PackageInterface[];
   setPackages?: (packages: PackageInterface[]) => void;
   selectedPackage?: PackageInterface;

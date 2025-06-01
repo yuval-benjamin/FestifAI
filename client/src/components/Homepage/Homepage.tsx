@@ -7,15 +7,7 @@ export const Homepage: FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div
-      className="container-inline d-flex flex-column justify-content-center align-items-center text-white"
-      style={{
-        height: "100vh",
-        backgroundImage: "url(/festival-bg.jpg)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
+    <div className="container-inline d-flex flex-column justify-content-center align-items-center text-white">
       <p className="fs-1 bangers-regular">WELCOME TO</p>
       <h1 className="display-1 bangers-regular">FestifAI</h1>
       <p className="fs-1 bangers-regular">YOUR FESTIVAL PLANNER</p>

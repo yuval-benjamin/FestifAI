@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { PackageInterface, FestivalInterface, AmadeusFlightOffer, PackageEnum } from "../App";
 import axios from "axios";
 
@@ -29,9 +30,9 @@ const fetchFlights = async () => {
   })
 
   data.data.sort((flightOfferA, flightOfferB) => parseInt(flightOfferA.price.total) - parseInt(flightOfferB.price.total))
-  data.data[0].packageType = PackageEnum.LITE,
-    data.data[1].packageType = PackageEnum.STANDARD,
-    data.data[2].packageType = PackageEnum.PREMIUM
+  data.data[0].packageType = PackageEnum.LITE;
+  data.data[1].packageType = PackageEnum.STANDARD;
+  data.data[2].packageType = PackageEnum.PREMIUM;
 
 
   const packages = data.data.map((flightOffer: AmadeusFlightOffer) => ({
@@ -41,22 +42,22 @@ const fetchFlights = async () => {
     _id: flightOffer.id,
     festivalId: selectedFestival?.name ?? "Unknown Festival",
     flights: {
-      departure: 
-      flightOffer.itineraries[0].segments.map((segment: any) => ({
-        origin: segment.departure.iataCode,
-        destination: segment.arrival.iataCode,
-        departureDate: segment.departure.at,
-        arrivalDate: segment.arrival.at,
-        airline: data.dictionaries.carriers[segment.operating?.carrierCode ?? segment.carrierCode]
-      
-      })),
+      departure:
+        flightOffer.itineraries[0].segments.map((segment: any) => ({
+          origin: segment.departure.iataCode,
+          destination: segment.arrival.iataCode,
+          departureDate: segment.departure.at,
+          arrivalDate: segment.arrival.at,
+          airline: data.dictionaries.carriers[segment.operating?.carrierCode ?? segment.carrierCode]
+
+        })),
       return: flightOffer.itineraries[1].segments.map((segment: any) => ({
         origin: segment.departure.iataCode,
         destination: segment.arrival.iataCode,
         departureDate: segment.departure.at,
         arrivalDate: segment.arrival.at,
         airline: data.dictionaries.carriers[segment.operating?.carrierCode ?? segment.carrierCode]
-      })),   
+      })),
     },
     accommodation: "no avalible accommodation",
     checkedBags: flightOffer.travelerPricings[0].fareDetailsBySegment[0].includedCheckedBags.quantity,
@@ -79,7 +80,7 @@ const fetchHotels = async (cityCode: string | undefined) => {
       AMADEUS_ACCESS_TOKEN: retrieveAmadeusTokenFromStorage()
     }
   })
-  if(!data || !data.data || data.data.length === 0) {
+  if (!data || !data.data || data.data.length === 0) {
     return shallowFlights
   }
   data.data.splice(20, data.data.length)
@@ -88,48 +89,54 @@ const fetchHotels = async (cityCode: string | undefined) => {
 }
 
 const fetchHotelOffers = async (hotelIds: any[], cityCode: string | undefined) => {
-  const { data } = await axios.get<{ data: any[], dictionaries: any }>(`http://localhost:3000/amadeus/hotel-offers`, {
-    params: {
-      hotelIds,
-      cityCode,
-      checkInDate: shallowFlights[0].startDay,
-      checkOutDate: shallowFlights[0].endDay,
-      adults: 1,
-    },
-    headers: {
-      AMADEUS_ACCESS_TOKEN: retrieveAmadeusTokenFromStorage()
-    },
-  })
-  if(!data || !data.data || data.data.length === 0) {
+  try {
+    const { data } = await axios.get<{ data: any[], dictionaries: any }>(`http://localhost:3000/amadeus/hotel-offers`, {
+      params: {
+        hotelIds,
+        cityCode,
+        checkInDate: shallowFlights[0].startDay,
+        checkOutDate: shallowFlights[0].endDay,
+        adults: 1,
+      },
+      headers: {
+        AMADEUS_ACCESS_TOKEN: retrieveAmadeusTokenFromStorage()
+      },
+    })
+
+
+    if (_.isEmpty(data?.data?.length)) {
+      return shallowFlights
+    }
+    let fullPackages: PackageInterface[] = [];
+
+    data.data.filter((hotelOffer) => hotelOffer.isAvalible)
+    if (data?.data?.length >= 3) {
+      data.data.sort((hotelA, hotelB) => (hotelA.offers[0].price.total) - (hotelB.offers[0].price.total))
+
+      data.data.map((hotelOffer) => {
+        hotelOffer.offers[0].price.total = parseInt(hotelOffer.offers[0].price.total) *
+          parseInt(data.dictionaries.currencyConversionLookupRates[hotelOffer.offers[0].price.currency].rate) // Convert to ILS
+      })
+
+      fullPackages = shallowFlights.map((flightPackage, index) => ({
+        ...flightPackage,
+        accommodation: data.data[index].hotel.name,
+        hotelId: data.data[index].hotel.hotelId,
+        price: (parseInt(flightPackage.price) + parseInt(data.data[index].offers[0].price.total)).toString(), // Add hotel price to flight package price
+      }))
+
+    } else {
+      fullPackages = shallowFlights.map((packageItem) => ({
+        ...packageItem,
+        accommodation: data.data[0].hotel.name,
+        price: (parseInt(packageItem.price) + parseInt(data.data[0].offers[0].price.total)).toString(),
+        hotelId: data.data[0].hotel.hotelId,
+      }))
+    }
+    return fetchHotelRatings(fullPackages)
+  } catch (error) {
     return shallowFlights
   }
-  let fullPackages: PackageInterface[] = [];
-
-  data.data.filter((hotelOffer) => hotelOffer.isAvalible)
-  if (data.data.length >= 3) {
-    data.data.sort((hotelA, hotelB) => (hotelA.offers[0].price.total) - (hotelB.offers[0].price.total))
-    
-    data.data.map((hotelOffer) => {
-      hotelOffer.offers[0].price.total = parseInt(hotelOffer.offers[0].price.total) * 
-      parseInt(data.dictionaries.currencyConversionLookupRates[hotelOffer.offers[0].price.currency].rate) // Convert to ILS
-    }) 
-
-    fullPackages = shallowFlights.map((flightPackage, index) => ({
-      ...flightPackage,
-      accommodation: data.data[index].hotel.name,
-      hotelId: data.data[index].hotel.hotelId,
-      price: (parseInt(flightPackage.price) + parseInt(data.data[index].offers[0].price.total)).toString(), // Add hotel price to flight package price
-    }))
-
-  } else {
-    fullPackages = shallowFlights.map((packageItem) => ({
-      ...packageItem,
-      accommodation: data.data[0].hotel.name,
-      price: (parseInt(packageItem.price) + parseInt(data.data[0].offers[0].price.total)).toString(),
-      hotelId: data.data[0].hotel.hotelId,
-    }))
-  }
-  return fetchHotelRatings(fullPackages)
 }
 
 const fetchHotelRatings = async (packagesWithoutRating: PackageInterface[]): Promise<PackageInterface[]> => {
