@@ -11,7 +11,13 @@ const UserSchema: Schema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   favoriteGenres: { type: [String], default: [] },
-  favoriteArtists: { type: [String], default: [] },
+  favoriteArtists: [
+    {
+      name: String,
+      image: String
+    }
+  ],
+
 });
 
 export const User = mongoose.model<IUser>('User', UserSchema);

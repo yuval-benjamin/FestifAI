@@ -29,7 +29,11 @@ export const syncSpotifyUser = async (req: Request, res: Response): Promise<void
       .flatMap((artist: any) => artist.genres)
       .filter((genre: string, i: number, arr: string[]) => arr.indexOf(genre) === i);
 
-    const artists = topArtistsData.items.map((artist: any) => artist.name);
+    const artists = topArtistsData.items.map((artist: any) => ({
+      name: artist.name,
+      image: artist.images?.[0]?.url || null,
+    }));
+
 
     // Save or update user
     const existingUser = await User.findOne({ email });
@@ -49,7 +53,7 @@ export const syncSpotifyUser = async (req: Request, res: Response): Promise<void
       await newUser.save();
     }
 
-   res.json({
+    res.json({
       message: "User data synced successfully",
       name,
       email,
@@ -82,3 +86,28 @@ export const getSpotifyUser = async (req: Request, res: Response): Promise<void>
     res.status(500).json({ error: "Failed to fetch user data" });
   }
 };
+
+
+export const getUserTopArtists = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const email = req.query.email as string;
+
+    if (!email) {
+      res.status(400).json({ error: "Missing email" });
+      return;
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user || !user.favoriteArtists) {
+      res.status(404).json({ error: "User or favorite artists not found" });
+      return;
+    }
+
+    res.json(user.favoriteArtists);
+  } catch (error) {
+    console.error("Error fetching user top artists:", error);
+    res.status(500).json({ error: "Failed to fetch top artists" });
+  }
+};
+
