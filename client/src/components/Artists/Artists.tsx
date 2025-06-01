@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useUser } from "../../context/UserContext";
+import { useNavigate } from 'react-router-dom';
 
 interface Artist {
     name: string;
@@ -10,6 +11,7 @@ export const Artists: React.FC = () => {
     const [artists, setArtists] = useState<Artist[]>([]);
     const [loading, setLoading] = useState(true);
     const { email } = useUser();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTopArtists = async () => {
@@ -70,6 +72,31 @@ export const Artists: React.FC = () => {
             backgroundColor: 'rgba(0,0,0,0.6)',
             borderRadius: '16px'
         }}>
+            {/* Go Back Button */}
+            <div style={{ textAlign: 'left', marginBottom: '16px' }}>
+                <button
+                    onClick={() => navigate(-1)}
+                    style={{
+                        background: 'transparent',
+                        border: '1px solid rgba(255,255,255,0.5)',
+                        color: 'white',
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontWeight: '500',
+                        transition: 'background 0.3s',
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'transparent';
+                    }}
+                >
+                    ← Go Back
+                </button>
+            </div>
+
             {/* Header Section */}
             <div style={{ 
                 textAlign: 'center', 
@@ -231,26 +258,7 @@ export const Artists: React.FC = () => {
                     0% { transform: rotate(0deg); }
                     100% { transform: rotate(360deg); }
                 }
-                
-                /* Custom scrollbar for the grid */
-                div::-webkit-scrollbar {
-                    width: 6px;
-                }
-                
-                div::-webkit-scrollbar-track {
-                    background: rgba(255,255,255,0.1);
-                    border-radius: 3px;
-                }
-                
-                div::-webkit-scrollbar-thumb {
-                    background: rgba(255,255,255,0.3);
-                    border-radius: 3px;
-                }
-                
-                div::-webkit-scrollbar-thumb:hover {
-                    background: rgba(255,255,255,0.5);
-                }
-                
+
                 @media (max-width: 1200px) {
                     div[style*="grid-template-columns: repeat(5, 1fr)"] {
                         grid-template-columns: repeat(4, 1fr) !important;
