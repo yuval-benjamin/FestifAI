@@ -142,8 +142,7 @@ const fetchHotelRatings = async (packagesWithoutRating: PackageInterface[]): Pro
 
   packagesWithoutRating = packagesWithoutRating.map((packageItem) => ({
     ...packageItem,
-    hotelRating: 5
-    // hotelRating: data?.data ? (data?.data?.find((hotelRating) => hotelRating.hotelId === packageItem.hotelId)?.overallRating ?? 0)/20 : 0 // Convert to 1-5 stars
+    hotelRating: data?.data ? (data?.data?.find((hotelRating) => hotelRating.hotelId === packageItem.hotelId)?.overallRating ?? 0)/20 : 0 // Convert to 1-5 stars
   }))
 
   return packagesWithoutRating;

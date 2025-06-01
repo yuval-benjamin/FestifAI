@@ -16,7 +16,7 @@ export const Festivals: FC = () => {
   const loadingMessages = [
     '🎉 Customizing your festival packages...',
     '✈️ Finding the best flight deals for you...',
-    '🏨 Looking for the nicest accommodations...',
+    '🏨 Looking for the nicest hotels...',
     '🎶 Preparing your festival experience...',
   ];
 
