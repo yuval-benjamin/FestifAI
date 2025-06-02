@@ -116,6 +116,35 @@ const fetchHotelOffers = async (hotelIds: any[], cityCode: string | undefined) =
         hotelOffer.offers[0].price.total = parseInt(hotelOffer.offers[0].price.total) *
           parseInt(data.dictionaries.currencyConversionLookupRates[hotelOffer.offers[0].price.currency].rate) // Convert to ILS
       })
+if( data.data.length === 1) {
+fullPackages = shallowFlights.map((flightPackage) => ({
+        ...flightPackage,
+        accommodation: data.data[0].hotel.name,
+        hotelId: data.data[0].hotel.hotelId,
+        price: (parseInt(flightPackage.price) + parseInt(data.data[0].offers[0].price.total)).toString(), // Add hotel price to flight package price
+      }))
+}
+      if( data.data.length ==2) {
+        fullPackages[0] = {
+          ...shallowFlights[0],
+          accommodation: data.data[0].hotel.name,
+          hotelId: data.data[0].hotel.hotelId,
+          price: (parseInt(shallowFlights[0].price) + parseInt(data.data[0].offers[0].price.total)).toString(), // Add hotel price to flight package price
+        }
+        fullPackages[1] = {
+          ...shallowFlights[1],
+          accommodation: data.data[0].hotel.name,
+          hotelId: data.data[0].hotel.hotelId,
+          price: (parseInt(shallowFlights[1].price) + parseInt(data.data[0].offers[0].price.total)).toString(), // Add hotel price to flight package price
+        }
+        fullPackages[2] = {
+          ...shallowFlights[2],
+          accommodation: data.data[1].hotel.name,
+          hotelId: data.data[1].hotel.hotelId,
+          price: (parseInt(shallowFlights[2].price) + parseInt(data.data[1].offers[0].price.total)).toString(), // Add hotel price to flight package price
+        }
+      }
+      if( data.data.length >=3) {
 
       fullPackages = shallowFlights.map((flightPackage, index) => ({
         ...flightPackage,
@@ -123,6 +152,8 @@ const fetchHotelOffers = async (hotelIds: any[], cityCode: string | undefined) =
         hotelId: data.data[index%data.data.length].hotel.hotelId,
         price: (parseInt(flightPackage.price) + parseInt(data.data[index%data.data.length].offers[0].price.total)).toString(), // Add hotel price to flight package price
       }))
+    }
+
 
     return fetchHotelRatings(fullPackages)
   } catch (error) {
