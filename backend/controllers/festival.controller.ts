@@ -96,18 +96,20 @@ export async function getFestivalsFromAi(req: Request, res: Response) {
   } catch (error) {
     console.log(error);
 
-    // Check if the error is that we are out of tokens
     if (error instanceof RateLimitError || error.status === 403) {
-      res.status(429).json({ error: 'Rate limit exceeded. Please wait and try again later.' });
+      console.log('Rate limit exceeded. Switching API keys...');
+    
       if(api.apiKey === process.env.AI_API_KEY) {
-        api.apiKey = process.env.AI_API_KEY_SECONDARY; // Reset the API key in case it was invalidated
-        getFestivalsFromAi(req, res); // Retry the request  
+        api.apiKey = process.env.AI_API_KEY_SECONDARY; 
+        return getFestivalsFromAi(req, res); 
       }
 
       if(api.apiKey === process.env.AI_API_KEY_SECONDARY) {
-        api.apiKey = process.env.AI_API_KEY_TERTIARY; // Reset the API key in case it was invalidated
-        getFestivalsFromAi(req, res); // Retry the request
+        api.apiKey = process.env.AI_API_KEY_TERTIARY; 
+        return getFestivalsFromAi(req, res); 
       }
+      res.status(429).json({ error: 'Rate limit exceeded. Please wait and try again later.' });
+
       
     } else {
       // If it's another error, handle it normally
