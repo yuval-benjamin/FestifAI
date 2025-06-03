@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { Festival } from '../models/Festival';
 import { User } from '../models/User';
 import dotenv from "dotenv";
+import { get } from 'mongoose';
 dotenv.config();
 const baseURL = "https://api.aimlapi.com/v1";
 const apiKey = process.env.AI_API_KEY;
@@ -95,9 +96,21 @@ export async function getFestivalsFromAi(req: Request, res: Response) {
   } catch (error) {
     console.log(error);
 
-    // Check if the error is that we are out of tokens
     if (error instanceof RateLimitError || error.status === 403) {
+      console.log('Rate limit exceeded. Switching API keys...');
+    
+      if(api.apiKey === process.env.AI_API_KEY) {
+        api.apiKey = process.env.AI_API_KEY_SECONDARY; 
+        return getFestivalsFromAi(req, res); 
+      }
+
+      if(api.apiKey === process.env.AI_API_KEY_SECONDARY) {
+        api.apiKey = process.env.AI_API_KEY_TERTIARY; 
+        return getFestivalsFromAi(req, res); 
+      }
       res.status(429).json({ error: 'Rate limit exceeded. Please wait and try again later.' });
+
+      
     } else {
       // If it's another error, handle it normally
       res.status(500).json({ error: 'An error occurred while processing your request.' });
