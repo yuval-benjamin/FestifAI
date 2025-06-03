@@ -5,6 +5,8 @@ import { ClipLoader } from 'react-spinners';
 import { fetchAmadeusToken } from '../../services/amaduesService';
 import HorizontalLinearStepper from '../Stepper/Stepper';
 import { useFestivals } from '../FetchFestivalsContext';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 
 export const Festivals: FC = () => {
   const { setPackages } = useContext(AppContext);
