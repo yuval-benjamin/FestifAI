@@ -9,6 +9,7 @@ import { categoryRouter } from './routers/category.router';
 import https from 'https';
 import http from 'http';
 import fs from 'fs';
+import path from 'path';
 
 dotenv.config();
 connectToMongoDB();
@@ -27,6 +28,8 @@ app.use('/category', categoryRouter);
 app.use('/spotify', spotifyRouter);
 app.use('/amadeus', amadeusRouter);
 
+const frontPath = path.join(__dirname, "front");
+app.use(express.static(frontPath));
 
 if(process.env.NODE_ENV !== 'production') {
   console.log("development env");
