@@ -8,6 +8,8 @@ import React, {
 import axios from "axios";
 import { FestivalCategory, FestivalInterface } from "../App";
 import { useUser } from "../context/UserContext";
+import axiosInstance from '../api/axiosInstance'
+
 
 type FestivalContextType = {
     festivals: FestivalInterface[];
@@ -47,8 +49,8 @@ export const FestivalProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await axios.get<{ festivals: FestivalInterface[] }>(
-                `http://localhost:3000/festivals`,
+            const response = await axiosInstance.get<{ festivals: FestivalInterface[] }>(
+                `/festivals`,
                 {
                     params: { priceArea, date, location: country, page, email },
                 }

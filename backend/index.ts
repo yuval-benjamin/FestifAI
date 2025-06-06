@@ -28,10 +28,6 @@ app.use('/spotify', spotifyRouter);
 app.use('/amadeus', amadeusRouter);
 
 
-// app.listen(port, () => {
-//   console.log(`FestifAI server listening at http://localhost:${port}`);
-// });
-
 if(process.env.NODE_ENV !== 'production') {
   console.log("development env");
   http.createServer(app).listen(port)

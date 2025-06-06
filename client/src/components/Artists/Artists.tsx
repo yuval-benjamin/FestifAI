@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useUser } from "../../context/UserContext";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import axiosInstance from '../../api/axiosInstance';
 
 interface Artist {
     name: string;
@@ -17,8 +19,10 @@ export const Artists: React.FC = () => {
         const fetchTopArtists = async () => {
             try {
                 console.log("Fetching top artists for user:", email);
-                const res = await fetch(`http://localhost:3000/spotify/getUserArtists?email=${email}`);
-                const data = await res.json();
+                const res = await axiosInstance.get(`/spotify/getUserArtists`, {
+                    params: { email }
+                  });
+                const data = await res.data;
                 setArtists(data);
             } catch (err) {
                 console.error("Failed to fetch top artists", err);
