@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useUser } from "../../context/UserContext";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import axiosInstance from '../../api/axiosInstance';
 
-interface Artist {
+interface Artist {  
     name: string;
     image: string;
 }
@@ -257,7 +256,7 @@ export const Artists: React.FC = () => {
                 </div>
             )}
 
-            <style jsx>{`
+            <style>{`
                 @keyframes spin {
                     0% { transform: rotate(0deg); }
                     100% { transform: rotate(360deg); }

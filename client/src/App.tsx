@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import theme from './theme';
 
 import { UserProvider } from "./context/UserContext";
-import React, { createContext, useState } from 'react';
+import { createContext, useState } from 'react';
 import { Festivals } from './components/Festivals/Festivals';
 import { Packages } from './components/Packages';
 import { Preferences } from './components/Preferences/Preferences';

@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { PackageInterface, FestivalInterface, AmadeusFlightOffer, PackageEnum } from "../App";
-import axios from "axios";
 import axiosInstance from "../api/axiosInstance";
 
 

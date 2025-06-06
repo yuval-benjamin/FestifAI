@@ -1,11 +1,10 @@
-import React, {
+import {
     createContext,
     useContext,
     useState,
     useMemo,
     ReactNode,
 } from "react";
-import axios from "axios";
 import { FestivalCategory, FestivalInterface } from "../App";
 import { useUser } from "../context/UserContext";
 import axiosInstance from '../api/axiosInstance'
@@ -31,7 +30,7 @@ type FestivalContextType = {
 export const FestivalContext = createContext<FestivalContextType | undefined>(undefined);
 
 export const FestivalProvider = ({ children }: { children: ReactNode }) => {
-    const [chosenFestivalCategory, setChosenFestivalCategory] = useState<string>();
+    const [chosenFestivalCategory, setChosenFestivalCategory] = useState<FestivalCategory | undefined>(undefined);
     const { email } = useUser();
     const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
     const [page, setPage] = useState(0);

@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { parseSpotifyTokens } from "../services/spotifyService";
 import { ClipLoader } from 'react-spinners';
 import { useUser } from "../context/UserContext";
-import axios from "axios";
 import axiosInstance from "../api/axiosInstance";
 
 const SpotifyCallback = () => {

@@ -23,7 +23,8 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.4.1",
     "react-spinners": "^0.17.0",
-    "styled-components": "^6.1.18"
+    "styled-components": "^6.1.18",
+    "styled-jsx": "^5.1.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
