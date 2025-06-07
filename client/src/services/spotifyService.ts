@@ -61,7 +61,7 @@ export const logoutSpotify = () => {
 
 export const loginWithSpotify = () => {
   const clientId = "e4f2aaa400d04d40824fe55863470098";
-  const redirectUri = "http://localhost:5173/spotify/callback";
+  const redirectUri = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
   const scopes = [
     "user-read-private",
     "user-read-email",

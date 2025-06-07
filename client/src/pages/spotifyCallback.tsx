@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { parseSpotifyTokens } from "../services/spotifyService";
 import { ClipLoader } from 'react-spinners';
 import { useUser } from "../context/UserContext";
+import axiosInstance from "../api/axiosInstance";
 
 const SpotifyCallback = () => {
   const navigate = useNavigate();
@@ -25,8 +26,10 @@ const SpotifyCallback = () => {
     const accessToken = localStorage.getItem("spotify_access_token");
     if (accessToken) {
       try {
-        const response = await fetch(`http://localhost:3000/spotify/getUserData?access_token=${accessToken}`);
-        const data = await response.json();
+        const response = await axiosInstance.get('/spotify/getUserData', {
+          params: { access_token: accessToken }
+        });
+        const data = response.data;
         setUser(data.name, data.email);
         navigate("/preferences");
       } catch (error) {

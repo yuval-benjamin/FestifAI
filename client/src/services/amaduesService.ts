@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { PackageInterface, FestivalInterface, AmadeusFlightOffer, PackageEnum } from "../App";
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 
 let shallowFlights: PackageInterface[];
@@ -10,13 +10,13 @@ const retrieveAmadeusTokenFromStorage = () => localStorage.getItem("AMADEUS_ACCE
 
 export const fetchAmadeusToken = async (festival: FestivalInterface) => {
   selectedFestival = (festival)
-  const { data } = await axios.post<{ access_token: string }>(`http://localhost:3000/amadeus`)
+  const { data } = await axiosInstance.post<{ access_token: string }>(`/amadeus`)
   localStorage.setItem("AMADEUS_ACCESS_TOKEN", data.access_token);
   return fetchFlights()
 };
 
 const fetchFlights = async () => {
-  const { data } = await axios.get<{ data: AmadeusFlightOffer[], dictionaries: any }>(`http://localhost:3000/amadeus/flight-offers`, {
+  const { data } = await axiosInstance.get<{ data: AmadeusFlightOffer[], dictionaries: any }>(`/amadeus/flight-offers`, {
     params: {
       originLocationCode: "TLV",
       destinationLocationCode: selectedFestival?.locationCode,
@@ -72,7 +72,7 @@ const fetchFlights = async () => {
 
 const fetchHotels = async (cityCode: string | undefined) => {
 
-  const { data } = await axios.get<{ data: any[] }>(`http://localhost:3000/amadeus/hotels`, {
+  const { data } = await axiosInstance.get<{ data: any[] }>(`/amadeus/hotels`, {
     params: {
       cityCode
     },
@@ -90,7 +90,7 @@ const fetchHotels = async (cityCode: string | undefined) => {
 
 const fetchHotelOffers = async (hotelIds: any[], cityCode: string | undefined) => {
   try {
-    const { data } = await axios.get<{ data: any[], dictionaries: any }>(`http://localhost:3000/amadeus/hotel-offers`, {
+    const { data } = await axiosInstance.get<{ data: any[], dictionaries: any }>(`/amadeus/hotel-offers`, {
       params: {
         hotelIds,
         cityCode,
@@ -162,7 +162,7 @@ fullPackages = shallowFlights.map((flightPackage) => ({
 }
 
 const fetchHotelRatings = async (packagesWithoutRating: PackageInterface[]): Promise<PackageInterface[]> => {
-  const { data } = await axios.get<{ data: any[] }>(`http://localhost:3000/amadeus/hotel-ratings`, {
+  const { data } = await axiosInstance.get<{ data: any[] }>(`/amadeus/hotel-ratings`, {
     params: {
       hotelIds: packagesWithoutRating.map((packageItem) => packageItem.hotelId),
     },
