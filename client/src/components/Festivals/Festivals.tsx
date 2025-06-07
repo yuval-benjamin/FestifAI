@@ -1,11 +1,13 @@
-import { FC, Fragment, useContext, useEffect, useState } from 'react';
+import { FC, Fragment, useContext, useEffect, useMemo, useState } from 'react';
+import ArrowCircleLeftRoundedIcon from '@mui/icons-material/ArrowCircleLeftRounded';
+import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
 import { useNavigate } from 'react-router-dom';
 import { AppContext, FestivalInterface } from '../../App';
 import { ClipLoader } from 'react-spinners';
 import { fetchAmadeusToken } from '../../services/amaduesService';
 import HorizontalLinearStepper from '../Stepper/Stepper';
 import { useFestivals } from '../FetchFestivalsContext';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import _ from 'lodash';
 
 
 export const Festivals: FC = () => {
@@ -14,6 +16,13 @@ export const Festivals: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingText, setLoadingText] = useState('🎉 Customizing your festival packages...');
   const { fetchFestivals, currentFestivals, isLoading: isFestivalsLoading, setChosenFestivalCategory } = useFestivals();
+  const [allFestivals, setAllFestivals] = useState<FestivalInterface[]>([]);
+  const [page, setPage] = useState(0);
+
+  const currentChunkFestivals =
+    useMemo(
+      () => allFestivals.slice(page * 2, (page + 1) * 2),
+      [page, allFestivals])
 
   const loadingMessages = [
     '🎉 Customizing your festival packages...',
@@ -21,6 +30,18 @@ export const Festivals: FC = () => {
     '🏨 Looking for the nicest hotels...',
     '🎶 Preparing your festival experience...',
   ];
+
+  useEffect(
+    () => {
+      setAllFestivals(festivals => _.uniqBy([...festivals, ...currentFestivals], festival => festival.name));
+    },
+    [currentFestivals])
+
+    useEffect(
+      () => {
+        setPage(Math.ceil(allFestivals.length / 2) - 1)
+      },
+      [allFestivals])
 
   useEffect(() => {
     let index = 0;
@@ -64,11 +85,13 @@ export const Festivals: FC = () => {
           </div>
         </Fragment> :
         <Fragment>
-          <div className="container max-w-full lg:max-w-6xl mx-auto w-full" style={{ marginBottom: '100px' }}
-          >
+          <div className="container max-w-full lg:max-w-6xl mx-auto w-full" style={{ marginBottom: '100px' }}>
             <h1 className="display-1 bangers-regular text-center" style={{ color: "white" }}>choose your festival</h1>
             <div className="d-flex flex-row justify-content-center align-items-center">
-              {currentFestivals?.map((festival) => (
+              <div style={{ width: "46px" }}>
+                {page > 0 && <ArrowCircleLeftRoundedIcon style={{ height: "46px", width: "46px", cursor: "pointer" }} onClick={() => setPage(page => page - 1)} />}
+              </div>
+              {currentChunkFestivals?.map((festival) => (
                 <div
                   key={festival.name}
                   className="card text-center m-2"
@@ -87,11 +110,13 @@ export const Festivals: FC = () => {
                     <p className="card-text" style={{ fontSize: '18px' }}><b className='bangers-regular'>location:</b> {festival.location}</p>
                     <p className="card-text" style={{ fontSize: '18px' }}><b className='bangers-regular'>category:</b> {festival.category}</p>
                     <p className="card-text" style={{ fontSize: '18px' }}>Because you like {festival.genre}</p>
-                    <a onClick={(event) => event.stopPropagation()} href={festival.website.startsWith("http") ? festival.website : `https://${festival.website}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular" style={{ backgroundColor: '#FF3366', color: 'white' }} > Checkout {festival.name}'s Website </a>
-
+                    <a onClick={(event) => event.stopPropagation()} href={festival.website.startsWith("http") ? festival.website : `https://${festival.website}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular card-text" style={{ backgroundColor: '#FF3366', color: 'white' }} > Checkout {festival.name}'s Website </a>
                   </div>
                 </div>
               ))}
+              <div style={{ width: "46px" }}>
+                {(page + 1) < (Math.ceil(allFestivals.length / 2)) && <ArrowCircleRightRoundedIcon style={{ height: "46px", width: "46px", cursor: "pointer" }} onClick={() => setPage(page => page + 1)} />}
+              </div>
             </div>
             <div className="d-flex justify-content-end mt-4 me-4">
               <div
@@ -111,6 +136,7 @@ export const Festivals: FC = () => {
             </div>
           </div>
           <HorizontalLinearStepper activeStep={1} />
-        </Fragment>)} </div>
+        </Fragment>)
+      } </div>
   );
 };
