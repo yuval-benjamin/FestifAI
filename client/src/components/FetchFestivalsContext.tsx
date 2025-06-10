@@ -30,7 +30,7 @@ type FestivalContextType = {
 export const FestivalContext = createContext<FestivalContextType | undefined>(undefined);
 
 export const FestivalProvider = ({ children }: { children: ReactNode }) => {
-    const [chosenFestivalCategory, setChosenFestivalCategory] = useState<FestivalCategory | undefined>(undefined);
+    const [chosenFestivalCategory, setChosenFestivalCategory] = useState<FestivalCategory>();
     const { email } = useUser();
     const [festivals, setFestivals] = useState<FestivalInterface[]>([]);
     const [page, setPage] = useState(0);
@@ -41,7 +41,7 @@ export const FestivalProvider = ({ children }: { children: ReactNode }) => {
     const [error, setError] = useState<string | null>(null);
 
     const currentFestivals = useMemo(() => {
-        return festivals.slice((page - 1) * 3, page * 3);
+        return festivals.slice((page - 1) * 2, page * 2);
     }, [page, festivals]);
 
     const fetchFestivals = async () => {
