@@ -32,14 +32,16 @@ export const Homepage: FC = () => {
         </button>
       )}
 
+{!showSpotifyLogin && (
       <button
         type="button"
         className="btn btn-success bangers-regular btn-lg mt-3"
         onClick={() => navigate('/preferences')}
       >
-        Go to Preferences without Spotify
+        Start Planning Your Festival
       </button>
-    </div>
+  )}
+      </div>
   );
 };
 
