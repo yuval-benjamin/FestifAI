@@ -31,7 +31,7 @@ export const Checkout: FC = () => {
             overflowY: 'auto', color: 'white'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-              <h2 style={{ fontSize: '28px' }}>Recommended Items for {chosenFestivalCategory}</h2>
+              <h2 style={{ fontSize: '28px' }}>Recommended Items for {selectedPackage?.festivalId}</h2>
               <button onClick={() => setIsModalOpen(false)} style={{
                 backgroundColor: '#FF3366', border: 'none', color: 'white',
                 padding: '8px 16px', borderRadius: '8px', cursor: 'pointer'
@@ -77,65 +77,223 @@ export const Checkout: FC = () => {
           </div>
         </div>
       )}
-      <div className=' d-flex flex-column justify-content-center align-items-center'
-        style={{
-          width: "100%",
-          height: "100%", backgroundImage: "url(/sziget.png)", backgroundSize: "cover", backgroundPosition: "center"
-        }}>
-        <h1 className="display-1 bangers-regular text-center" style={{ color: "white" }}>Your selected package</h1>
-        <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '100px', width: '80%' }}>
-          <div className=' d-flex flex-column bangers-regular text-center' style={{
-            backdropFilter: 'blur(10px)',
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            borderRadius: '10px',
-            padding: '20px',
-            margin: '20px',
-            color: 'white',
-            width: "100%",
-            fontSize: '22px',
+ <div
+  className="d-flex flex-column justify-content-center align-items-center"
+  style={{
+    width: "100%",
+    height: "100%",
+    backgroundImage: "url(/sziget.png)",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }}
+>
+  {/* Title */}
+  <h1
+    className="display-1 bangers-regular text-center"
+    style={{ color: "white" }}
+  >
+    Your selected package
+  </h1>
+
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      marginBottom: "40px",
+      width: "60%",
+    }}
+  >
+    {/* Festival Data Block */}
+    <div
+      className="d-flex flex-column bangers-regular text-center"
+      style={{
+        backdropFilter: "blur(10px)",
+        backgroundColor: "rgba(255, 255, 255, 0.2)",
+        borderRadius: "10px",
+        padding: "20px",
+        color: "white",
+        width: "100%",
+        fontSize: "22px",
+      }}
+    >
+      <div
+        className="bangers-regular"
+        style={{ color: "white", fontSize: "25px" }}
+      >
+        {selectedPackage?.festivalId} with a {selectedPackage?.packageType} package
+      </div>
+      <div className="bangers-regular"
+        style={{ color: "white", fontSize: "20px" }}
+      >
+        🗓️ {selectedPackage?.startDay} til {selectedPackage?.endDay}
+      </div>
+      <div className="bangers-regular"
+        style={{ color: "white", fontSize: "20px" }}
+      >
+        <b>💰</b> ₪{selectedPackage?.price}
+      </div>
+      {/* Action Buttons */}
+      <div className="d-flex flex-row align-items-center justify-content-center gap-3">
+        <button
+          onClick={handleOpenModal}
+          className="btn bangers-regular"
+          style={{
+            backgroundColor: "#FF3366",
+            color: "white",
+            width: "200px",
+            display: "flex",
+            justifyContent: "center",
+            alignSelf: "center",
           }}
+        >
+          Festival essentials 🛒
+        </button>
+        <a
+          onClick={(event) => event.stopPropagation()}
+          href={
+            selectedPackage?.festivalLink.startsWith("http")
+              ? selectedPackage.festivalLink
+              : `https://${selectedPackage?.festivalLink}`
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn bangers-regular"
+          style={{
+            backgroundColor: "#FF3366",
+            color: "white",
+            width: "200px",
+            display: "flex",
+            justifyContent: "center",
+            alignSelf: "center",
+          }}
+        >
+          Buy festival ticket  🎫
+        </a>
+      </div>
+    </div>
+
+    {/* Flights and Hotel Row */}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        gap: "20px",
+        marginTop: "20px",
+      }}
+    >
+      {/* Flights Block */}
+      <div
+        className="d-flex flex-column bangers-regular text-center"
+        style={{
+          backdropFilter: "blur(10px)",
+          backgroundColor: "rgba(255, 255, 255, 0.2)",
+          borderRadius: "10px",
+          padding: "20px",
+          color: "white",
+          width: "65%", // Larger block for flights
+          fontSize: "22px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            gap: "20px",
+            marginTop: "20px",
+            textAlign: "center",
+          }}
+        >
+          {/* Departure Flights Block */}
+          <div
+            style={{
+              width: "48%",
+              backdropFilter: "blur(10px)",
+              backgroundColor: "rgba(255, 255, 255, 0.2)",
+              borderRadius: "10px",
+              padding: "10px",
+              color: "white",
+            }}
           >
-            <div className="bangers-regular" style={{ color: "white", fontSize: '25px' }}>{selectedPackage?.festivalId} with a {selectedPackage?.packageType} package</div>
-            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
-              <p className="card-text"><b className="bangers-regular">departure:</b>
-                {selectedPackage?.flights.departure.map((flight, index) => (
-                  <p key={index} className="card-text">{flight.origin} - {flight.destination} operated by {flight.airline}</p>
-                ))}</p>
-              <p className="card-text"><b className="bangers-regular">return: </b>
-                {selectedPackage?.flights.return.map((flight, index) => (
-                  <p key={index} className="card-text">{flight.origin} - {flight.destination} operated by {flight.airline}</p>
-                ))}</p>
-            </div>
-            <p className="card-text">dates: {(selectedPackage?.startDay)} til {selectedPackage?.endDay}</p>
-            <p className="card-text"><b>travel class:</b> {selectedPackage?.class}</p>
-            <p className="card-text"><b>accommodation:</b> {selectedPackage?.accommodation}
-              {Array.from({ length: selectedPackage?.hotelRating ?? 0 }, (_, i) => (
-                <span key={i}>⭐</span>
-              ))}</p>
-            <p className="card-text"><b>checked bags:</b>
-              {
-                selectedPackage?.checkedBags === 0 ? "No checked bags" :
-                  selectedPackage?.checkedBags
-              }
-            </p>
-            <p className="card-text"><b>total:</b> ₪{selectedPackage?.price}</p>
-            <button
-              onClick={handleOpenModal}
-              className="card-text btn bangers-regular"
-              style={{
-                outline: 'none',
-                border: 'none',
-                fontSize: '22px',
-                cursor: 'pointer'
-              }}
-            >
-              Check out items for festival
-            </button>
-            <a onClick={(event) => event.stopPropagation()} href={selectedPackage?.festivalLink.startsWith("http") ? selectedPackage.festivalLink : `https://${selectedPackage?.festivalLink}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular" style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white', width: '300px', display: 'flex', justifyContent: 'center', alignSelf: 'center' }} > Buy {selectedPackage?.festivalId} ticket here </a>
+            <h3 className="bangers-regular" style={{ color: "white", fontSize: "20px" }}>
+              🛫
+            </h3>
+            {selectedPackage?.flights.departure.map((flight, index) => (
+              <p key={index} className="card-text">
+                {flight.origin} - {flight.destination} operated by {flight.airline}
+              </p>
+            ))}
+          </div>
+
+          {/* Return Flights Block */}
+          <div
+            style={{
+              width: "48%",
+              backdropFilter: "blur(10px)",
+              backgroundColor: "rgba(255, 255, 255, 0.2)",
+              borderRadius: "10px",
+              padding: "10px",
+              color: "white",
+            }}
+          >
+            <h3 className="bangers-regular" style={{ color: "white", fontSize: "20px" }}>
+              🛬
+            </h3>
+            {selectedPackage?.flights.return.map((flight, index) => (
+              <p key={index} className="card-text">
+                {flight.origin} - {flight.destination} operated by {flight.airline}
+              </p>
+            ))}
           </div>
         </div>
-        <HorizontalLinearStepper activeStep={4} />
+        {/* Luggage and Travel Class */}
+        <div
+          style={{
+            display: "flex",
+            marginTop: "10px",
+            textAlign: "center",
+            justifyContent: "space-around",
+          }}
+        >
+          <p className="card-text">
+            <b>🧳 </b>{" "}
+            {selectedPackage?.checkedBags === 0
+              ? "No checked bags"
+              : selectedPackage?.checkedBags}
+          </p>
+          <p className="card-text">
+            <b>Class:</b> {selectedPackage?.class}
+          </p>
+        </div>
       </div>
+
+      {/* Hotel Block */}
+      <div
+        className="d-flex flex-column bangers-regular text-center"
+        style={{
+          backdropFilter: "blur(10px)",
+          backgroundColor: "rgba(255, 255, 255, 0.2)",
+          borderRadius: "10px",
+          padding: "20px",
+          color: "white",
+          width: "35%", // Smaller block for hotel
+          fontSize: "22px",
+        }}
+      >
+        <h2 className="bangers-regular" style={{ color: "white", fontSize: "25px" }}>
+          🏨
+        </h2>
+        <p className="card-text">
+           {selectedPackage?.accommodation} {Array.from({ length: selectedPackage?.hotelRating ?? 0 }, (_, i) => (
+            <span key={i}>⭐</span>
+          ))}
+        </p>
+      </div>
+    </div>
+  </div>
+  <HorizontalLinearStepper activeStep={4} />
+</div>
     </Fragment>
   )
 }
