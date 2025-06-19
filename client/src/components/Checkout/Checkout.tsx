@@ -120,7 +120,7 @@ export const Checkout: FC = () => {
         className="bangers-regular"
         style={{ color: "white", fontSize: "25px" }}
       >
-        {selectedPackage?.festivalId} with a {selectedPackage?.packageType} package
+        {selectedPackage?.festivalId} 
       </div>
       <div className="bangers-regular"
         style={{ color: "white", fontSize: "20px" }}
@@ -247,25 +247,7 @@ export const Checkout: FC = () => {
             ))}
           </div>
         </div>
-        {/* Luggage and Travel Class */}
-        <div
-          style={{
-            display: "flex",
-            marginTop: "10px",
-            textAlign: "center",
-            justifyContent: "space-around",
-          }}
-        >
-          <p className="card-text">
-            <b>🧳 </b>{" "}
-            {selectedPackage?.checkedBags === 0
-              ? "No checked bags"
-              : selectedPackage?.checkedBags}
-          </p>
-          <p className="card-text">
-            <b>Class:</b> {selectedPackage?.class}
-          </p>
-        </div>
+      
       </div>
 
       {/* Hotel Block */}
@@ -281,14 +263,63 @@ export const Checkout: FC = () => {
           fontSize: "22px",
         }}
       >
-        <h2 className="bangers-regular" style={{ color: "white", fontSize: "25px" }}>
-          🏨
-        </h2>
-        <p className="card-text">
-           {selectedPackage?.accommodation} {Array.from({ length: selectedPackage?.hotelRating ?? 0 }, (_, i) => (
+         <div className="card-text" style={{
+          backdropFilter: "blur(10px)",
+          backgroundColor: "rgba(255, 255, 255, 0.2)",
+          borderRadius: "10px",
+          padding: "20px",
+          color: "#FF3366",
+          fontSize: "22px",
+          marginBottom: "10px",
+        }}>
+            {selectedPackage?.packageType} package
+          </div>
+        <p className="card-text"  style={{
+              backdropFilter: "blur(10px)",
+              backgroundColor: "rgba(255, 255, 255, 0.2)",
+              borderRadius: "10px",
+              padding: "10px",
+              color: "white",
+            }}>
+        🏨 {selectedPackage?.accommodation} {Array.from({ length: selectedPackage?.hotelRating ?? 0 }, (_, i) => (
             <span key={i}>⭐</span>
           ))}
         </p>
+          {/* Luggage and Travel Class */}
+          <div style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+           <div className="card-text" style={{
+            display: "flex",
+            textAlign: "center",
+            justifyContent: "space-around", backdropFilter: "blur(10px)",
+            backgroundColor: "rgba(255, 255, 255, 0.2)",
+            borderRadius: "10px",
+            padding: "10px",
+            color: "white",
+            width: "70%"
+          }}>
+           💺 {selectedPackage?.class} class
+          </div>
+          <div className="card-text" style={{
+            display: "flex",
+            textAlign: "center",
+            backdropFilter: "blur(10px)",
+            backgroundColor: "rgba(255, 255, 255, 0.2)",
+            borderRadius: "10px",
+            padding: "10px",
+            color: "white",
+            width: "25%"
+          }}>
+            🧳 {selectedPackage?.checkedBags === 0
+              ? " No checked bags"
+              :  selectedPackage?.checkedBags}
+          </div>         
+        </div>
       </div>
     </div>
   </div>

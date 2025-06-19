@@ -39,20 +39,21 @@ export const Packages: FC = () => {
               <h5 className="card-title bangers-regular text-center"style={{fontSize:'22px'}}>{festivalPackage.packageType}</h5>
               <p className="card-text">🗓️ {(festivalPackage.startDay)} til {festivalPackage.endDay}</p>
                 { (festivalPackage.flights.departure[0].airline == festivalPackage.flights.return[0].airline) ? 
-              <p className="card-text">✈️: {festivalPackage.flights.departure[0].airline}</p>
+              <p className="card-text">✈️ {festivalPackage.flights.departure[0].airline}</p>
               :<>
               <p className="card-text"><b>🛫</b> {festivalPackage.flights.departure[0].airline}</p>
               <p className="card-text"><b>🛬</b> {festivalPackage.flights.return[0].airline}</p>
               </>}
-              <p className="card-text"><b>travel class:</b> {festivalPackage.class}</p>
-              <p className="card-text"><b>🏨 </b> {festivalPackage.accommodation } 
-                {Array.from({ length: festivalPackage?.hotelRating ?? 0 }, (_, i) => (
-                  <span key={i}>⭐</span>
-                ))}</p>
+              <p className="card-text">💺 {festivalPackage.class} class</p>
+             
               <p className="card-text"><b>🧳 </b>  {
                 festivalPackage.checkedBags === 0 ? "No checked bags" : 
                 festivalPackage.checkedBags
               }</p>
+               <p className="card-text"><b>🏨 </b> {festivalPackage.accommodation } 
+                {Array.from({ length: festivalPackage?.hotelRating ?? 0 }, (_, i) => (
+                  <span key={i}>⭐</span>
+                ))}</p>
               <p className="card-text"><b>💰:</b> ₪{festivalPackage.price}</p>
             </div>
           </div>
