@@ -31,7 +31,7 @@ export const Checkout: FC = () => {
             overflowY: 'auto', color: 'white'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-              <h2 style={{ fontSize: '28px' }}>Recommended Items for {chosenFestivalCategory}</h2>
+              <h2 style={{ fontSize: '28px' }}>Recommended Items for {selectedPackage?.festivalId}</h2>
               <button onClick={() => setIsModalOpen(false)} style={{
                 backgroundColor: '#FF3366', border: 'none', color: 'white',
                 padding: '8px 16px', borderRadius: '8px', cursor: 'pointer'
@@ -97,28 +97,28 @@ export const Checkout: FC = () => {
           >
             <div className="bangers-regular" style={{ color: "white", fontSize: '25px' }}>{selectedPackage?.festivalId} with a {selectedPackage?.packageType} package</div>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly' }}>
-              <p className="card-text"><b className="bangers-regular">departure:</b>
+              <p className="card-text"><b className="bangers-regular">🛫</b>
                 {selectedPackage?.flights.departure.map((flight, index) => (
                   <p key={index} className="card-text">{flight.origin} - {flight.destination} operated by {flight.airline}</p>
                 ))}</p>
-              <p className="card-text"><b className="bangers-regular">return: </b>
+              <p className="card-text"><b className="bangers-regular">🛬 </b>
                 {selectedPackage?.flights.return.map((flight, index) => (
                   <p key={index} className="card-text">{flight.origin} - {flight.destination} operated by {flight.airline}</p>
                 ))}</p>
             </div>
-            <p className="card-text">dates: {(selectedPackage?.startDay)} til {selectedPackage?.endDay}</p>
+            <p className="card-text">🗓️ {(selectedPackage?.startDay)} til {selectedPackage?.endDay}</p>
             <p className="card-text"><b>travel class:</b> {selectedPackage?.class}</p>
-            <p className="card-text"><b>accommodation:</b> {selectedPackage?.accommodation}
+            <p className="card-text"><b>🏨</b> {selectedPackage?.accommodation}
               {Array.from({ length: selectedPackage?.hotelRating ?? 0 }, (_, i) => (
                 <span key={i}>⭐</span>
               ))}</p>
-            <p className="card-text"><b>checked bags:</b>
+            <p className="card-text"><b>🧳 </b>
               {
                 selectedPackage?.checkedBags === 0 ? "No checked bags" :
                   selectedPackage?.checkedBags
               }
             </p>
-            <p className="card-text"><b>total:</b> ₪{selectedPackage?.price}</p>
+            <p className="card-text"><b>💰</b> ₪{selectedPackage?.price}</p>
             <button
               onClick={handleOpenModal}
               className="card-text btn bangers-regular"
@@ -129,7 +129,7 @@ export const Checkout: FC = () => {
                 cursor: 'pointer'
               }}
             >
-              Check out items for festival
+              Check out items for festival 🛒
             </button>
             <a onClick={(event) => event.stopPropagation()} href={selectedPackage?.festivalLink.startsWith("http") ? selectedPackage.festivalLink : `https://${selectedPackage?.festivalLink}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular" style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white', width: '300px', display: 'flex', justifyContent: 'center', alignSelf: 'center' }} > Buy {selectedPackage?.festivalId} ticket here </a>
           </div>
