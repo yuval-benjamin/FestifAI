@@ -67,7 +67,7 @@ const fetchFlights = async () => {
     festivalLink: selectedFestival.website ?? ""
   }))
   shallowFlights = packages;
-  return fetchHotels(selectedFestival?.locationCode)
+  return fetchHotels(selectedFestival?.cityCode)
 }
 
 const fetchHotels = async (cityCode: string | undefined) => {
