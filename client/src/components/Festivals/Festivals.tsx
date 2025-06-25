@@ -106,10 +106,20 @@ export const Festivals: FC = () => {
                   onClick={() => fetchPackages(festival)}>
                   <div className="card-body bangers-regular">
                     <h5 className="card-title" style={{ fontSize: '25px' }}>{festival.name}</h5>
-                    <p className="card-text" style={{ fontSize: '18px' }}><b className='bangers-regular'>dates:</b> {festival.startDate}, {festival.endDate}</p>
-                    <p className="card-text" style={{ fontSize: '18px' }}><b className='bangers-regular'>location:</b> {festival.location}</p>
-                    <p className="card-text" style={{ fontSize: '18px' }}><b className='bangers-regular'>category:</b> {festival.category}</p>
-                    <p className="card-text" style={{ fontSize: '18px' }}>Because you like {festival.genre}</p>
+                    <p className="card-text" style={{ fontSize: '18px' }}>🗓️ {festival.startDate}, {festival.endDate}</p>
+                    <p className="card-text" style={{ fontSize: '18px' }}>📍 {festival.location}</p>
+                    <p className="card-text" style={{ fontSize: '18px' }}><b className='bangers-regular'>category:</b> {festival.category}
+                    {
+                      festival.category === 'nature' && <span className='bangers-regular'> 🌳</span>
+                    }
+                    {
+                      festival.category === 'urban' && <span className='bangers-regular'> 🌆</span>
+                    }
+                    {
+                      festival.category === 'desert' && <span className='bangers-regular'> 🏜️</span>
+                    }
+                    </p>
+                    <p className="card-text" style={{ fontSize: '18px' }}>Because you like {festival.genre} 🎵</p>
                     <a onClick={(event) => event.stopPropagation()} href={festival.website.startsWith("http") ? festival.website : `https://${festival.website}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular card-text" style={{ backgroundColor: '#FF3366', color: 'white' }} > Checkout {festival.name}'s Website </a>
                   </div>
                 </div>
