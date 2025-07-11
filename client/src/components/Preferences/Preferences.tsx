@@ -55,7 +55,7 @@ export const Preferences: React.FC = () => {
                 Choose Your Preferences
               </h1>
               <div className="form-group mt-6 bangers-regular">
-                <label htmlFor="lowPrice">Price Area</label>
+                <label htmlFor="lowPrice">Price Area $</label>
                 <input
                   value={priceArea}
                   onChange={(e) => setPriceArea(Number(e.target.value))}
