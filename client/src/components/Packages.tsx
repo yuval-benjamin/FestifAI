@@ -54,7 +54,7 @@ export const Packages: FC = () => {
                 {Array.from({ length: festivalPackage?.hotelRating ?? 0 }, (_, i) => (
                   <span key={i}>⭐</span>
                 ))}</p>
-              <p className="card-text"><b>💰:</b> ₪{festivalPackage.price}</p>
+              <p className="card-text"><b>💰:</b> ${festivalPackage.price}</p>
             </div>
           </div>
         ))}
