@@ -54,19 +54,19 @@ export const Preferences: React.FC = () => {
               <h1 className="display-1 bangers-regular text-center" style={{ color: 'white' }}>
                 Choose Your Preferences
               </h1>
-              <div className="form-group mt-6 bangers-regular">
-                <label htmlFor="lowPrice">Price Area</label>
+              <div className="form-group mt-4 bangers-regular">
+                <label htmlFor="lowPrice">Festival ticket price Range 💵</label>
                 <input
                   value={priceArea}
                   onChange={(e) => setPriceArea(Number(e.target.value))}
                   type="number"
                   className="form-control rounded-lg focus:ring-blue-600 focus:border-blue-600"
                   id="lowPrice"
-                  placeholder="Enter Price Area"
+                  placeholder="Enter Price Range"
                 />
               </div>
-              <div className="form-group mt-6 bangers-regular">
-                <label htmlFor="location">Location - country or area</label>
+              <div className="form-group mt-4 bangers-regular">
+                <label htmlFor="location">Location - country or area 📍</label>
                 <input
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}
@@ -75,8 +75,8 @@ export const Preferences: React.FC = () => {
                   placeholder="Enter Location"
                 />
               </div>
-              <div className="form-group mt-6 bangers-regular">
-                <label htmlFor="month">Month Area</label>
+              <div className="form-group mt-4 bangers-regular">
+                <label htmlFor="month">Month Area 🗓️</label>
                 <input
                   type="month"
                   value={date}
