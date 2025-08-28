@@ -14,6 +14,7 @@ import { Checkout } from './components/Checkout/Checkout';
 import { FestivalProvider } from './components/FetchFestivalsContext';
 import Header from "./components/Header";
 import { Artists } from './components/Artists/Artists';
+import { PrivateRouteComponent } from './components/PrivateRouteComponent';
 
 export function App() {
   const [packages, setPackages] = useState<PackageInterface[]>([]);
@@ -41,13 +42,13 @@ export function App() {
               <BrowserRouter>
                 <Header />
                 <Routes>
-                  <Route path="/" element={<Homepage />} />
-                  <Route path="/festivals" element={<Festivals />} />
-                  <Route path="/festivals/package" element={<Packages />} />
+                  <Route path="/" element={<Homepage/>} />
+                  <Route path="/festivals" element={<PrivateRouteComponent element={<Festivals />}/>} />
+                  <Route path="/festivals/package" element={<PrivateRouteComponent element={<Packages />}/>} />
                   <Route path="/spotify/callback" element={<SpotifyCallback />} />
-                  <Route path="/preferences" element={<Preferences />} />
-                  <Route path="/checkout" element={<Checkout />} />
-                  <Route path="/artists" element={<Artists  />} />
+                  <Route path="/preferences" element={<PrivateRouteComponent element={<Preferences />}/>} />
+                  <Route path="/checkout" element={<PrivateRouteComponent element={<Checkout />}/>} />
+                  <Route path="/artists" element={<PrivateRouteComponent element={<Artists  />}/>} />
                 </Routes>
               </BrowserRouter>
             </div>

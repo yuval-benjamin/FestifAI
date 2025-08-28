@@ -27,7 +27,6 @@ export const retreiveAmadeusToken = (request: Request, res: Response) => {
 
         response.on('end', () => {
         const body = JSON.parse(data);
-        console.log(body);
         res.status(response.statusCode!).send(body);
         });
     })
@@ -60,7 +59,6 @@ export const flightOffersSearch = async (request: Request, res: Response) => {
 
         response.on('end', () => {
         const body = JSON.parse(data);
-        console.log(body);
         res.status(response.statusCode!).send(body);
         });
 })
@@ -90,7 +88,6 @@ export const hotels = async (request: Request, res: Response) => {
         );
         response.on('end', () => {
             const body = JSON.parse(data);
-            console.log(data)
             res.status(response.statusCode!).send(body);
         });
     })
@@ -121,7 +118,6 @@ const req = https.request(options, (response) => {
     );
     response.on('end', () => {
         const body = JSON.parse(data);
-        console.log(data)
         res.status(response.statusCode!).send(body);
     });
 })
@@ -150,7 +146,6 @@ const req = https.request(options, (response) => {
     );
     response.on('end', () => {
         const body = JSON.parse(data);
-        console.log(data)
         res.status(response.statusCode!).send(body);
     });
 })

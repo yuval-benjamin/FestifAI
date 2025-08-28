@@ -93,7 +93,7 @@ export const getUserTopArtists = async (req: Request, res: Response): Promise<vo
     const email = req.query.email as string;
 
     if (!email) {
-      res.status(400).json({ error: "Missing email" });
+      res.status(400).json({ error: "Missing email" }); 
       return;
     }
 
