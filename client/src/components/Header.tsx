@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { FaHome } from "react-icons/fa";
+import { logoutSpotify } from "../services/spotifyService";
 
 const Header = () => {
   const { name, clearUser } = useUser();
@@ -113,6 +114,7 @@ const Header = () => {
       </Link>
       <div
         onClick={() => {
+          logoutSpotify();
           clearUser();
           navigate("/");
         }}
