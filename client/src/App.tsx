@@ -14,7 +14,7 @@ import { Checkout } from './components/Checkout/Checkout';
 import { FestivalProvider } from './components/FetchFestivalsContext';
 import Header from "./components/Header";
 import { Artists } from './components/Artists/Artists';
-import { PrivateRouteComponent } from './components/PrivateRouteComponent';
+import { PrivateRouteComponent } from './components/privateRouteComponent';
 
 export function App() {
   const [packages, setPackages] = useState<PackageInterface[]>([]);
