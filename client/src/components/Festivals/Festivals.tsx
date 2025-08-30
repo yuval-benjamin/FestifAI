@@ -97,7 +97,6 @@ export const Festivals: FC = () => {
                   className="card text-center m-2"
                   style={{
                     width: "20rem",
-                    height: "288px",
                     backgroundColor: "rgba(31, 31, 61, 0.8)",
                     color: "white",
                     border: "none",
