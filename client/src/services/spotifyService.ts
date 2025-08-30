@@ -10,7 +10,6 @@ export const parseSpotifyTokens = () => {
   const params = new URLSearchParams(hash);
   const accessToken = params.get("access_token");
   const expiresIn = params.get("expires_in");
-  console.log(accessToken)
 
   if (accessToken && expiresIn) {
     const expiresAt = Date.now() + parseInt(expiresIn) * 1000;

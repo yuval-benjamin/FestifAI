@@ -17,7 +17,6 @@ export const Artists: React.FC = () => {
     useEffect(() => {
         const fetchTopArtists = async () => {
             try {
-                console.log("Fetching top artists for user:", email);
                 const res = await axiosInstance.get(`/spotify/getUserArtists`, {
                     params: { email }
                   });
