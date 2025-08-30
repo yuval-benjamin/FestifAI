@@ -154,7 +154,7 @@ fullPackages = shallowFlights.map((flightPackage) => ({
       }))
     }
 
-
+console.log(fullPackages)
     return fetchHotelRatings(fullPackages)
   } catch (error) {
     return shallowFlights

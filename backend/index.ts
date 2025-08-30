@@ -31,6 +31,10 @@ app.use('/amadeus', amadeusRouter);
 const frontPath = path.join(__dirname, "front");
 app.use(express.static(frontPath));
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontPath, "index.html"));
+});
+
 if(process.env.NODE_ENV !== 'production') {
   console.log("development env");
   http.createServer(app).listen(port)
