@@ -102,28 +102,29 @@ const fetchHotelOffers = async (hotelIds: any[], cityCode: string | undefined) =
         AMADEUS_ACCESS_TOKEN: retrieveAmadeusTokenFromStorage()
       },
     })
-
-
     if (_.isEmpty(data?.data)) {
       return shallowFlights
     }
     let fullPackages: PackageInterface[] = [];
 
-    data.data.filter((hotelOffer) => hotelOffer.isAvalible)
-      data.data.sort((hotelA, hotelB) => (hotelA.offers[0].price.total) - (hotelB.offers[0].price.total))
+    data.data.filter((hotelOffer) => hotelOffer.isAvalible || hotelOffer.available)
 
-      data.data.map((hotelOffer) => {
-        hotelOffer.offers[0].price.total = parseInt(hotelOffer.offers[0].price.total) *
-          parseInt(data.dictionaries.currencyConversionLookupRates[hotelOffer.offers[0].price.currency].rate) // Convert to ILS
-      })
-if( data.data.length === 1) {
-fullPackages = shallowFlights.map((flightPackage) => ({
+      data.data.map((hotelOffer) => hotelOffer.offers[0].price.total = parseInt(hotelOffer.offers[0].price.total))
+      if(data.dictionaries && data.dictionaries.currencyConversionLookupRates) {
+        data.data.map((hotelOffer) => {
+          hotelOffer.offers[0].price.total = parseInt(hotelOffer.offers[0].price.total) *
+            parseInt(data.dictionaries.currencyConversionLookupRates[hotelOffer.offers[0].price.currency].rate) // Convert to ILS
+        })
+      }
+      data.data.sort((hotelA, hotelB) => (hotelA.offers[0].price.total) - (hotelB.offers[0].price.total))
+      if( data.data.length === 1) {
+      fullPackages = shallowFlights.map((flightPackage) => ({
         ...flightPackage,
         accommodation: data.data[0].hotel.name,
         hotelId: data.data[0].hotel.hotelId,
         price: (parseInt(flightPackage.price) + parseInt(data.data[0].offers[0].price.total)).toString(), // Add hotel price to flight package price
       }))
-}
+      }
       if( data.data.length ==2) {
         fullPackages[0] = {
           ...shallowFlights[0],
