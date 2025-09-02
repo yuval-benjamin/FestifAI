@@ -125,12 +125,12 @@ export const Checkout: FC = () => {
             <div className="bangers-regular"
               style={{ color: "white", fontSize: "20px" }}
             >
-              🗓️ {selectedPackage?.startDay} til {selectedPackage?.endDay}
+              🗓️ {selectedPackage?.festivalDatesStart} til {selectedPackage?.festivalDatesEnd}
             </div>
             <div className="bangers-regular"
               style={{ color: "white", fontSize: "20px" }}
             >
-              <b>💰</b> ${selectedPackage?.price}
+              <b>💰</b> ${selectedPackage?.price} total package price
             </div>
             {/* Action Buttons */}
             <div className="d-flex flex-row align-items-center justify-content-center gap-3">
@@ -217,7 +217,7 @@ export const Checkout: FC = () => {
                   }}
                 >
                   <h3 className="bangers-regular" style={{ color: "white", fontSize: "20px" }}>
-                    🛫
+                    🛫 {selectedPackage?.startDay}
                   </h3>
                   {selectedPackage?.flights.departure.map((flight, index) => (
                     <p key={index} className="card-text">
@@ -238,7 +238,7 @@ export const Checkout: FC = () => {
                   }}
                 >
                   <h3 className="bangers-regular" style={{ color: "white", fontSize: "20px" }}>
-                    🛬
+                    🛬 {selectedPackage?.endDay}
                   </h3>
                   {selectedPackage?.flights.return.map((flight, index) => (
                     <p key={index} className="card-text">
@@ -247,7 +247,11 @@ export const Checkout: FC = () => {
                   ))}
                 </div>
               </div>
-
+              <div className="bangers-regular"
+                style={{ color: "white", fontSize: "20px", marginTop: "10px" }}
+              >
+                <b>💰</b> ${selectedPackage?.flightPrice} (Flight)
+              </div>
             </div>
 
             {/* Hotel Block */}
@@ -285,6 +289,9 @@ export const Checkout: FC = () => {
                   <span key={i}>⭐</span>
                 ))}
               </p>
+              <div className="bangers-regular" style={{ color: "white", fontSize: "20px" }}>
+                <b>💰</b> ${selectedPackage?.hotelPrice} (Hotel)
+              </div>
               {/* Luggage and Travel Class */}
               <div style={{
                 display: "flex",
