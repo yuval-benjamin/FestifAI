@@ -326,6 +326,17 @@ export const Checkout: FC = () => {
                     ? " No checked bags"
                     : selectedPackage?.checkedBags}
                 </div>
+                <p className="card-text" style={{ fontSize: '18px' }}><b className='bangers-regular'>category:</b> {festival.category}
+                    {
+                      chosenFestivalCategory === 'nature' && <span className='bangers-regular'> 🌳</span>
+                    }
+                    {
+                      chosenFestivalCategory === 'urban' && <span className='bangers-regular'> 🌆</span>
+                    }
+                    {
+                      chosenFestivalCategory === 'desert' && <span className='bangers-regular'> 🏜️</span>
+                    }
+                    </p>
               </div>
             </div>
           </div>
