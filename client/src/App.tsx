@@ -101,6 +101,10 @@ export interface PackageInterface {
   hotelRating?: number;
   hotelId: string;
   festivalLink: string;
+  hotelPrice?: string;
+  flightPrice?: string;
+  festivalDatesStart: string;
+  festivalDatesEnd: string;
 }
 
 export interface FlightInterface {
