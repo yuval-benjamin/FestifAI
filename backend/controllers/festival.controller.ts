@@ -33,7 +33,8 @@ export async function getFestivalsFromAi(req: Request, res: Response) {
     ? "pop" // Default genre if none are set
     : user.favoriteGenres.join(", ");
 
-  const question = `Return a JSON array of 2 *different* ${genreList} music festivals in 2025 that have not been listed in previous pages (this is page ${page}), price area:${priceArea}$,general location-${location}, genre, general date-${date} Each object must have: name, genre, location,startDate,endDate,locationCode (nearest airport), cityCode (nearest city),category - Only One of three types urban, nature or desert, website. Dates in YYYY-MM-DD. Response must be max 256 characters.`;
+
+  const question = `Return a JSON array of 2 *different* ${genreList} music festivals in 2025-2026 that are real from actual websites (very important not to make them up) that have not been listed in previous pages (this is page ${page}), price area:${priceArea}$,general location-${location}, genre, general date-${date} area Each object must have: name, genre,location,startDate,endDate,locationCode (nearest airport), cityCode (nearest city),category - Only One of three types urban, nature or desert, website. Dates in YYYY-MM-DD and very important that the dates are correct so please double check so that when I click the link and go to the website i will see that same dates.`;
 
   try {
     const completion = await api.chat.completions.create({
