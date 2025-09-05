@@ -23,7 +23,8 @@ export const Checkout: FC = () => {
         <div style={{
           position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
           backgroundColor: 'rgba(0, 0, 0, 0.6)', display: 'flex',
-          justifyContent: 'center', alignItems: 'center', zIndex: 1000
+          justifyContent: 'center', alignItems: 'center', zIndex: 1000,
+          fontFamily: "bangers"
         }}>
           <div style={{
             backgroundColor: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(12px)',
@@ -195,7 +196,7 @@ export const Checkout: FC = () => {
           >
             <div
               className="bangers-regular"
-              style={{ color: "white", fontSize: "25px" }}
+              style={{ color: "white", fontSize: "27px", marginBottom: "5px" }}
             >
               price breakdown 💸
             </div>
