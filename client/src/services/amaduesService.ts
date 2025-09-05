@@ -64,7 +64,10 @@ const fetchFlights = async () => {
     class: flightOffer.travelerPricings[0].fareDetailsBySegment[0].cabin,
     packageType: flightOffer.packageType,
     hotelId: "",
-    festivalLink: selectedFestival.website ?? ""
+    festivalLink: selectedFestival.website ?? "",
+    festivalDatesStart: selectedFestival?.startDate,
+    festivalDatesEnd: selectedFestival?.endDate,
+    flightPrice: flightOffer.price.total
   }))
   shallowFlights = packages;
   return fetchHotels(selectedFestival?.cityCode)
@@ -113,7 +116,7 @@ const fetchHotelOffers = async (hotelIds: any[], cityCode: string | undefined) =
       if(data.dictionaries && data.dictionaries.currencyConversionLookupRates) {
         data.data.map((hotelOffer) => {
           hotelOffer.offers[0].price.total = parseInt(hotelOffer.offers[0].price.total) *
-            parseInt(data.dictionaries.currencyConversionLookupRates[hotelOffer.offers[0].price.currency].rate) // Convert to ILS
+            parseInt(data.dictionaries.currencyConversionLookupRates[hotelOffer.offers[0].price.currency].rate) // Convert to USD
         })
       }
       data.data.sort((hotelA, hotelB) => (hotelA.offers[0].price.total) - (hotelB.offers[0].price.total))
@@ -122,7 +125,8 @@ const fetchHotelOffers = async (hotelIds: any[], cityCode: string | undefined) =
         ...flightPackage,
         accommodation: data.data[0].hotel.name,
         hotelId: data.data[0].hotel.hotelId,
-        price: (parseInt(flightPackage.price) + parseInt(data.data[0].offers[0].price.total)).toString(), // Add hotel price to flight package price
+        price: (parseInt(flightPackage.price) + parseInt(data.data[0].offers[0].price.total)).toString(),
+        hotelPrice: parseInt(data.data[0].offers[0].price.total).toString()
       }))
       }
       if( data.data.length ==2) {
@@ -130,19 +134,22 @@ const fetchHotelOffers = async (hotelIds: any[], cityCode: string | undefined) =
           ...shallowFlights[0],
           accommodation: data.data[0].hotel.name,
           hotelId: data.data[0].hotel.hotelId,
-          price: (parseInt(shallowFlights[0].price) + parseInt(data.data[0].offers[0].price.total)).toString(), // Add hotel price to flight package price
+          price: (parseInt(shallowFlights[0].price) + parseInt(data.data[0].offers[0].price.total)).toString(),
+          hotelPrice: parseInt(data.data[0].offers[0].price.total).toString()
         }
         fullPackages[1] = {
           ...shallowFlights[1],
           accommodation: data.data[0].hotel.name,
           hotelId: data.data[0].hotel.hotelId,
           price: (parseInt(shallowFlights[1].price) + parseInt(data.data[0].offers[0].price.total)).toString(), // Add hotel price to flight package price
+          hotelPrice: parseInt(data.data[0].offers[0].price.total).toString()
         }
         fullPackages[2] = {
           ...shallowFlights[2],
           accommodation: data.data[1].hotel.name,
           hotelId: data.data[1].hotel.hotelId,
           price: (parseInt(shallowFlights[2].price) + parseInt(data.data[1].offers[0].price.total)).toString(), // Add hotel price to flight package price
+          hotelPrice: parseInt(data.data[1].offers[0].price.total).toString()
         }
       }
       if( data.data.length >=3) {
@@ -152,6 +159,7 @@ const fetchHotelOffers = async (hotelIds: any[], cityCode: string | undefined) =
         accommodation: data.data[index%data.data.length].hotel.name,
         hotelId: data.data[index%data.data.length].hotel.hotelId,
         price: (parseInt(flightPackage.price) + parseInt(data.data[index%data.data.length].offers[0].price.total)).toString(), // Add hotel price to flight package price
+        hotelPrice: parseInt(data.data[index%data.data.length].offers[0].price.total).toString()
       }))
     }
 
