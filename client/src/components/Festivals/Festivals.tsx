@@ -100,10 +100,23 @@ export const Festivals: FC = () => {
                     backgroundColor: "rgba(31, 31, 61, 0.8)",
                     color: "white",
                     border: "none",
-                    cursor: "pointer"
+                    cursor: "pointer",
+                    minHeight: "350px",
+                    transition: "transform 0.3s ease, background-color 0.3s ease",
                   }}
-                  onClick={() => fetchPackages(festival)}>
-                  <div className="card-body bangers-regular">
+                  onClick={(e) => {
+                    e.currentTarget.style.border = "2px solid rgb(255, 51, 102)";
+                    fetchPackages(festival)}}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "scale(1.05)";
+                      e.currentTarget.style.backgroundColor = "rgba(31, 31, 61, 0.9)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "scale(1)";
+                      e.currentTarget.style.backgroundColor = "rgba(31, 31, 61, 0.8)";
+                    }}
+                  >
+                  <div className="card-body bangers-regular" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                     <h5 className="card-title" style={{ fontSize: '25px' }}>{festival.name}</h5>
                     <p className="card-text" style={{ fontSize: '18px' }}>🗓️ {festival.startDate}, {festival.endDate}</p>
                     <p className="card-text" style={{ fontSize: '18px' }}>📍 {festival.location}</p>
@@ -119,7 +132,28 @@ export const Festivals: FC = () => {
                     }
                     </p>
                     <p className="card-text" style={{ fontSize: '18px' }}>Because you like {festival.genre} 🎵</p>
-                    <a onClick={(event) => event.stopPropagation()} href={festival.website.startsWith("http") ? festival.website : `https://${festival.website}`} target="_blank" rel="noopener noreferrer" className="btn bangers-regular card-text" style={{ backgroundColor: '#FF3366', color: 'white' }} > Checkout {festival.name}'s Website </a>
+                    <a
+                      onClick={(event) => event.stopPropagation()}
+                      href={festival.website.startsWith("http") ? festival.website : `https://${festival.website}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn bangers-regular card-text"
+                      style={{
+                        backgroundColor: '#FF3366',
+                        color: 'white',
+                        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.05)';
+                        e.currentTarget.style.boxShadow = '0px 4px 15px rgba(255, 51, 102, 0.5)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                    >
+                      Checkout {festival.name}
+                    </a>
                   </div>
                 </div>
               ))}

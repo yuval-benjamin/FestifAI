@@ -7,7 +7,7 @@ import HorizontalLinearStepper from './Stepper/Stepper';
 export const Packages: FC = () => {
   const { packages } = useContext(AppContext)
   const navigate = useNavigate();
-  const { setSelectedPackage } = useContext(AppContext)
+  const { setSelectedPackage, selectedPackage } = useContext(AppContext)
 
   const onSelectPackage = (selectedPackage: PackageInterface) => {
     setSelectedPackage?.(selectedPackage)
@@ -24,8 +24,7 @@ export const Packages: FC = () => {
     }}
     >
       <h1 className="display-1 bangers-regular text-center" style={{ color: "white" }}>choose your package</h1>
-      <div className="d-flex flex-row justify-content-center align-items-center" style={{       marginBottom: '100px',
-}}>
+      <div className="d-flex flex-row justify-content-center align-items-center">
         {packages?.map((festivalPackage) => (
           <div key={festivalPackage._id} className="card text-left m-2" style={{
             width: "20rem",
@@ -34,7 +33,18 @@ export const Packages: FC = () => {
             color: "white",
             border: "none",
             cursor: "pointer",
-          }} onClick={() => onSelectPackage(festivalPackage)}>
+            transition: "transform 0.3s ease, background-color 0.3s ease",
+          }} onClick={(e) => {
+            e.currentTarget.style.border = "2px solid rgb(255, 51, 102)";
+            onSelectPackage(festivalPackage)}}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.05)";
+            e.currentTarget.style.backgroundColor = "rgba(31, 31, 61, 0.9)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.backgroundColor = "rgba(31, 31, 61, 0.8)";
+          }}>
             <div className="card-body" style={{fontSize: '18px'}}>
               <h5 className="card-title bangers-regular text-center"style={{fontSize:'22px'}}>{festivalPackage.packageType}</h5>
               <p className="card-text">🗓️ {(festivalPackage.startDay)} til {festivalPackage.endDay}</p>
@@ -59,6 +69,29 @@ export const Packages: FC = () => {
           </div>
         ))}
       </div>
+      {packages && (
+        <div
+          className="card text-left m-4"
+          style={{
+            width: "30rem",
+            backgroundColor: "rgba(31, 31, 61, 0.8)",
+            color: "white",
+            border: "none",
+          }}
+        >
+          <div className="card-body" style={{ fontSize: "18px" }}>
+            <h5 className="card-title bangers-regular text-center" style={{ fontSize: "22px", color: "#FF3366" }}>
+              Selected Festival details 🕺🏽
+            </h5>
+            <p className="card-text">
+              🎉 {packages[0].festivalId}
+            </p>
+            <p className="card-text">
+              <b>📅 Dates:</b> {packages[0].festivalDatesStart} til {packages[0].festivalDatesEnd}
+            </p>
+          </div>
+        </div>
+      )}
      <HorizontalLinearStepper activeStep={2}/>
     </div>
     </Fragment>

@@ -60,7 +60,7 @@ const fetchFlights = async () => {
       })),
     },
     accommodation: "no avalible accommodation",
-    checkedBags: flightOffer.travelerPricings[0].fareDetailsBySegment[0].includedCheckedBags.quantity,
+    checkedBags: flightOffer.travelerPricings[0].fareDetailsBySegment[0].includedCheckedBags.quantity ?? 0,
     class: flightOffer.travelerPricings[0].fareDetailsBySegment[0].cabin,
     packageType: flightOffer.packageType,
     hotelId: "",
