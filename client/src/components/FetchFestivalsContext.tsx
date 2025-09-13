@@ -51,7 +51,7 @@ export const FestivalProvider = ({ children }: { children: ReactNode }) => {
             const response = await axiosInstance.get<{ festivals: FestivalInterface[] }>(
                 `/festivals`,
                 {
-                    params: { priceArea, date, location: country, page, email },
+                    params: { priceArea, date, location: country, page, email, names: festivals.map(f => f.name)  },
                 }
             );
             setFestivals((prev) => [...prev, ...response.data.festivals]);

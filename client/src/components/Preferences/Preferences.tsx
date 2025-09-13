@@ -90,7 +90,20 @@ export const Preferences: React.FC = () => {
               </div>
               <button
                 className="btn mt-6 bangers-regular"
-                style={{ marginTop: "20px", backgroundColor: '#FF3366', color: 'white' }}
+                style={{
+                  marginTop: "20px",
+                  color: 'white',
+                  backgroundColor: '#FF3366',
+                  transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                  e.currentTarget.style.boxShadow = '0px 4px 15px rgba(255, 51, 102, 0.5)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = 'none';
+                }}
                 onClick={async () => {
                   try {
                     await fetchFestivals()

@@ -23,7 +23,8 @@ export const Checkout: FC = () => {
         <div style={{
           position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
           backgroundColor: 'rgba(0, 0, 0, 0.6)', display: 'flex',
-          justifyContent: 'center', alignItems: 'center', zIndex: 1000
+          justifyContent: 'center', alignItems: 'center', zIndex: 1000,
+          fontFamily: "bangers"
         }}>
           <div style={{
             backgroundColor: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(12px)',
@@ -103,7 +104,16 @@ export const Checkout: FC = () => {
             width: "60%",
           }}
         >
-          {/* Festival Data Block */}
+          <div style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              gap: "20px",
+              marginTop: "20px",
+              width: "100%",
+            }}>
+
+  {/* Festival Data Block */}
           <div
             className="d-flex flex-column bangers-regular text-center"
             style={{
@@ -112,23 +122,23 @@ export const Checkout: FC = () => {
               borderRadius: "10px",
               padding: "20px",
               color: "white",
-              width: "100%",
+              width: "50%",
               fontSize: "22px",
             }}
           >
             <div
               className="bangers-regular"
-              style={{ color: "white", fontSize: "25px" }}
+              style={{ color: "#FF3366", fontSize: "30px" }}
             >
               {selectedPackage?.festivalId}
             </div>
             <div className="bangers-regular"
-              style={{ color: "white", fontSize: "20px" }}
+              style={{ color: "white", fontSize: "22px" }}
             >
-              🗓️ {selectedPackage?.startDay} til {selectedPackage?.endDay}
+              🗓️ {selectedPackage?.festivalDatesStart} til {selectedPackage?.festivalDatesEnd}
             </div>
             <div className="bangers-regular"
-              style={{ color: "white", fontSize: "20px" }}
+              style={{ color: "white", fontSize: "22px", marginBottom: "10px" }}
             >
               <b>💰</b> ${selectedPackage?.price}
             </div>
@@ -171,6 +181,43 @@ export const Checkout: FC = () => {
               </a>
             </div>
           </div>
+  {/* Festival Data Block */}
+          <div
+            className="d-flex flex-column bangers-regular text-center"
+            style={{
+              backdropFilter: "blur(10px)",
+              backgroundColor: "rgba(255, 255, 255, 0.2)",
+              borderRadius: "10px",
+              padding: "20px",
+              color: "white",
+              width: "50%",
+              fontSize: "22px",
+            }}
+          >
+            <div
+              className="bangers-regular"
+              style={{ color: "white", fontSize: "27px", marginBottom: "5px" }}
+            >
+              price breakdown 💸
+            </div>
+            {
+                selectedPackage?.hotelPrice &&  <div className="bangers-regular" style={{ color: "white", fontSize: "20px" }}>
+                accommodation: <b>💰</b> ${selectedPackage?.hotelPrice} 
+              </div>
+              }
+               <div className="bangers-regular"
+                style={{ color: "white", fontSize: "20px", marginTop: "10px" }}
+              >
+                flights: <b>💰</b> ${selectedPackage?.flightPrice}
+              </div>
+              <div className="bangers-regular"
+                style={{ color: "white", fontSize: "20px", marginTop: "10px" }}
+              >
+                total: <b>🧾</b> ${selectedPackage?.price}
+              </div>
+          </div>
+          </div>
+        
 
           {/* Flights and Hotel Row */}
           <div
@@ -217,7 +264,7 @@ export const Checkout: FC = () => {
                   }}
                 >
                   <h3 className="bangers-regular" style={{ color: "white", fontSize: "20px" }}>
-                    🛫
+                    🛫 {selectedPackage?.startDay}
                   </h3>
                   {selectedPackage?.flights.departure.map((flight, index) => (
                     <p key={index} className="card-text">
@@ -238,7 +285,7 @@ export const Checkout: FC = () => {
                   }}
                 >
                   <h3 className="bangers-regular" style={{ color: "white", fontSize: "20px" }}>
-                    🛬
+                    🛬 {selectedPackage?.endDay}
                   </h3>
                   {selectedPackage?.flights.return.map((flight, index) => (
                     <p key={index} className="card-text">
@@ -248,49 +295,13 @@ export const Checkout: FC = () => {
                 </div>
               </div>
 
-            </div>
-
-            {/* Hotel Block */}
-            <div
-              className="d-flex flex-column bangers-regular text-center"
-              style={{
-                backdropFilter: "blur(10px)",
-                backgroundColor: "rgba(255, 255, 255, 0.2)",
-                borderRadius: "10px",
-                padding: "20px",
-                color: "white",
-                width: "35%", // Smaller block for hotel
-                fontSize: "22px",
-              }}
-            >
-              <div className="card-text" style={{
-                backdropFilter: "blur(10px)",
-                backgroundColor: "rgba(255, 255, 255, 0.2)",
-                borderRadius: "10px",
-                padding: "20px",
-                color: "#FF3366",
-                fontSize: "22px",
-                marginBottom: "10px",
-              }}>
-                {selectedPackage?.packageType} package
-              </div>
-              <p className="card-text" style={{
-                backdropFilter: "blur(10px)",
-                backgroundColor: "rgba(255, 255, 255, 0.2)",
-                borderRadius: "10px",
-                padding: "10px",
-                color: "white",
-              }}>
-                🏨 {selectedPackage?.accommodation} {Array.from({ length: selectedPackage?.hotelRating ?? 0 }, (_, i) => (
-                  <span key={i}>⭐</span>
-                ))}
-              </p>
               {/* Luggage and Travel Class */}
               <div style={{
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
                 width: "100%",
+                marginTop: "10px"
               }}
               >
                 <div className="card-text" style={{
@@ -313,13 +324,68 @@ export const Checkout: FC = () => {
                   borderRadius: "10px",
                   padding: "10px",
                   color: "white",
-                  width: "25%"
+                  width: "25%",
+                  justifyContent: "space-around"
                 }}>
                   🧳 {selectedPackage?.checkedBags === 0
                     ? " No checked bags"
                     : selectedPackage?.checkedBags}
-                </div>
+                </div>            
               </div>
+             
+            </div>
+
+            {/* Hotel Block */}
+            <div
+              className="d-flex flex-column bangers-regular text-center"
+              style={{
+                backdropFilter: "blur(10px)",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                borderRadius: "10px",
+                padding: "20px",
+                color: "white",
+                width: "35%", // Smaller block for hotel
+                fontSize: "22px",
+                justifyContent: "center",
+              }}
+            >
+              <div className="card-text" style={{
+                backdropFilter: "blur(10px)",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                borderRadius: "10px",
+                padding: "20px",
+                color: "#FF3366",
+                fontSize: "22px",
+                marginBottom: "10px",
+              }}>
+                {selectedPackage?.packageType} package
+              </div>
+              <p className="card-text" style={{
+                  display: "flex",
+                  textAlign: "center",
+                  backdropFilter: "blur(10px)",
+                  backgroundColor: "rgba(255, 255, 255, 0.2)",
+                  borderRadius: "10px",
+                  padding: "10px",
+                  color: "white",
+                  width: "100%",
+                  justifyContent: "center"
+
+                }}>category: {chosenFestivalCategory} {chosenFestivalCategory === 'nature' && <span className='bangers-regular'>🌳</span>}{chosenFestivalCategory === 'urban' && <span className='bangers-regular'>🌆</span>}{chosenFestivalCategory === 'desert' && <span className='bangers-regular'>🏜️</span>}
+                    </p>
+              <p className="card-text" style={{
+                backdropFilter: "blur(10px)",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
+                borderRadius: "10px",
+                padding: "10px",
+                color: "white",
+              }}>
+                🏨 {selectedPackage?.accommodation} {Array.from({ length: selectedPackage?.hotelRating ?? 0 }, (_, i) => (
+                  <span key={i}>⭐</span>))}
+                 
+              </p> 
+           
+            
             </div>
           </div>
         </div>
